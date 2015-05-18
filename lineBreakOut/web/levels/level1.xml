@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- New document created with EditiX at Sat May 16 18:34:00 CEST 2015 -->
+
+
+<blocks>
+	<block>
+		<color>red</color>
+		<x>1</x>
+		<y>1</y>
+		<solid>0</solid>
+		<hitCounter>1</hitCounter>
+	</block>
+		<block>
+		<color>red</color>
+		<x>2</x>
+		<y>1</y>
+		<solid>0</solid>
+		<hitCounter>1</hitCounter>
+	</block>
+		<block>
+		<color>red</color>
+		<x>5</x>
+		<y>5</y>
+		<solid>0</solid>
+		<hitCounter>1</hitCounter>
+	</block>
+		<block>
+		<color>red</color>
+		<x>10</x>
+		<y>7</y>
+		<solid>0</solid>
+		<hitCounter>1</hitCounter>
+	</block>
+		<block>
+		<color>red</color>
+		<x>14</x>
+		<y>10</y>
+		<solid>0</solid>
+		<hitCounter>1</hitCounter>
+	</block>
+</blocks>

@@ -1,0 +1,69 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+#field{
+  background-color: lightgrey;
+  position: absolute;
+  width: 600px;
+  height: 600px;  
+  padding: 1px;
+}
+
+#cursor {
+  background-color: black;
+  position: absolute;
+  width: 50px;
+  height: 10px;
+  border-radius: 5px;  
+  padding: 1px;
+  top: 750px;
+}
+
+.ball{
+  background-color: red;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;  
+  padding: 1px;
+}
+
+.blueBlock{
+  background-color: blue;
+  position: absolute;    
+  padding: 1px;
+  width: 40px;
+  height: 20px;
+}
+
+.solidBlock{
+  background-color: black;
+  position: absolute;    
+  padding: 1px;
+  width: 40px;
+  height: 20px;
+}
+
+.greenBlock{
+  background-color: green;
+  position: absolute;    
+  padding: 1px;
+  width: 40px;
+  height: 20px;
+}
+
+.redBlock{
+  background-color: red;
+  position: absolute;    
+  padding: 1px;
+  width: 40px;
+  height: 20px;  
+}
+
