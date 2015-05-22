@@ -2,6 +2,7 @@ library test;
 
 import 'dart:html';
 import 'dart:async';
+import 'dart:math';
 
 part 'src/block.dart';
 part 'src/view.dart';
