@@ -126,9 +126,9 @@ class Controller{
      // zeige alle Blöcke im View an
      _model.blocks.forEach( (e) => _view.addElement(e.getElement) );
      // füge Spieler hinzu
-    _view.addElement(_model.player);
+    //_view.addElement(_model.player);
      
-     _view.addElement(player);
+     //_view.addElement(player);
     // starte TimerEvent 
     _timer = new Timer.periodic(new Duration(milliseconds: 25), (_)=> timerEvent() );
   }
