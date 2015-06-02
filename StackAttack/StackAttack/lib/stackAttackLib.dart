@@ -1,4 +1,4 @@
-library test;
+library stackAttackLib;
 
 import 'dart:html';
 import 'dart:async';
@@ -9,6 +9,7 @@ part 'src/view.dart';
 part 'src/controller.dart';
 part 'src/model.dart';
 part 'src/player.dart';
+part 'src/movingElement.dart';
 
 
 

@@ -1,4 +1,4 @@
-part of test;
+part of stackAttackLib;
 
 /**
  * globale Konstanten
@@ -12,6 +12,7 @@ const String red = "red";
 const String blue = "blue";
 const String green = "green";
 const String black = "black";
+const int DIFFERENT_COLORS = 4; //Anzahl verschiedener Farben
 
 
 /**
@@ -32,11 +33,25 @@ class Controller{
   Timer _timer;
   
   /**
+   * TimerIntervall 
+   */
+  var _timerIntervall = new Duration(milliseconds: 10);
+  
+  /**
+   * Wahrscheinlichkeit für Erzeugung eines neuen Blocks
+   * 0 .. 99
+   */
+  var _randomValue = 99;
+   
+  /**
+   * 
+   */
+  var _isStarted = false;
+  
+  /**
    * Konstruktor
    */
-  Controller(Model m){
-    _model = m;
-  }
+  Controller();
   
   /**
    * TODO herausnehmen und in model migrieren
@@ -47,53 +62,45 @@ class Controller{
    * das Timer-Event
    */
   void timerEvent(){
-    //TODO Wahrscheinlichkeit für Erzeugung neuer Blöcke
-    if(counter == 40){
-      
-      //Zufallsfarbe TODO Farben hinzufügen
-      String color = "";
-      switch(new Random().nextInt(4)){
-        case 0:
-          color = red;
-          break;
-        case 1:
-          color = blue;
-          break;
-        case 2:
-          color = green;
-          break;
-        case 3:
-          color = black;
-          break;
-      }          
-      Block block = new Block(0,0,color,false);      
-      _view.addElement(block.getElement); // zeichne den Block an Startposition      
-      block.x = new Random().nextInt(BLOCKS_PER_ROW);
-      block.y = BLOCK_ROWS;      
-      _model.movingBlocks = block; // füge Blocks zur List der sich bewegenden Blöcke
-      counter = 0;
+    if( counter == 50){      
+      if( new Random().nextInt(100) < _randomValue){
+        //Zufallsfarbe TODO Farben hinzufügen
+        String color = "";
+        switch(new Random().nextInt(DIFFERENT_COLORS)){
+          case 0:
+            color = red;
+            break;
+          case 1:
+            color = blue;
+            break;
+          case 2:
+            color = green;
+            break;
+          case 3:
+            color = black;
+            break;
+        }          
+        Block block = new Block(0,0,color,false);      
+        _view.addElement(block.element); // zeichne den Block an Startposition      
+        block.x = new Random().nextInt(BLOCKS_PER_ROW);
+        block.y = BLOCK_ROWS;      
+        _model.movingBlocks = block; // füge Blocks zur List der sich bewegenden Blöcke
+        counter = 0;
+      }
     }
     else{
       counter++;
     }
-    // bewege Blöcke
-    _model.movingBlockList.forEach( (e) {
-      //bewege nach Rechts
-      if(e.realX < e.x * BLOCK_SIZE){
-        e.realX += 3;        
-      }//bewege nach unten
-      else{
-        e.realX = e.x * BLOCK_SIZE;
-        //VerlierKriterium
-        if(_model.isLost()){
-          _timer.cancel();
-        }
-        //KollisionsDetektion
-        if( !_model.kollisionDetection(e) ){
-          e.realY += 3;  
-        }
-      }
-    });
+    
+    
+    //bewege Blöcke inklusive Kollisionsdetection
+    if( !_model.moveBlocks() ){
+      //setze StartBool
+      _isStarted = false;
+      //TODO Verlier-Bild etc einblenden
+      _timer.cancel();
+    }
+   
   }
 
   /**
@@ -120,17 +127,41 @@ class Controller{
    */
   void startGame(){
     // lösche alte Werte
-    //TODO lösche alte Werte
+    _model = new Model();
+    _view.clear();
+    if( _timer != null)
+      _timer.cancel();
     // lade Level
      loadLevel();
      // zeige alle Blöcke im View an
-     _model.blocks.forEach( (e) => _view.addElement(e.getElement) );
+     _model.blocks.forEach( (e) => _view.addElement(e.element) );
      // füge Spieler hinzu
-    //_view.addElement(_model.player);
-     
-     //_view.addElement(player);
+    _view.addElement(_model.player.element);     
+
+    //setze StartBool
+    _isStarted = true;
     // starte TimerEvent 
-    _timer = new Timer.periodic(new Duration(milliseconds: 25), (_)=> timerEvent() );
+    _timer = new Timer.periodic(_timerIntervall, (_)=> timerEvent() );
+  }
+  
+  /**
+   * Pausiert das Spiel
+   */
+  void pauseGame(){
+    if(!_isStarted)
+      return;
+    if( _timer != null &&_timer.isActive )
+      _timer.cancel();
+    else
+      _timer = new Timer.periodic(_timerIntervall, (_)=> timerEvent() );      
+  }
+  
+  /**
+   * Reaktion auf KeyboardEingabe
+   */
+  void keyEvent(var key){  
+    if( _isStarted)
+      _model.movingPlayer(key);
   }
   
 }

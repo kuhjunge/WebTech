@@ -1,4 +1,4 @@
-part of test;
+part of stackAttackLib;
 
 /**
  * View
@@ -28,14 +28,32 @@ class View{
       _control.startGame();
     });
     
+    /*
+     * verknüpfe mit controller.pauseGame
+     */
+    body.querySelector("#button_pause").onClick.listen(( e){
+      _control.pauseGame();
+    });
+
+    body.onKeyDown.listen( (e){      
+      _control.keyEvent(e);      
+    });
+    
   }
   
   /**
-   * fügt ein DivElement zum container hinzu
+   * löscht alle Elemente
+   */
+  void clear(){
+    _container.children.clear();
+  }
+  
+  /**
+   * fügt ein HtmlElement zum container hinzu
    */
   void addElement(DivElement elem){
     _container.append(elem);
   }  
-  
+    
    
 }

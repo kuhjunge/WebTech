@@ -1,4 +1,4 @@
-part of test;
+part of stackAttackLib;
 
 /**
  * Model-Class
@@ -19,7 +19,7 @@ class Model{
   /**
    * Liste sich bewegender Blöcke
    */
-  List<Block> _movingBlocks = new List();
+  List<MovingElement> _movingBlocks = new List();
   
   /**
    * Default-Konstruktor
@@ -66,63 +66,121 @@ class Model{
   Player get player => _player;
   
   /**
-   * Kollisionsdetection ob Block unter übergebenden Block ist
+   *  Lösche Zeile, wenn in übergebender Zeile alle Blöcke belegt sind
    */
-  bool kollisionDetection(Block block){
+  void checkDeletionOfFullRow(var row){        
+           int counter = 0;
+           List<Block> tmpList = new List();
+           //überprüfen
+           for(int i = 0; i < BLOCKS_PER_ROW; i++){
+            Block tmpBlock = this.getBlock(i, row);
+            if( tmpBlock != null){
+              counter++;
+              tmpList.add(tmpBlock);
+            }
+           }
+           //löschen
+           if(counter == BLOCKS_PER_ROW){
+            tmpList.forEach( (e) {
+              _blockMap.remove(e.x.toString()+" "+e.y.toString());
+              e.element.remove();             
+            });
+            //TODO zähle Punkte hoch
+            // verschiebe alle anderen Blöcke nach unten
+            for(int b = BLOCK_ROWS-1; b >= 0; b--)
+            for(int a = 0; a < BLOCKS_PER_ROW; a++) {
+              Block tmpBlock = this.getBlock(a, b);
+              if(tmpBlock != null){
+                
+               _blockMap.remove(tmpBlock.x.toString()+" "+tmpBlock.y.toString());              
+               tmpBlock.y = tmpBlock.y + 1;
+               tmpBlock.realY = tmpBlock.y * BLOCK_SIZE;
+               this.block = tmpBlock;
+              }
+            }
+           }
+        
+  }
+  /**
+   * Kollisionsdetection ob Block unter übergebenden Block ist   * 
+   */
+  bool _kollisionWithBlock(MovingElement block){
     int y = block.realY ~/ BLOCK_SIZE ;
     if( this.getBlock(block.x, y +1) != null || y == BLOCK_ROWS){
         _movingBlocks.remove(block);
         block.y = y;
         block.realY = block.y * BLOCK_SIZE;
         this.block = block;
-        // Lösche Zeile, wenn block in unterste Zeile gefallen ist
+        
+        //Überprüfe, ob ganze Zeile gelöscht werden muß
         if(y == BLOCK_ROWS){
-          int counter = 0;
-          List<Block> tmpList = new List();
-          //überprüfen
-          for(int i = 0; i < BLOCKS_PER_ROW; i++){
-           Block tmpBlock = this.getBlock(i, y);
-           if( tmpBlock != null){
-             counter++;
-             tmpList.add(tmpBlock);
-           }
-          }
-          //löschen
-          if(counter == BLOCKS_PER_ROW){
-           tmpList.forEach( (e) {
-             _blockMap.remove(e.x.toString()+" "+e.y.toString());
-             e.getElement.remove();             
-           });
-           //TODO zähle Punkte hoch
-           // verschiebe alle anderen Blöcke nach unten
-           for(int b = BLOCK_ROWS-1; b >= 0; b--)
-           for(int a = 0; a < BLOCKS_PER_ROW; a++) {
-             Block tmpBlock = this.getBlock(a, b);
-             if(tmpBlock != null){
-               
-              _blockMap.remove(tmpBlock.x.toString()+" "+tmpBlock.y.toString());              
-              tmpBlock.y = tmpBlock.y + 1;
-              tmpBlock.realY = tmpBlock.y * BLOCK_SIZE;
-              this.block = tmpBlock;
-             }
-           }
-          }
+          checkDeletionOfFullRow(y);
         }
+        
         return true;
     }    
     
     return false;
   }
   
-  /**
-   * Überprüfe, ob ein Block in 0ter Zeile ist
-   */
-  bool isLost(){
-    for(int i = 0; i < BLOCKS_PER_ROW; i++){
-      if( this.getBlock(i, 0) != null)
-        return true;
-    }
+  bool _kollisionWithPlayer(MovingElement block){
     return false;
+  }
+  
+  /**
+   * Bewegt alle Blöcke in _movingBlockList
+   */
+  bool moveBlocks(){
+    
+    movingBlockList.forEach( (e) {
+      //TODO es lassen sich die +2 eventuell noch auslagern
+        
+      
+        //bewege nach Rechts
+         if(e.realX < e.x * BLOCK_SIZE){
+           e.realX += 2;        
+         }//bewege nach unten
+         else{
+           e.realX = e.x * BLOCK_SIZE;
+           
+           //Überprüfe, ob Kollision mit Block
+           if( ! _kollisionWithBlock(e) ){
+             e.realY += 2;  
+           }
+           //Überprüfe, ob Kollision mit Spieler
+           if( !_kollisionWithPlayer(e) ){
+                   
+           }
+           
+         }
+       });
+    
+    /*
+     * Überprüfe, ob ein Block in 0ter Zeile ist
+     */
+    for(int i = 0; i < BLOCKS_PER_ROW; i++){
+         if( this.getBlock(i, 0) != null)
+           return false;
+       }
+    return true;
+  }
+  
+  /**
+   * Bewegt den Computerspieler
+   */
+  void movingPlayer(var key){
+    
+    switch( key.keyCode ){
+          case KeyCode.LEFT:
+                  _player.realX -= 10;
+                  break;
+          case KeyCode.RIGHT:
+                  _player.realX += 10;
+                  break;
+          case KeyCode.UP:
+                  _player.realY -= 50;
+                  break;                
+        }
   }
   
 }

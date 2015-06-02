@@ -2,11 +2,10 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:html';
-import 'package:StackAttack/test.dart';
+import 'package:StackAttack/stackAttackLib.dart';
 
-void main() {
-   Model model = new Model();
-   Controller control = new Controller(model);
+void main() {   
+   Controller control = new Controller();
    View view = new View(document.body, control); 
    control.view = view;   
 }
