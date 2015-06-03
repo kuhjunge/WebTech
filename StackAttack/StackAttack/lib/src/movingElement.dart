@@ -5,19 +5,19 @@ part of stackAttackLib;
  */
 abstract class MovingElement{
   int _x, _y;
-  DivElement _element;
+  int _targetX;
+  DivElement _element;  
    
    /**
     * Konstruktor
     */
    MovingElement(this._x, this._y){
-     element = new DivElement();
-     element.style
-       ..left = (_x*BLOCK_SIZE).toString() + "px"
-       ..top = (_y*BLOCK_SIZE).toString() + "px";
-     element.style
-       ..left = (_x*BLOCK_SIZE).toString() + "px"
-       ..top = (_y*BLOCK_SIZE).toString() + "px";     
+     _element = new DivElement();
+     _element.style
+                ..left = (_x).toString() + "px"
+                ..top = (_y).toString() + "px"     
+               ..width = getElementWidth().toString() + "px"
+               ..height = getElementHeight().toString() + "px";     
    }
    
    /**
@@ -29,26 +29,29 @@ abstract class MovingElement{
    /**
     * setter
     */
-   set x(int x) => _x = x;
-   set y(int y) => _y = y;
+   set x(int x) {
+     _x = x;
+     _element.style.left = (_x).toString()+"px";
+   }
+     
+   set y(int y){
+     _y = y;
+     _element.style.top = (_y).toString()+"px";
+   }
    
    DivElement get element => _element;
    set element(DivElement e) => _element = e;
    
+   int get targetX => _targetX;
+   set targetX(int x) => _targetX = x; 
+   
    /**
-    * tatsächliche Position x/y
+    * gibt berechnete Breite zurück
     */
-   int get realX {
-     String  str = _element.style.left;
-     str = str.substring(0, str.length-2);
-     return int.parse(str, onError: (_)=> 0);
-   }
-   int get realY {
-       String  str = _element.style.top;
-       str = str.substring(0, str.length-2);
-       return int.parse(str, onError: (_)=> 0);
-     }
-   set realX(int x) => _element.style.left = x.toString()+"px";
+   int getElementWidth();
+   /**
+    * gibt berechnete Höhe zurück
+    */
+   int getElementHeight();   
 
-   set realY(int y) => _element.style.top = y.toString()+"px";  
 }

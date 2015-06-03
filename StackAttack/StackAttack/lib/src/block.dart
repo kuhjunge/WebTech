@@ -10,11 +10,18 @@ class Block extends MovingElement {
   /**
    * Konstruktor
    */
-  Block(int x, int y, this._color, this._isSolid):super(x,y){   
+  Block(int x, int y, this._color, this._isSolid):super(x,y){    
     element.classes
       ..add("block")
-      ..add(_color);    
+      ..add(_color);
   }
    
+  int getElementWidth(){    
+      return BLOCK_SIZE;
+    }
+    
+    int getElementHeight(){
+      return BLOCK_SIZE;
+    }
   
 }

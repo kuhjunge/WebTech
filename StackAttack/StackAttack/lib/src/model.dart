@@ -17,15 +17,14 @@ class Model{
   Map<String, Block> _blockMap = new Map();
   
   /**
-   * Liste sich bewegender Blöcke
+   * Liste sich bewegender Elemente
    */
-  List<MovingElement> _movingBlocks = new List();
+  List<MovingElement> _movingElements = new List();
   
   /**
    * Default-Konstruktor
    */
-  model(){
-
+  model(){    
   }
   
   /**
@@ -46,14 +45,14 @@ class Model{
   Block getBlock(int x, int y) => _blockMap[(x).toString() + " " + (y).toString()];
   
   /**
-   * setter für _movingBlocks
+   * setter für _movingElements
    */
-  set movingBlocks(Block block) => _movingBlocks.add(block);
+  set movingElements(MovingElement block) => _movingElements.add(block);
   
   /**
    * getter für _movingBlocks
    */
-  List<Block> get movingBlockList => _movingBlocks.toList();
+  List<MovingElement> get movingElementsList => _movingElements.toList();
   
   /**
    * setter für Player
@@ -71,6 +70,7 @@ class Model{
   void checkDeletionOfFullRow(var row){        
            int counter = 0;
            List<Block> tmpList = new List();
+                      
            //überprüfen
            for(int i = 0; i < BLOCKS_PER_ROW; i++){
             Block tmpBlock = this.getBlock(i, row);
@@ -83,85 +83,69 @@ class Model{
            if(counter == BLOCKS_PER_ROW){
             tmpList.forEach( (e) {
               _blockMap.remove(e.x.toString()+" "+e.y.toString());
-              e.element.remove();             
+              e.element.remove();
             });
             //TODO zähle Punkte hoch
             // verschiebe alle anderen Blöcke nach unten
-            for(int b = BLOCK_ROWS-1; b >= 0; b--)
-            for(int a = 0; a < BLOCKS_PER_ROW; a++) {
-              Block tmpBlock = this.getBlock(a, b);
-              if(tmpBlock != null){
-                
-               _blockMap.remove(tmpBlock.x.toString()+" "+tmpBlock.y.toString());              
-               tmpBlock.y = tmpBlock.y + 1;
-               tmpBlock.realY = tmpBlock.y * BLOCK_SIZE;
-               this.block = tmpBlock;
-              }
-            }
+            _blockMap.forEach( (s,b) {
+              b.x += b.getElementHeight();
+            });
            }
         
   }
   /**
-   * Kollisionsdetection ob Block unter übergebenden Block ist   * 
+   * Kollisionsdetection ob Block unter übergebenden Block ist    
    */
-  bool _kollisionWithBlock(MovingElement block){
-    int y = block.realY ~/ BLOCK_SIZE ;
-    if( this.getBlock(block.x, y +1) != null || y == BLOCK_ROWS){
-        _movingBlocks.remove(block);
-        block.y = y;
-        block.realY = block.y * BLOCK_SIZE;
-        this.block = block;
-        
-        //Überprüfe, ob ganze Zeile gelöscht werden muß
-        if(y == BLOCK_ROWS){
-          checkDeletionOfFullRow(y);
-        }
-        
-        return true;
-    }    
+  bool _kollisionWithBlock(int posX, int posY){
+             
+    if( getBlock(posX, posY) != null){
+      return true;
+    }   
     
     return false;
   }
   
-  bool _kollisionWithPlayer(MovingElement block){
+  bool _kollisionWithPlayer(int posY){
     return false;
   }
   
   /**
    * Bewegt alle Blöcke in _movingBlockList
+   * return false Block ist oben angekommen => Spiel verloren;
    */
   bool moveBlocks(){
     
-    movingBlockList.forEach( (e) {
-      //TODO es lassen sich die +2 eventuell noch auslagern
-        
-      
+    for( int i = 0; i < _movingElements.length; i++){
+      var e = _movingElements.elementAt(i);
         //bewege nach Rechts
-         if(e.realX < e.x * BLOCK_SIZE){
-           e.realX += 2;        
-         }//bewege nach unten
-         else{
-           e.realX = e.x * BLOCK_SIZE;
-           
-           //Überprüfe, ob Kollision mit Block
-           if( ! _kollisionWithBlock(e) ){
-             e.realY += 2;  
-           }
-           //Überprüfe, ob Kollision mit Spieler
-           if( !_kollisionWithPlayer(e) ){
-                   
-           }
-           
-         }
-       });
+        if( e.targetX > e.x){
+          e.x = e.x + 3;
+        }
+        else{          
+          //setze e.x richtig
+          e.x = e.targetX;
+          // "fallen" bis unten maximal oder kollision mit Player oder Block 
+          if ( ( e.y >= FIELD_HEIGHT) 
+            || ( _kollisionWithBlock( e.x, e.y + e.getElementHeight()))//TODO Fehler bei Kollisionsdetection, aufGrund der unterschiedlichen e.y bewegung
+            || ( _kollisionWithPlayer(e.y + e.getElementHeight())) ){          
+            //Spiel verloren, wenn e.y == 0 bleibt
+            if( e.y == 0){
+              return false;
+            }
+            //Lösche vielleicht ganze Zeile, wenn Block bis nach ganz unten gefallen ist
+            if( e.y >= FIELD_HEIGHT){
+              checkDeletionOfFullRow(e.y+e.getElementHeight());
+            }
+            // lösche aus _movingElement Liste und füge zu blockList hinzu
+            _movingElements.removeAt(i);      
+            block = e;//TODO nur, wenn es ein Block und kein Player ist
+          } 
+          else{
+            e.y = e.y + 3;
+          }
+        }
+     }
     
-    /*
-     * Überprüfe, ob ein Block in 0ter Zeile ist
-     */
-    for(int i = 0; i < BLOCKS_PER_ROW; i++){
-         if( this.getBlock(i, 0) != null)
-           return false;
-       }
     return true;
   }
   
@@ -169,18 +153,18 @@ class Model{
    * Bewegt den Computerspieler
    */
   void movingPlayer(var key){
-    
+    /*
     switch( key.keyCode ){
           case KeyCode.LEFT:
-                  _player.realX -= 10;
+                  
                   break;
           case KeyCode.RIGHT:
-                  _player.realX += 10;
+                  
                   break;
           case KeyCode.UP:
-                  _player.realY -= 50;
+                  
                   break;                
-        }
+        }*/
   }
   
 }

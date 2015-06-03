@@ -1,21 +1,6 @@
 part of stackAttackLib;
 
 /**
- * globale Konstanten
- */
-const int BLOCK_SIZE = 50;
-const int BLOCKS_PER_ROW = 10;// Blöcke pro Zeile
-const int BLOCK_ROWS = 10; // maximale Anzahl an Zeilen, inclusive 0
-const int FIELD_WIDTH = 500;
-const int FIELD_HEIGHT = 500;
-const String red = "red";
-const String blue = "blue";
-const String green = "green";
-const String black = "black";
-const int DIFFERENT_COLORS = 4; //Anzahl verschiedener Farben
-
-
-/**
  * Controller-Class
  */
 class Controller{
@@ -35,7 +20,7 @@ class Controller{
   /**
    * TimerIntervall 
    */
-  var _timerIntervall = new Duration(milliseconds: 10);
+  var _timerIntervall = new Duration(milliseconds: 20);
   
   /**
    * Wahrscheinlichkeit für Erzeugung eines neuen Blocks
@@ -54,7 +39,7 @@ class Controller{
   Controller();
   
   /**
-   * TODO herausnehmen und in model migrieren
+   * TODO herausnehmen und in model migrieren; bzw. da, wo die Json-Level-Dateien eingeladen werden
    */
   int counter = 0;
   
@@ -62,36 +47,35 @@ class Controller{
    * das Timer-Event
    */
   void timerEvent(){
+    //TODO hier könnten counter/randomValue werte durch Datei eingeladen werden
     if( counter == 50){      
       if( new Random().nextInt(100) < _randomValue){
         //Zufallsfarbe TODO Farben hinzufügen
         String color = "";
         switch(new Random().nextInt(DIFFERENT_COLORS)){
           case 0:
-            color = red;
+            color = RED;
             break;
           case 1:
-            color = blue;
+            color = BLUE;
             break;
           case 2:
-            color = green;
+            color = GREEN;
             break;
           case 3:
-            color = black;
+            color = BLACK;
             break;
         }          
-        Block block = new Block(0,0,color,false);      
-        _view.addElement(block.element); // zeichne den Block an Startposition      
-        block.x = new Random().nextInt(BLOCKS_PER_ROW);
-        block.y = BLOCK_ROWS;      
-        _model.movingBlocks = block; // füge Blocks zur List der sich bewegenden Blöcke
+        Block block = new Block(0,0,color,false);
+        block.targetX = block.getElementWidth()*new Random().nextInt(BLOCKS_PER_ROW);;         
+        _view.addElement(block.element); 
+        _model.movingElements = block; // füge Blocks zur List der sich bewegenden Blöcke
         counter = 0;
       }
     }
     else{
       counter++;
-    }
-    
+    }    
     
     //bewege Blöcke inklusive Kollisionsdetection
     if( !_model.moveBlocks() ){
@@ -113,12 +97,12 @@ class Controller{
    */
   void loadLevel(){
     //TODO Unterschiedliche Schwierigkeitsgrade einstellbar(ladbar und hier umsetzen)
-    _model.block = new Block(0,10,red, false);
-    _model.block = new Block(1,10,green, false);
-    _model.block = new Block(3,10,blue, false);
-    _model.block = new Block(9,10,black, true);
+    _model.block = new Block(0,400,RED, false);
+    _model.block = new Block(20,400,GREEN, false);
+    _model.block = new Block(40,400,BLUE, false);
+    _model.block = new Block(60,400,BLACK, true);
     
-    _model.player = new Player(8,10);
+    _model.player = new Player(80, 380);
 
   }  
   
