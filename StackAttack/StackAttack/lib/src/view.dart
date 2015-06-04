@@ -20,7 +20,11 @@ class View{
    */
   View(Element body, Controller control){
     _container = body.querySelector("#field");
-    _control = control;    
+    _control = control;
+    //setze die Dimensionen des Feldes
+    _container.style
+      ..height = (FIELD_HEIGHT + BLOCK_SIZE).toString() + "px"
+      ..width = (FIELD_WIDTH ).toString() + "px";
     /*
      * verknüpfe mit controller.startGame
      */

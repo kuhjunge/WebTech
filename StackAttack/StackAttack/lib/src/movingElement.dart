@@ -16,8 +16,8 @@ abstract class MovingElement{
      _element.style
                 ..left = (_x).toString() + "px"
                 ..top = (_y).toString() + "px"     
-               ..width = getElementWidth().toString() + "px"
-               ..height = getElementHeight().toString() + "px";     
+               ..width = BLOCK_SIZE.toString() + "px"
+               ..height = BLOCK_SIZE.toString() + "px";     
    }
    
    /**
@@ -44,14 +44,5 @@ abstract class MovingElement{
    
    int get targetX => _targetX;
    set targetX(int x) => _targetX = x; 
-   
-   /**
-    * gibt berechnete Breite zurück
-    */
-   int getElementWidth();
-   /**
-    * gibt berechnete Höhe zurück
-    */
-   int getElementHeight();   
 
 }

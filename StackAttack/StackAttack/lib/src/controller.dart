@@ -67,7 +67,7 @@ class Controller{
             break;
         }          
         Block block = new Block(0,0,color,false);
-        block.targetX = block.getElementWidth()*new Random().nextInt(BLOCKS_PER_ROW);;         
+        block.targetX = BLOCK_SIZE* new Random().nextInt(BLOCKS_PER_ROW);;         
         _view.addElement(block.element); 
         _model.movingElements = block; // füge Blocks zur List der sich bewegenden Blöcke
         counter = 0;

@@ -1,22 +1,15 @@
 part of stackAttackLib;
 
 /**
- * Playerklasse
- *  vorbereitet für abgeleitete andere Player mit anderen Dimensionen 
+ * Playerklasse 
  */
 class Player extends MovingElement {
     
   Player(int x, int y) : super(x, y){ 
     element.innerHtml = '<img src="'+PLAYER_STANDING+'"></img>';
-    element.classes.add("player");    
+    element.classes.add("player");
+    element.style.height = BLOCK_SIZE.toString() + "px";
   }  
-  
-  int getElementWidth(){    
-        return BLOCK_SIZE;
-      }
-      
-      int getElementHeight(){
-        return BLOCK_SIZE * 2;
-      }
+    
 
 }

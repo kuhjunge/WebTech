@@ -15,13 +15,6 @@ class Block extends MovingElement {
       ..add("block")
       ..add(_color);
   }
-   
-  int getElementWidth(){    
-      return BLOCK_SIZE;
-    }
-    
-    int getElementHeight(){
-      return BLOCK_SIZE;
-    }
+  
   
 }

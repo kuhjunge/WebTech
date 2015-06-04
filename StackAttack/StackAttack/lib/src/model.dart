@@ -72,43 +72,43 @@ class Model{
            List<Block> tmpList = new List();
                       
            //überprüfen
-           for(int i = 0; i < BLOCKS_PER_ROW; i++){
-            Block tmpBlock = this.getBlock(i, row);
+           for(int i = 0; i < FIELD_WIDTH; i++){
+            Block tmpBlock = getBlock(i, row);
             if( tmpBlock != null){
               counter++;
               tmpList.add(tmpBlock);
             }
            }
            //löschen
-           if(counter == BLOCKS_PER_ROW){
-            tmpList.forEach( (e) {
-              _blockMap.remove(e.x.toString()+" "+e.y.toString());
-              e.element.remove();
-            });
+           if(counter == BLOCKS_PER_ROW){             
+             //lösche Zeile
+             tmpList.forEach( (e){
+               _blockMap.remove(e);
+               e.element.remove();
+             });
             //TODO zähle Punkte hoch
-            // verschiebe alle anderen Blöcke nach unten
-            _blockMap.forEach( (s,b) {
-              b.x += b.getElementHeight();
-            });
-           }
-        
+            //verschiebe den Rest nach unten
+             for(int a = 0; a < FIELD_WIDTH; a+=BLOCK_SIZE){
+               for(int b = row; b > 0; b-=BLOCK_SIZE){
+                Block bl = getBlock(a, b);
+                if( bl != null){
+                  _moveOneBlock(bl, bl.x, bl.y + BLOCK_SIZE);     
+                }
+               }
+             }
+           }        
   }
+  
   /**
-   * Kollisionsdetection ob Block unter übergebenden Block ist    
+   * Bewege einen Block in _blockMap
    */
-  bool _kollisionWithBlock(int posX, int posY){
-             
-    if( getBlock(posX, posY) != null){
-      return true;
-    }   
+  void _moveOneBlock(Block b, int newX, int newY){
+    _blockMap.remove(b.x.toString()+" "+b.y.toString());
+    b.y = newY;
+    b.x = newX;
+    block = b;
+  }
     
-    return false;
-  }
-  
-  bool _kollisionWithPlayer(int posY){
-    return false;
-  }
-  
   /**
    * Bewegt alle Blöcke in _movingBlockList
    * return false Block ist oben angekommen => Spiel verloren;
@@ -119,29 +119,30 @@ class Model{
       var e = _movingElements.elementAt(i);
         //bewege nach Rechts
         if( e.targetX > e.x){
-          e.x = e.x + 3;
+          e.x = e.x + 1;
         }
         else{          
           //setze e.x richtig
           e.x = e.targetX;
           // "fallen" bis unten maximal oder kollision mit Player oder Block 
           if ( ( e.y >= FIELD_HEIGHT) 
-            || ( _kollisionWithBlock( e.x, e.y + e.getElementHeight()))//TODO Fehler bei Kollisionsdetection, aufGrund der unterschiedlichen e.y bewegung
-            || ( _kollisionWithPlayer(e.y + e.getElementHeight())) ){          
+            || ( getBlock( e.x, e.y + BLOCK_SIZE) != null )
+            /*|| TODO abfrage, Playerkollision */){          
             //Spiel verloren, wenn e.y == 0 bleibt
             if( e.y == 0){
               return false;
             }
-            //Lösche vielleicht ganze Zeile, wenn Block bis nach ganz unten gefallen ist
-            if( e.y >= FIELD_HEIGHT){
-              checkDeletionOfFullRow(e.y+e.getElementHeight());
-            }
             // lösche aus _movingElement Liste und füge zu blockList hinzu
             _movingElements.removeAt(i);      
-            block = e;//TODO nur, wenn es ein Block und kein Player ist
+             block = e;//TODO nur, wenn es ein Block und kein Player ist
+            //Lösche vielleicht ganze Zeile, wenn Block bis nach ganz unten gefallen ist
+            if( e.y + BLOCK_SIZE >= FIELD_HEIGHT){
+              checkDeletionOfFullRow(e.y);
+            }
+            
           } 
           else{
-            e.y = e.y + 3;
+            e.y = e.y + 1;
           }
         }
      }
@@ -149,22 +150,55 @@ class Model{
     return true;
   }
   
+  
+  
   /**
    * Bewegt den Computerspieler
    */
   void movingPlayer(var key){
-    /*
-    switch( key.keyCode ){
-          case KeyCode.LEFT:
-                  
+    
+    if( key.keyCode == KeyCode.A || key.keyCode == KeyCode.D || key.keyCode == KeyCode.Q ||key.keyCode == KeyCode.E ){
+      switch( key.keyCode ){
+          case KeyCode.A:                
+                  Block b = getBlock(_player.x - BLOCK_SIZE, _player.y + BLOCK_SIZE);
+                  //Abfrage ob Bock verschiebbar ist
+                  if( b != null){
+                    Block a = getBlock(b.x - BLOCK_SIZE, b.y);
+                    if( a == null){
+                      _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);
+                    }
+                  }
+                  else{
+                    if(_player.x >= BLOCK_SIZE){
+                      _player.x = _player.x - BLOCK_SIZE;
+                    }
+                  }                  
                   break;
-          case KeyCode.RIGHT:
-                  
+          case KeyCode.D:                  
+                  Block b = getBlock(_player.x + BLOCK_SIZE, _player.y + BLOCK_SIZE);
+                  //Abfrage ob Bock verschiebbar ist
+                  if( b != null){
+                    Block a = getBlock(b.x + BLOCK_SIZE, b.y);
+                    if( a == null){
+                      _moveOneBlock(b, b.x +BLOCK_SIZE, b.y);
+                    }
+                  }      
+                  else{
+                    if(_player.x + BLOCK_SIZE < FIELD_WIDTH ){
+                      _player.x = _player.x + BLOCK_SIZE;
+                    }
+                  }
                   break;
-          case KeyCode.UP:
-                  
-                  break;                
-        }*/
+          case KeyCode.Q:
+                  _player.x = _player.x - BLOCK_SIZE;
+                  _player.y = _player.y - BLOCK_SIZE;
+                  break;
+          case KeyCode.E:
+                 _player.x = _player.x + BLOCK_SIZE;
+                 _player.y = _player.y - BLOCK_SIZE;
+                 break;
+      }      
+    }
   }
   
 }
