@@ -76,14 +76,15 @@ class Controller{
     else{
       counter++;
     }    
-    
-    //bewege Blöcke inklusive Kollisionsdetection
+      
+    //bewege Blöcke und Player inklusive Kollisionsdetection
     if( !_model.moveBlocks() ){
       //setze StartBool
       _isStarted = false;
       //TODO Verlier-Bild etc einblenden
       _timer.cancel();
     }
+       
    
   }
 
@@ -144,8 +145,23 @@ class Controller{
    * Reaktion auf KeyboardEingabe
    */
   void keyEvent(var key){  
-    if( _isStarted)
-      _model.movingPlayer(key);
+    if( _isStarted){
+      switch( key.keyCode ){
+        case KeyCode.A:          
+          _model.movingPlayer(Direction.LEFT);
+          break;
+        case KeyCode.D:
+          _model.movingPlayer(Direction.RIGHT);          
+          break;
+        case KeyCode.Q:
+          _model.movingPlayer(Direction.TOPLEFT);
+          break;
+        case KeyCode.E:
+          _model.movingPlayer(Direction.TOPRIGHT);
+          break;
+      }
+    }
+      
   }
   
 }

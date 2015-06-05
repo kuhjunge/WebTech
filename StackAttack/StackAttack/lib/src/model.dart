@@ -20,7 +20,7 @@ class Model{
    * Liste sich bewegender Elemente
    */
   List<MovingElement> _movingElements = new List();
-  
+    
   /**
    * Default-Konstruktor
    */
@@ -63,11 +63,12 @@ class Model{
    * getter für player
    */
   Player get player => _player;
+ 
   
   /**
    *  Lösche Zeile, wenn in übergebender Zeile alle Blöcke belegt sind
    */
-  void checkDeletionOfFullRow(var row){        
+  void _checkDeletionOfFullRow(var row){        
            int counter = 0;
            List<Block> tmpList = new List();
                       
@@ -112,6 +113,7 @@ class Model{
   /**
    * Bewegt alle Blöcke in _movingBlockList
    * return false Block ist oben angekommen => Spiel verloren;
+   * return false Block hat Spieler getroffen => Spiel verloren;
    */
   bool moveBlocks(){
     
@@ -137,7 +139,7 @@ class Model{
              block = e;//TODO nur, wenn es ein Block und kein Player ist
             //Lösche vielleicht ganze Zeile, wenn Block bis nach ganz unten gefallen ist
             if( e.y + BLOCK_SIZE >= FIELD_HEIGHT){
-              checkDeletionOfFullRow(e.y);
+              _checkDeletionOfFullRow(e.y);
             }
             
           } 
@@ -155,49 +157,64 @@ class Model{
   /**
    * Bewegt den Computerspieler
    */
-  void movingPlayer(var key){
-    
-    if( key.keyCode == KeyCode.A || key.keyCode == KeyCode.D || key.keyCode == KeyCode.Q ||key.keyCode == KeyCode.E ){
-      switch( key.keyCode ){
-          case KeyCode.A:                
+  void movingPlayer(Direction d){
+      
+      switch( d ){
+          case Direction.DOWN:
+            break;
+          case Direction.LEFT:                
                   Block b = getBlock(_player.x - BLOCK_SIZE, _player.y + BLOCK_SIZE);
                   //Abfrage ob Bock verschiebbar ist
                   if( b != null){
                     Block a = getBlock(b.x - BLOCK_SIZE, b.y);
-                    if( a == null){
-                      _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);
+                    if( a == null && b.x - BLOCK_SIZE >= 0){
+                      _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);                      
                     }
                   }
                   else{
                     if(_player.x >= BLOCK_SIZE){
-                      _player.x = _player.x - BLOCK_SIZE;
+                      _player.x = _player.x - BLOCK_SIZE;                      
+                      _playerFalling();
                     }
                   }                  
                   break;
-          case KeyCode.D:                  
+          case Direction.RIGHT:                  
                   Block b = getBlock(_player.x + BLOCK_SIZE, _player.y + BLOCK_SIZE);
                   //Abfrage ob Bock verschiebbar ist
                   if( b != null){
                     Block a = getBlock(b.x + BLOCK_SIZE, b.y);
-                    if( a == null){
+                    if( a == null && b.x + BLOCK_SIZE < FIELD_WIDTH){
                       _moveOneBlock(b, b.x +BLOCK_SIZE, b.y);
                     }
                   }      
                   else{
                     if(_player.x + BLOCK_SIZE < FIELD_WIDTH ){
                       _player.x = _player.x + BLOCK_SIZE;
+                      _playerFalling();
                     }
                   }
                   break;
-          case KeyCode.Q:
+          case Direction.TOPLEFT:
                   _player.x = _player.x - BLOCK_SIZE;
                   _player.y = _player.y - BLOCK_SIZE;
+                  _playerFalling();
                   break;
-          case KeyCode.E:
+          case Direction.TOPRIGHT:
                  _player.x = _player.x + BLOCK_SIZE;
                  _player.y = _player.y - BLOCK_SIZE;
+                 _playerFalling();
                  break;
-      }      
+      }     
+    
+    
+  }
+  
+  /**
+   * Abfrage, ob Player fallen muß
+   */
+  void _playerFalling(){   
+    while( _player.y + BLOCK_SIZE < FIELD_HEIGHT && getBlock(_player.x, _player.y + 2*BLOCK_SIZE) == null){
+            _player.y = _player.y + BLOCK_SIZE;
     }
   }
   

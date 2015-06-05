@@ -15,3 +15,6 @@ const String BLACK = "black";
 const int DIFFERENT_COLORS = 4; //Anzahl verschiedener Farben
 const String PLAYER_STANDING = "/pics/player_standing.png";
 
+enum Direction{
+  LEFT, RIGHT, DOWN, TOPLEFT, TOPRIGHT
+}
