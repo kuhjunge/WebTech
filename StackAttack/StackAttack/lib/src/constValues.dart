@@ -3,7 +3,7 @@ part of stackAttackLib;
 /**
  * globale Konstanten
  */
-const int BLOCK_SIZE = 20;
+const int BLOCK_SIZE = 20;//TODO anpassen, damit hier Größenänderung einfach klappt
 const int BLOCKS_PER_ROW = 15;// Blöcke pro Zeile
 const int BLOCK_ROWS = 20; // maximale Anzahl an Zeilen, inclusive 0
 const int FIELD_WIDTH = BLOCKS_PER_ROW * BLOCK_SIZE;

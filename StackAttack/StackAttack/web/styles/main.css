@@ -32,7 +32,10 @@ html, body {
   background-color: black;
 }
 
-.block, .player{  
+.block{
   position: absolute;    
+}
+.player{
+  position: absolute;
 }
 

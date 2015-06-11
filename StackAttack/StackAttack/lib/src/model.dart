@@ -97,6 +97,8 @@ class Model{
                 }
                }
              }
+             //verschiebe auch player nach unten
+             _playerFalling();
            }        
   }
   
@@ -168,7 +170,9 @@ class Model{
                   if( b != null){
                     Block a = getBlock(b.x - BLOCK_SIZE, b.y);
                     if( a == null && b.x - BLOCK_SIZE >= 0){
-                      _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);                      
+                      _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);
+                      _blockFalling(b, b.x, b.y);
+                      _checkDeletionOfFullRow(FIELD_HEIGHT);
                     }
                   }
                   else{
@@ -185,6 +189,8 @@ class Model{
                     Block a = getBlock(b.x + BLOCK_SIZE, b.y);
                     if( a == null && b.x + BLOCK_SIZE < FIELD_WIDTH){
                       _moveOneBlock(b, b.x +BLOCK_SIZE, b.y);
+                      _blockFalling(b, b.x, b.y);
+                      _checkDeletionOfFullRow(FIELD_HEIGHT);
                     }
                   }      
                   else{
@@ -200,9 +206,12 @@ class Model{
                   _playerFalling();
                   break;
           case Direction.TOPRIGHT:
-                 _player.x = _player.x + BLOCK_SIZE;
-                 _player.y = _player.y - BLOCK_SIZE;
-                 _playerFalling();
+                 Block b = getBlock(_player.x + BLOCK_SIZE, _player.y - BLOCK_SIZE);
+                 
+                    _player.x = _player.x + BLOCK_SIZE;
+                    _player.y = _player.y - BLOCK_SIZE;
+                    _playerFalling();
+                 
                  break;
       }     
     
@@ -216,6 +225,13 @@ class Model{
     while( _player.y + BLOCK_SIZE < FIELD_HEIGHT && getBlock(_player.x, _player.y + 2*BLOCK_SIZE) == null){
             _player.y = _player.y + BLOCK_SIZE;
     }
+  }
+  
+  void _blockFalling(Block b, int x, int y){
+    while( y < FIELD_HEIGHT && getBlock( x, y + BLOCK_SIZE) == null){          
+          _moveOneBlock(b, x, y + BLOCK_SIZE);
+          y = y + BLOCK_SIZE;
+        }
   }
   
 }
