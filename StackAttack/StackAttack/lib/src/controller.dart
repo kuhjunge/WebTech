@@ -66,7 +66,9 @@ class Controller{
             color = BLACK;
             break;
         }          
-        Block block = new Block(0,0,color,false);
+        //Block block = new Block(0,0, color,false);
+        Powerup block = new Powerup(0,0);//TODO Powerup-Mechaniken übernehmen => aufsammeln können in model :)
+        
         block.targetX = BLOCK_SIZE* new Random().nextInt(BLOCKS_PER_ROW);;         
         _view.addElement(block.element); 
         _model.movingElements = block; // füge Blocks zur List der sich bewegenden Blöcke
@@ -77,14 +79,36 @@ class Controller{
       counter++;
     }    
       
-    //bewege Blöcke und Player inklusive Kollisionsdetection
+    //bewege Blöcke inklusive Kollisionsdetection
     if( !_model.moveBlocks() ){
+      //Zähle Leben runter
+      if(_model.player.life > 0){
+        int life = _model.player.life - 1;
+        
+        //starte Spiel erneut
+        _timer.cancel();
+        // lösche alte Werte
+        _model = new Model();
+        _view.clear();
+        
+        //neuer Player mit weniger Leben
+        _model.player = new Player(80, FIELD_HEIGHT-BLOCK_SIZE, life);        
+        _view.addElement(_model.player.element);
+        //update LifeView
+        _view.updateLife(_model.player.life);
+        //restart Timer
+        _timer = new Timer.periodic(_timerIntervall, (_)=> timerEvent() );
+      }
+      else{
       //setze StartBool
-      _isStarted = false;
-      //TODO Verlier-Bild etc einblenden
-      _timer.cancel();
+        _isStarted = false;
+        //TODO Verlier-Bild etc einblenden
+        _timer.cancel();  
+      }      
     }
-       
+    
+    //update des Views für Punkteanzeige
+    _view.updatePoints(_model.player.points);
    
   }
 
@@ -99,7 +123,7 @@ class Controller{
   void loadLevel(){
     //TODO Unterschiedliche Schwierigkeitsgrade einstellbar(ladbar und hier umsetzen)   
     
-    _model.player = new Player(80, FIELD_HEIGHT-BLOCK_SIZE);
+    _model.player = new Player(80, FIELD_HEIGHT-BLOCK_SIZE, START_LIFE);
 
   }  
   
@@ -119,6 +143,9 @@ class Controller{
      // füge Spieler hinzu
     _view.addElement(_model.player.element);     
 
+     //update LifeView    
+     _view.updateLife(_model.player.life);
+     
     //setze StartBool
     _isStarted = true;
     // starte TimerEvent 

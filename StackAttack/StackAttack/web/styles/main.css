@@ -9,11 +9,10 @@ html, body {
     float: left;
 }
 
-#field{
+#field{  
   background-color: lightgrey;  
   width: 300px;
   height: 420px;  
-  padding: 1px;
 }
 
 .green{
@@ -32,10 +31,7 @@ html, body {
   background-color: black;
 }
 
-.block{
+.block, .player{
   position: absolute;    
-}
-.player{
-  position: absolute;
 }
 

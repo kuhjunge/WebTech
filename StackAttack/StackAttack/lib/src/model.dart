@@ -100,7 +100,8 @@ class Model{
                _blockMap.remove(e._x.toString()+" "+e.y.toString());
                e.element.remove();
              });
-            //TODO zähle Punkte hoch
+            //zähle Punkte hoch 
+             _player.points += POINTS_PER_ROW;             
             //verschiebe den Rest nach unten
              _allBlocksFallingDown();
              //verschiebe auch player nach unten
@@ -136,7 +137,7 @@ class Model{
    * return false Block hat Spieler getroffen => Spiel verloren;
    */
   bool moveBlocks(){
-    
+
     for( int i = 0; i < _movingElements.length; i++){
       var e = _movingElements.elementAt(i);
         //bewege nach Rechts
@@ -181,7 +182,7 @@ class Model{
    * Bewegt den Computerspieler
    */
   void movingPlayer(Direction d){
-      
+    // TODO Bewegung - contra Kollisiondetection überprüfen; wenn Block verschoben teilweise gestorben      
       switch( d ){
           case Direction.DOWN:
             break;

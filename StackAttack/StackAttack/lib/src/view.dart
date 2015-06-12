@@ -14,12 +14,24 @@ class View{
   Controller _control;
   
   /**
+   * Anzeige der Punkte
+   */
+  Element _pointView;
+  
+  /**
+   * Anzeige der Leben
+   */
+  Element _lifeView;
+  
+  /**
    * Konstruktor
    * Übergabe des html-body
    * Initialisierung
    */
   View(Element body, Controller control){
-    _container = body.querySelector("#field");
+    _container = body.querySelector("#field");    
+    _pointView = body.querySelector("#pointView");
+    _lifeView = body.querySelector("#lifeView");
     _control = control;
     //setze die Dimensionen des Feldes
     _container.style
@@ -55,9 +67,23 @@ class View{
   /**
    * fügt ein HtmlElement zum container hinzu
    */
-  void addElement(DivElement elem){
+  void addElement(DivElement elem){    
     _container.append(elem);
   }  
+  
+  /**
+   * refresht die Punkteanzeige
+   */
+  void updatePoints(int points){
+    _pointView.text = "Punktestand: "+points.toString();
+  }
+  
+  /**
+   * refresht die Lebensanzeige
+   */
+  void updateLife(int life){
+    _lifeView.text = "Leben: "+life.toString();
+  }
     
-   
+  
 }

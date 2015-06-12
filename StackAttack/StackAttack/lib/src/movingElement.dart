@@ -6,13 +6,18 @@ part of stackAttackLib;
 abstract class MovingElement{
   int _x, _y;
   int _targetX;
-  DivElement _element;  
+  
+  /**
+   * Zugrundeliegendes AnzeigeObjekt
+   */
+  DivElement _element; 
+
    
    /**
     * Konstruktor
     */
    MovingElement(this._x, this._y){
-     _element = new DivElement();
+     _element = new DivElement();     
      _element.style
                 ..left = (_x).toString() + "px"
                 ..top = (_y).toString() + "px"     
