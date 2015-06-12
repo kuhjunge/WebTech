@@ -97,13 +97,9 @@ class Controller{
    * lade Level 
    */
   void loadLevel(){
-    //TODO Unterschiedliche Schwierigkeitsgrade einstellbar(ladbar und hier umsetzen)
-    _model.block = new Block(0,400,RED, false);
-    _model.block = new Block(20,400,GREEN, false);
-    _model.block = new Block(40,400,BLUE, false);
-    _model.block = new Block(60,400,BLACK, true);
+    //TODO Unterschiedliche Schwierigkeitsgrade einstellbar(ladbar und hier umsetzen)   
     
-    _model.player = new Player(80, 380);
+    _model.player = new Player(80, FIELD_HEIGHT-BLOCK_SIZE);
 
   }  
   

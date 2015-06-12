@@ -64,6 +64,19 @@ class Model{
    */
   Player get player => _player;
  
+  /**
+   * Alle Blöcke aus _blockMap fallen so weit sie können nach unten
+   */
+  void _allBlocksFallingDown(){
+    for(int a = 0; a < FIELD_WIDTH; a +=BLOCK_SIZE){
+      for(int b = FIELD_HEIGHT-BLOCK_SIZE; b > 0; b -=BLOCK_SIZE){
+        Block bl = getBlock(a, b);
+        if( bl != null){
+          _blockFalling(bl);     
+        }
+      }
+    }
+  }
   
   /**
    *  Lösche Zeile, wenn in übergebender Zeile alle Blöcke belegt sind
@@ -84,19 +97,12 @@ class Model{
            if(counter == BLOCKS_PER_ROW){             
              //lösche Zeile
              tmpList.forEach( (e){
-               _blockMap.remove(e);
+               _blockMap.remove(e._x.toString()+" "+e.y.toString());
                e.element.remove();
              });
             //TODO zähle Punkte hoch
             //verschiebe den Rest nach unten
-             for(int a = 0; a < FIELD_WIDTH; a+=BLOCK_SIZE){
-               for(int b = row; b > 0; b-=BLOCK_SIZE){
-                Block bl = getBlock(a, b);
-                if( bl != null){
-                  _moveOneBlock(bl, bl.x, bl.y + BLOCK_SIZE);     
-                }
-               }
-             }
+             _allBlocksFallingDown();
              //verschiebe auch player nach unten
              _playerFalling(_player);
            }        
@@ -113,6 +119,18 @@ class Model{
   }
     
   /**
+   * Überprüft, ob die übergebenden Koordinaten im Player drin sind
+   */
+  bool _playerCollision(Player p, int x, int y){
+    if( x >= p.x && x < p.x + BLOCK_SIZE && y+BLOCK_SIZE >= p.y && y < p.y + 2*BLOCK_SIZE ){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  
+  /**
    * Bewegt alle Blöcke in _movingBlockList
    * return false Block ist oben angekommen => Spiel verloren;
    * return false Block hat Spieler getroffen => Spiel verloren;
@@ -128,18 +146,21 @@ class Model{
         else{          
           //setze e.x richtig
           e.x = e.targetX;
-          // "fallen" bis unten maximal oder kollision mit Player oder Block 
+          //Abfrage auf Kollision mit Player
+          if (_playerCollision(_player, e.x, e.y)){
+            return false;
+          }
+          // "fallen" bis unten maximal oder kollision Block 
           if ( ( e.y >= FIELD_HEIGHT) 
-            || ( getBlock( e.x, e.y + BLOCK_SIZE) != null )
-            /*|| TODO abfrage, Playerkollision */){          
+            || ( getBlock( e.x, e.y + BLOCK_SIZE) != null ) ){          
             //Spiel verloren, wenn e.y == 0 bleibt
-            if( e.y == 0){
+            if( e.y == 0 ){
               return false;
             }
             // lösche aus _movingElement Liste und füge zu blockList hinzu
             _movingElements.removeAt(i);      
-             block = e;//TODO nur, wenn es ein Block und kein Player ist
-            //Lösche vielleicht ganze Zeile, wenn Block bis nach ganz unten gefallen ist
+             block = e;
+            //Lösche ganze Zeile, wenn Block bis nach ganz unten gefallen ist
             if( e.y + BLOCK_SIZE >= FIELD_HEIGHT){
               _checkDeletionOfFullRow(e.y);
             }
@@ -172,7 +193,7 @@ class Model{
                     Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
                     if( aboveB == null && a == null && b.x - BLOCK_SIZE >= 0){
                       _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);
-                      _blockFalling(b, b.x, b.y);
+                      _blockFalling(b);
                       _checkDeletionOfFullRow(b.y);
                     }
                   }
@@ -191,7 +212,7 @@ class Model{
                     Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
                     if( aboveB == null && a == null && b.x + BLOCK_SIZE < FIELD_WIDTH){
                       _moveOneBlock(b, b.x +BLOCK_SIZE, b.y);
-                      _blockFalling(b, b.x, b.y);
+                      _blockFalling(b);
                       _checkDeletionOfFullRow(b.y);
                     }
                   }      
@@ -203,17 +224,42 @@ class Model{
                   }
                   break;
           case Direction.TOPLEFT:
-                  _player.x = _player.x - BLOCK_SIZE;
-                  _player.y = _player.y - BLOCK_SIZE;
-                  _playerFalling(_player);
+                  Block b = getBlock( _player.x - BLOCK_SIZE, _player.y);
+                  if( b != null){
+                    Block a = getBlock(b.x - BLOCK_SIZE, b.y);
+                    Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
+                    if( aboveB == null && a == null && b.x - BLOCK_SIZE >= 0){
+                      _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);
+                      _blockFalling(b);
+                      _checkDeletionOfFullRow(b.y);
+                    }                    
+                  }
+                  else{                    
+                    if(_player.x >= BLOCK_SIZE){
+                      _player.x = _player.x - BLOCK_SIZE;
+                      _player.y = _player.y - BLOCK_SIZE;
+                      _playerFalling(_player);
+                    }
+                  }
                   break;
           case Direction.TOPRIGHT:
-                 Block b = getBlock(_player.x + BLOCK_SIZE, _player.y - BLOCK_SIZE);
-                 
-                    _player.x = _player.x + BLOCK_SIZE;
-                    _player.y = _player.y - BLOCK_SIZE;
-                    _playerFalling(_player);
-                 
+                 Block b = getBlock(_player.x + BLOCK_SIZE, _player.y);                 
+                 if( b != null){
+                   Block a = getBlock(b.x + BLOCK_SIZE, b.y);
+                   Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
+                   if( aboveB == null && a == null && b.x + BLOCK_SIZE < FIELD_WIDTH){
+                    _moveOneBlock(b, b.x +BLOCK_SIZE, b.y);
+                    _blockFalling(b);
+                    _checkDeletionOfFullRow(b.y);
+                   }                 
+                 }
+                 else{                   
+                   if(_player.x + BLOCK_SIZE < FIELD_WIDTH){
+                      _player.x = _player.x + BLOCK_SIZE;
+                      _player.y = _player.y - BLOCK_SIZE;
+                      _playerFalling(_player);
+                   }
+                 }                 
                  break;
       }     
     
@@ -229,11 +275,10 @@ class Model{
     }
   }
   
-  void _blockFalling(Block b, int x, int y){
-    while( y < FIELD_HEIGHT && getBlock( x, y + BLOCK_SIZE) == null){          
-          _moveOneBlock(b, x, y + BLOCK_SIZE);
-          y = y + BLOCK_SIZE;
-        }
+  void _blockFalling(Block b){    
+    while( b.y < FIELD_HEIGHT && getBlock( b.x, b.y + BLOCK_SIZE) == null){          
+      _moveOneBlock(b, b.x, b.y + BLOCK_SIZE);          
+    }
   }
   
 }
