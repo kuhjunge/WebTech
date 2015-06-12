@@ -19,7 +19,7 @@ class Model{
   /**
    * Liste sich bewegender Elemente
    */
-  List<Block> _movingElements = new List();
+  List<Block> _movingBlocks = new List();
     
   /**
    * Default-Konstruktor
@@ -47,12 +47,12 @@ class Model{
   /**
    * setter für _movingElements
    */
-  set movingElements(Block block) => _movingElements.add(block);
+  set movingElements(Block block) => _movingBlocks.add(block);
   
   /**
    * getter für _movingBlocks
    */
-  List<Block> get movingElementsList => _movingElements.toList();
+  List<Block> get movingElementsList => _movingBlocks.toList();
   
   /**
    * setter für Player
@@ -138,8 +138,8 @@ class Model{
    */
   bool moveBlocks(){
 
-    for( int i = 0; i < _movingElements.length; i++){
-      var e = _movingElements.elementAt(i);
+    for( int i = 0; i < _movingBlocks.length; i++){
+      var e = _movingBlocks.elementAt(i);
         //bewege nach Rechts
         if( e.targetX > e.x){
           e.x = e.x + 1;
@@ -159,7 +159,7 @@ class Model{
               return false;
             }
             // lösche aus _movingElement Liste und füge zu blockList hinzu
-            _movingElements.removeAt(i);      
+            _movingBlocks.removeAt(i);      
              block = e;
             //Lösche ganze Zeile, wenn Block bis nach ganz unten gefallen ist
             if( e.y + BLOCK_SIZE >= FIELD_HEIGHT){
