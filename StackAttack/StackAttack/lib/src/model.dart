@@ -19,7 +19,7 @@ class Model{
   /**
    * Liste sich bewegender Elemente
    */
-  List<MovingElement> _movingElements = new List();
+  List<Block> _movingElements = new List();
     
   /**
    * Default-Konstruktor
@@ -47,12 +47,12 @@ class Model{
   /**
    * setter für _movingElements
    */
-  set movingElements(MovingElement block) => _movingElements.add(block);
+  set movingElements(Block block) => _movingElements.add(block);
   
   /**
    * getter für _movingBlocks
    */
-  List<MovingElement> get movingElementsList => _movingElements.toList();
+  List<Block> get movingElementsList => _movingElements.toList();
   
   /**
    * setter für Player
@@ -98,7 +98,7 @@ class Model{
                }
              }
              //verschiebe auch player nach unten
-             _playerFalling();
+             _playerFalling(_player);
            }        
   }
   
@@ -169,16 +169,17 @@ class Model{
                   //Abfrage ob Bock verschiebbar ist
                   if( b != null){
                     Block a = getBlock(b.x - BLOCK_SIZE, b.y);
-                    if( a == null && b.x - BLOCK_SIZE >= 0){
+                    Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
+                    if( aboveB == null && a == null && b.x - BLOCK_SIZE >= 0){
                       _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);
                       _blockFalling(b, b.x, b.y);
-                      _checkDeletionOfFullRow(FIELD_HEIGHT);
+                      _checkDeletionOfFullRow(b.y);
                     }
                   }
                   else{
                     if(_player.x >= BLOCK_SIZE){
                       _player.x = _player.x - BLOCK_SIZE;                      
-                      _playerFalling();
+                      _playerFalling(_player);
                     }
                   }                  
                   break;
@@ -187,30 +188,31 @@ class Model{
                   //Abfrage ob Bock verschiebbar ist
                   if( b != null){
                     Block a = getBlock(b.x + BLOCK_SIZE, b.y);
-                    if( a == null && b.x + BLOCK_SIZE < FIELD_WIDTH){
+                    Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
+                    if( aboveB == null && a == null && b.x + BLOCK_SIZE < FIELD_WIDTH){
                       _moveOneBlock(b, b.x +BLOCK_SIZE, b.y);
                       _blockFalling(b, b.x, b.y);
-                      _checkDeletionOfFullRow(FIELD_HEIGHT);
+                      _checkDeletionOfFullRow(b.y);
                     }
                   }      
                   else{
                     if(_player.x + BLOCK_SIZE < FIELD_WIDTH ){
                       _player.x = _player.x + BLOCK_SIZE;
-                      _playerFalling();
+                      _playerFalling(_player);
                     }
                   }
                   break;
           case Direction.TOPLEFT:
                   _player.x = _player.x - BLOCK_SIZE;
                   _player.y = _player.y - BLOCK_SIZE;
-                  _playerFalling();
+                  _playerFalling(_player);
                   break;
           case Direction.TOPRIGHT:
                  Block b = getBlock(_player.x + BLOCK_SIZE, _player.y - BLOCK_SIZE);
                  
                     _player.x = _player.x + BLOCK_SIZE;
                     _player.y = _player.y - BLOCK_SIZE;
-                    _playerFalling();
+                    _playerFalling(_player);
                  
                  break;
       }     
@@ -221,9 +223,9 @@ class Model{
   /**
    * Abfrage, ob Player fallen muß
    */
-  void _playerFalling(){   
-    while( _player.y + BLOCK_SIZE < FIELD_HEIGHT && getBlock(_player.x, _player.y + 2*BLOCK_SIZE) == null){
-            _player.y = _player.y + BLOCK_SIZE;
+  void _playerFalling(Player p){   
+    while( p.y + BLOCK_SIZE < FIELD_HEIGHT && getBlock(p.x, p.y + 2*BLOCK_SIZE) == null){//TODO 2*BLOCK_SIZE modular gestalten
+            p.y = p.y + BLOCK_SIZE;
     }
   }
   
