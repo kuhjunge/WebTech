@@ -19,8 +19,8 @@ abstract class MovingElement{
    MovingElement(this._x, this._y){
      _element = new DivElement();     
      _element.style
-                ..left = (_x).toString() + "px"
-                ..top = (_y).toString() + "px"     
+                ..left = (_x*BLOCK_SIZE).toString() + "px"
+                ..top = (_y*BLOCK_SIZE).toString() + "px"     
                ..width = BLOCK_SIZE.toString() + "px"
                ..height = BLOCK_SIZE.toString() + "px";     
    }
@@ -36,12 +36,12 @@ abstract class MovingElement{
     */
    set x(int x) {
      _x = x;
-     _element.style.left = (_x).toString()+"px";
+     _element.style.left = (_x*BLOCK_SIZE).toString()+"px";
    }
      
    set y(int y){
      _y = y;
-     _element.style.top = (_y).toString()+"px";
+     _element.style.top = (_y*BLOCK_SIZE).toString()+"px";
    }
    
    DivElement get element => _element;

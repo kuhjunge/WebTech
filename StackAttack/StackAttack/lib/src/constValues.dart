@@ -19,6 +19,7 @@ const int DIFFERENT_COLORS = 4; //Anzahl verschiedener Farben
 const String PICS_PATH = "/pics/";
 const String PLAYER_STANDING = "player_standing";//Bild des stehenden Spielers
 const String POWERUP_HEART = "powerup_heart";
+const String BLOCK = "block";
 const String PICS_TYP = ".png";
 
 const int POINTS_PER_ROW = 10;

@@ -17,7 +17,7 @@ class Model{
   Map<String, Block> _blockMap = new Map();
   
   /**
-   * Liste sich bewegender Elemente
+   * Liste sich bewegender Blöcke
    */
   List<Block> _movingBlocks = new List();
     
@@ -30,7 +30,15 @@ class Model{
   /**
    * fügt einen Block zur Blockmap hinzu
    */
-  set block(Block block) {
+  set block(Block block) {        
+    _blockMap[(block.x).toString() + " " + (block.y).toString()] = block;
+  }
+  
+  /**
+   * Füge einen Block zur MovingBlockList hinzu
+   */
+  void addMovingBlock(Block block){
+    _movingBlocks.add(block);    
     _blockMap[(block.x).toString() + " " + (block.y).toString()] = block;
   }
   
@@ -45,14 +53,14 @@ class Model{
   Block getBlock(int x, int y) => _blockMap[(x).toString() + " " + (y).toString()];
   
   /**
-   * setter für _movingElements
+   * setter für _movingBlocks
    */
-  set movingElements(Block block) => _movingBlocks.add(block);
+  //set movingBlocks(Block block) => _movingBlocks.add(block);
   
   /**
    * getter für _movingBlocks
    */
-  List<Block> get movingElementsList => _movingBlocks.toList();
+  //List<Block> get movingBlocksList => _movingBlocks.toList();
   
   /**
    * setter für Player
@@ -68,10 +76,10 @@ class Model{
    * Alle Blöcke aus _blockMap fallen so weit sie können nach unten
    */
   void _allBlocksFallingDown(){
-    for(int a = 0; a < FIELD_WIDTH; a +=BLOCK_SIZE){
-      for(int b = FIELD_HEIGHT-BLOCK_SIZE; b > 0; b -=BLOCK_SIZE){
+    for(int a = 0; a < BLOCKS_PER_ROW; a++){
+      for(int b = BLOCK_ROWS; b > 0; b--){
         Block bl = getBlock(a, b);
-        if( bl != null){
+        if( bl != null && !_movingBlocks.contains(bl)){
           _blockFalling(bl);     
         }
       }
@@ -86,7 +94,7 @@ class Model{
            List<Block> tmpList = new List();
                       
            //überprüfen
-           for(int i = 0; i < FIELD_WIDTH; i++){
+           for(int i = 0; i < BLOCKS_PER_ROW; i++){
             Block tmpBlock = getBlock(i, row);
             if( tmpBlock != null){
               counter++;
@@ -120,10 +128,10 @@ class Model{
   }
     
   /**
-   * Überprüft, ob die übergebenden Koordinaten im Player drin sind
+   * Überprüft, ob Player und Block kollidieren
    */
-  bool _playerCollision(Player p, int x, int y){
-    if( x >= p.x && x < p.x + BLOCK_SIZE && y+BLOCK_SIZE >= p.y && y < p.y + 2*BLOCK_SIZE ){
+  bool _playerCollision(Player p, Block b){    
+    if( b.x == p.x && ( b.y == p.y || b.y == p.y +1) ){
       return true;
     }
     else{
@@ -137,148 +145,146 @@ class Model{
    * return false Block hat Spieler getroffen => Spiel verloren;
    */
   bool moveBlocks(){
+    List<Block> tmpList = new List();
 
-    for( int i = 0; i < _movingBlocks.length; i++){
-      var e = _movingBlocks.elementAt(i);
+    for(Block e in _movingBlocks){      
         //bewege nach Rechts
         if( e.targetX > e.x){
-          e.x = e.x + 1;
-        }
-        else{          
-          //setze e.x richtig
-          e.x = e.targetX;
+          _moveOneBlock(e, e.x +1, e.y);
+        }          
+        else{
           //Abfrage auf Kollision mit Player
-          if (_playerCollision(_player, e.x, e.y)){
+          if (_playerCollision(_player, e) ){
             return false;
           }
           // "fallen" bis unten maximal oder kollision Block 
-          if ( ( e.y >= FIELD_HEIGHT) 
-            || ( getBlock( e.x, e.y + BLOCK_SIZE) != null ) ){          
+          if ( ( e.y >= BLOCK_ROWS) 
+            || ( getBlock( e.x, e.y + 1) != null ) ){          
             //Spiel verloren, wenn e.y == 0 bleibt
             if( e.y == 0 ){
               return false;
             }
-            // lösche aus _movingElement Liste und füge zu blockList hinzu
-            _movingBlocks.removeAt(i);      
-             block = e;
+            //füge zum Löschen aus Liste hinzu
+            tmpList.add(e);                 
             //Lösche ganze Zeile, wenn Block bis nach ganz unten gefallen ist
-            if( e.y + BLOCK_SIZE >= FIELD_HEIGHT){
-              _checkDeletionOfFullRow(e.y);
-            }
-            
+            if( e.y >= BLOCK_ROWS){
+              _checkDeletionOfFullRow(e.y);             
+            }            
           } 
           else{
-            e.y = e.y + 1;
+            _moveOneBlock(e, e.x, e.y+1);            
           }
         }
      }
     
+    //lösche aus _movingElement Liste
+    tmpList.forEach( (f) {
+      _movingBlocks.remove(f);    
+    });
     return true;
   }
-  
-  
+    
   
   /**
-   * Bewegt den Computerspieler
+   * Bewegt den Player
    */
-  void movingPlayer(Direction d){
-    // TODO Bewegung - contra Kollisiondetection überprüfen; wenn Block verschoben teilweise gestorben      
+  void movingPlayer(Direction d){  
+      Player p = _player;
       switch( d ){
           case Direction.DOWN:
             break;
-          case Direction.LEFT:                
-                  Block b = getBlock(_player.x - BLOCK_SIZE, _player.y + BLOCK_SIZE);
-                  //Abfrage ob Bock verschiebbar ist
-                  if( b != null){
-                    Block a = getBlock(b.x - BLOCK_SIZE, b.y);
-                    Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
-                    if( aboveB == null && a == null && b.x - BLOCK_SIZE >= 0){
-                      _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);
-                      _blockFalling(b);
-                      _checkDeletionOfFullRow(b.y);
-                    }
-                  }
-                  else{
-                    if(_player.x >= BLOCK_SIZE){
-                      _player.x = _player.x - BLOCK_SIZE;                      
-                      _playerFalling(_player);
-                    }
-                  }                  
-                  break;
-          case Direction.RIGHT:                  
-                  Block b = getBlock(_player.x + BLOCK_SIZE, _player.y + BLOCK_SIZE);
-                  //Abfrage ob Bock verschiebbar ist
-                  if( b != null){
-                    Block a = getBlock(b.x + BLOCK_SIZE, b.y);
-                    Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
-                    if( aboveB == null && a == null && b.x + BLOCK_SIZE < FIELD_WIDTH){
-                      _moveOneBlock(b, b.x +BLOCK_SIZE, b.y);
-                      _blockFalling(b);
-                      _checkDeletionOfFullRow(b.y);
-                    }
-                  }      
-                  else{
-                    if(_player.x + BLOCK_SIZE < FIELD_WIDTH ){
-                      _player.x = _player.x + BLOCK_SIZE;
-                      _playerFalling(_player);
-                    }
-                  }
-                  break;
-          case Direction.TOPLEFT:
-                  Block b = getBlock( _player.x - BLOCK_SIZE, _player.y);
-                  if( b != null){
-                    Block a = getBlock(b.x - BLOCK_SIZE, b.y);
-                    Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
-                    if( aboveB == null && a == null && b.x - BLOCK_SIZE >= 0){
-                      _moveOneBlock(b, b.x-BLOCK_SIZE, b.y);
-                      _blockFalling(b);
-                      _checkDeletionOfFullRow(b.y);
-                    }                    
-                  }
-                  else{                    
-                    if(_player.x >= BLOCK_SIZE){
-                      _player.x = _player.x - BLOCK_SIZE;
-                      _player.y = _player.y - BLOCK_SIZE;
-                      _playerFalling(_player);
-                    }
-                  }
-                  break;
+          case Direction.LEFT:   
+            Block b = getBlock( p.x - 1, p.y + 1);
+            Block aboveB = getBlock( p.x -1, p.y);       
+            Block a = getBlock( p.x - 2, p.y + 1);            
+            //bewege direkt den Player
+            if(aboveB == null && b == null && p.x - 1 >= 0){
+              p.x = p.x - 1;
+              _playerFalling(p);
+              break;
+            }
+            //verschiebe Block
+            if( b != null && !_movingBlocks.contains(b) && aboveB == null && a == null && b.x - 1 >= 0){
+              _moveOneBlock(b, b.x -1, b.y);
+              _blockFalling(b);
+              _checkDeletionOfFullRow(b.y);
+              break;
+            }                   
+            break;
+          case Direction.RIGHT:             
+            Block b = getBlock( p.x + 1, p.y + 1);
+            Block aboveB = getBlock( p.x + 1, p.y);       
+            Block a = getBlock( p.x + 2, p.y + 1);
+            //bewege direkt den Player
+            if(aboveB == null && b == null && p.x + 1 < BLOCKS_PER_ROW){
+              p.x = p.x + 1;
+              _playerFalling(p);
+              break;
+            }
+            //verschiebe Block
+            if( b != null && !_movingBlocks.contains(b) && aboveB == null && a == null && b.x + 1 < BLOCKS_PER_ROW){
+              _moveOneBlock(b, b.x + 1, b.y);
+              _blockFalling(b);
+              _checkDeletionOfFullRow(b.y);
+              break;
+            }                    
+            break;
+          case Direction.TOPLEFT:                 
+            Block b = getBlock( p.x - 1, p.y);
+            Block aboveB = getBlock( p.x - 1, p.y - 1);       
+            Block a = getBlock( p.x - 2, p.y);            
+            //bewege direkt den Player
+            if(aboveB == null && b == null && p.x - 1 >= 0){
+              p.x = p.x - 1;
+              p.y = p.y -1;
+              _playerFalling(p);
+              break;
+            }
+            //verschiebe Block
+            if( b != null  && !_movingBlocks.contains(b)&& aboveB == null && a == null && b.x -1 >= 0){
+              _moveOneBlock(b, b.x -1, b.y);
+              _blockFalling(b);
+              _checkDeletionOfFullRow(b.y); 
+              break;
+            }                    
+            break;
           case Direction.TOPRIGHT:
-                 Block b = getBlock(_player.x + BLOCK_SIZE, _player.y);                 
-                 if( b != null){
-                   Block a = getBlock(b.x + BLOCK_SIZE, b.y);
-                   Block aboveB = getBlock(b.x, b.y - BLOCK_SIZE);
-                   if( aboveB == null && a == null && b.x + BLOCK_SIZE < FIELD_WIDTH){
-                    _moveOneBlock(b, b.x +BLOCK_SIZE, b.y);
-                    _blockFalling(b);
-                    _checkDeletionOfFullRow(b.y);
-                   }                 
-                 }
-                 else{                   
-                   if(_player.x + BLOCK_SIZE < FIELD_WIDTH){
-                      _player.x = _player.x + BLOCK_SIZE;
-                      _player.y = _player.y - BLOCK_SIZE;
-                      _playerFalling(_player);
-                   }
-                 }                 
-                 break;
+            Block b = getBlock( p.x + 1, p.y);
+            Block aboveB = getBlock( p.x + 1, p.y - 1);       
+            Block a = getBlock( p.x + 2, p.y);            
+            //bewege direkt den Player
+            if(aboveB == null && b == null && p.x + 1 < BLOCKS_PER_ROW){
+              p.x = p.x + 1;
+              p.y = p.y -1;
+              _playerFalling(p);
+              break;
+            }
+            //verschiebe Block
+            if( b != null  && !_movingBlocks.contains(b)&& aboveB == null && a == null && b.x + 1 < BLOCKS_PER_ROW){
+              _moveOneBlock(b, b.x +1, b.y);
+              _blockFalling(b);
+              _checkDeletionOfFullRow(b.y); 
+              break;
+            }                                                        
+            break;
       }     
     
     
   }
   
+  
   /**
    * Abfrage, ob Player fallen muß
    */
   void _playerFalling(Player p){   
-    while( p.y + BLOCK_SIZE < FIELD_HEIGHT && getBlock(p.x, p.y + 2*BLOCK_SIZE) == null){//TODO 2*BLOCK_SIZE modular gestalten
-            p.y = p.y + BLOCK_SIZE;
+    while( p.y + 1 < BLOCK_ROWS && getBlock(p.x, p.y + 2) == null){//TODO 2*BLOCK_SIZE modular gestalten
+            p.y = p.y + 1;
     }
   }
   
   void _blockFalling(Block b){    
-    while( b.y < FIELD_HEIGHT && getBlock( b.x, b.y + BLOCK_SIZE) == null){          
-      _moveOneBlock(b, b.x, b.y + BLOCK_SIZE);          
+    while( b.y < BLOCK_ROWS && getBlock( b.x, b.y + 1) == null){          
+      _moveOneBlock(b, b.x, b.y + 1);          
     }
   }
   

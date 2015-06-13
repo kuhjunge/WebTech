@@ -20,7 +20,7 @@ class Controller{
   /**
    * TimerIntervall 
    */
-  var _timerIntervall = new Duration(milliseconds: 20);
+  var _timerIntervall = new Duration(milliseconds: 200);
   
   /**
    * Wahrscheinlichkeit für Erzeugung eines neuen Blocks
@@ -48,7 +48,7 @@ class Controller{
    */
   void timerEvent(){
     //TODO hier könnten counter/randomValue werte durch Datei eingeladen werden
-    if( counter == 50){      
+    if( counter == 5){      
       if( new Random().nextInt(100) < _randomValue){
         //Zufallsfarbe TODO Farben hinzufügen
         String color = "";
@@ -66,12 +66,12 @@ class Controller{
             color = BLACK;
             break;
         }          
-        //Block block = new Block(0,0, color,false);
-        Powerup block = new Powerup(0,0);//TODO Powerup-Mechaniken übernehmen => aufsammeln können in model :)
+        Block block = new Block(-1,0, color,false);
+        //Powerup block = new Powerup(0,0);//TODO Powerup-Mechaniken übernehmen => aufsammeln können in model :)
         
-        block.targetX = BLOCK_SIZE* new Random().nextInt(BLOCKS_PER_ROW);;         
+        block.targetX = new Random().nextInt(BLOCKS_PER_ROW);         
         _view.addElement(block.element); 
-        _model.movingElements = block; // füge Blocks zur List der sich bewegenden Blöcke
+        _model.addMovingBlock(block); 
         counter = 0;
       }
     }
@@ -92,7 +92,7 @@ class Controller{
         _view.clear();
         
         //neuer Player mit weniger Leben
-        _model.player = new Player(80, FIELD_HEIGHT-BLOCK_SIZE, life);        
+        _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-1, life);       
         _view.addElement(_model.player.element);
         //update LifeView
         _view.updateLife(_model.player.life);
@@ -123,7 +123,7 @@ class Controller{
   void loadLevel(){
     //TODO Unterschiedliche Schwierigkeitsgrade einstellbar(ladbar und hier umsetzen)   
     
-    _model.player = new Player(80, FIELD_HEIGHT-BLOCK_SIZE, START_LIFE);
+    _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-1, START_LIFE);
 
   }  
   
