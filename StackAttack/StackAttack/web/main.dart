@@ -4,8 +4,11 @@
 import 'dart:html';
 import 'package:StackAttack/stackAttackLib.dart';
 
-void main() {   
+void main(){   
    Controller control = new Controller();
-   View view = new View(document.body, control); 
-   control.view = view;   
+   control.loadParameters().then( (f) {
+     View view = new View(document.body, control); 
+     control.view = view;  
+   });
+      
 }

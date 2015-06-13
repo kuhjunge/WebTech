@@ -1,0 +1,20 @@
+{
+  "BLOCK_SIZE":20,
+  "BLOCKS_PER_ROW":10,
+  "BLOCK_ROWS":20,
+  "DIFFERENT_COLORS":4,
+  "RED":"red",
+  "BLUE":"blue",
+  "GREEN":"green",
+  "NO_COLOR":"none",
+  "BLUE":"blue",
+  "BLACK":"black",
+  "PICS_PATH":"/pics/",
+  "PLAYER_STANDING":"player_standing",
+  "POWERUP_HEART":"powerup_heart",
+  "BLOCK":"block",
+  "PICS_TYP":".png",
+  "POINTS_PER_ROW":10,
+  "POINTS_PER_GROUPELEMENT":5,
+  "START_LIFE":3
+}

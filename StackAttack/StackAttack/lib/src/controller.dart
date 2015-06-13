@@ -36,12 +36,38 @@ class Controller{
   /**
    * Konstruktor
    */
-  Controller();
+  Controller() {
+  }
   
   /**
    * TODO herausnehmen und in model migrieren; bzw. da, wo die Json-Level-Dateien eingeladen werden
    */
   int counter = 0;
+  
+  /**
+   * Lade Spielparameter ein
+   */
+  Future loadParameters() async{
+    //Laden von Parametern
+    String inputString = await HttpRequest.getString('/parameters/global_settings.json');    
+    Map jMap = JSON.decode(inputString);    
+    BLOCK_SIZE = jMap["BLOCK_SIZE"];
+    BLOCKS_PER_ROW = jMap["BLOCKS_PER_ROW"];
+    BLOCK_ROWS = jMap["BLOCK_ROWS"];   
+    RED = jMap["RED"];
+    BLUE = jMap["BLUE"];
+    GREEN = jMap["GREEN"];
+    BLACK = jMap["BLACK"]; 
+    DIFFERENT_COLORS = jMap["DIFFERENT_COLORS"];
+    PICS_PATH = jMap["PICS_PATH"];
+    PLAYER_STANDING = jMap["PLAYER_STANDING"];
+    POWERUP_HEART = jMap["POWERUP_HEART"];
+    BLOCK = jMap["BLOCK"];
+    PICS_TYP = jMap["PICS_TYP"];
+    POINTS_PER_ROW = jMap["POINTS_PER_ROW"];
+    POINTS_PER_GROUPELEMENT = jMap["POINTS_PER_GROUPELEMENT"];
+    START_LIFE = jMap["START_LIFE"];    
+  }
   
   /**
    * das Timer-Event
@@ -66,7 +92,7 @@ class Controller{
             color = BLACK;
             break;
         }          
-        Block block = new Block(-1,0, color,false);
+        Block block = new Block(0,0, color,false);
         //Powerup block = new Powerup(0,0);//TODO Powerup-Mechaniken übernehmen => aufsammeln können in model :)
         
         block.targetX = new Random().nextInt(BLOCKS_PER_ROW);         
