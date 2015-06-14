@@ -24,7 +24,7 @@ class Model{
   /**
    * Default-Konstruktor
    */
-  model(){    
+  Model(){    
   }
   
   /**
