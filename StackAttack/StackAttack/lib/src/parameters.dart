@@ -20,7 +20,7 @@ part of stackAttackLib;
 
  //Externe Bilder
  String PICS_PATH;
- String PLAYER_STANDING;//Bild des stehenden Spielers
+ String PLAYER;//Bild des stehenden Spielers
  String POWERUP_HEART;
  String BLOCK;
  String PICS_TYP;

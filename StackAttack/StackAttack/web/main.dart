@@ -12,3 +12,11 @@ void main(){
    });
       
 }
+
+/* TODO:
+ * - Wenn Blöcke runterfallen (Moving Blocks) und verschiebst, bleibt Block in der Luft
+ * - Farben: Gelb (15%), Rot (15%), Grün (15%), Blau (15%), weiß(15%), Schwarz(Solid, 10%), Powerup (5%) (parametrisierbar)
+ * - Block das Attribut walkable
+ * http://www.iconarchive.com/show/character-icons-by-martin-berube/Kid-icon.html
+ * http://icons.iconarchive.com/icons/kyo-tux/phuzion/256/Misc-Box-icon.png
+ */

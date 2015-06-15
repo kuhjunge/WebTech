@@ -60,7 +60,7 @@ class Controller{
     BLACK = jMap["BLACK"]; 
     DIFFERENT_COLORS = jMap["DIFFERENT_COLORS"];
     PICS_PATH = jMap["PICS_PATH"];
-    PLAYER_STANDING = jMap["PLAYER_STANDING"];
+    PLAYER = jMap["PLAYER"];
     POWERUP_HEART = jMap["POWERUP_HEART"];
     BLOCK = jMap["BLOCK"];
     PICS_TYP = jMap["PICS_TYP"];
