@@ -18,15 +18,19 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 
-<body>  
-  <div id="field"></div>
-  <h1>Stack Attack</h1><!-- TODO wegen absoluter Positionierung klappt es nicht, wenn über dem field-div steht -->
-  <button id="button_start">Spiel starten</button>
-  <button id="button_pause">Spiel pausieren</button>
-  <button id="button_rules">Spielregeln</button>  
-  <div> <p id="pointView">Punktestand: </p>
-        <p id="lifeView">Leben: </p>
-  </div>
+<body>
+  <div id="wrap">
+    <h1>Stack Attack</h1>
+    <div id="field"></div>
+    <div id="menu">
+      <button id="button_start">Spiel starten</button>
+      <button id="button_pause">Spiel pausieren</button>
+      <button id="button_rules">Spielregeln</button>  
+      <div> <p id="pointView">Punktestand: </p>
+            <p id="lifeView">Leben: </p>
+      </div>
+    </div><!-- menu -->
+  </div><!-- wrap -->
 
 
 
