@@ -96,9 +96,14 @@ class Controller{
       int randomValue = new Random().nextInt(100);
       String color = "";
       bool isSolid = false;
+      int value = level.yellow_share;
       
-      if(randomValue < level.yellow_share){
+      if(randomValue < value){
         color = YELLOW;
+      }
+      value += level.red_share;
+      if(randomValue < value){
+        color = RED;
       }
       
         Block block = new Block(0,0, color,false,isSolid);
