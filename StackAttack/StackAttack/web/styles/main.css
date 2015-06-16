@@ -10,17 +10,33 @@ h1{
   text-align:center;
 }
 
+#wrap{
+  position:absolute;
+  
+  /*
+  background-image: url(../pics/background.jpg);
+  */
+  
+  width:100%;
+  height:100%;
+}
+
+/* Style Spiel*/
+
 #field{  
   background-color: lightgrey;  
   width: 200px;
   height: 420px;
   position:relative;
-  margin: 50px auto;
+  margin: 10px auto;
+  /*background-image: url(../pics/warehouse.jpg);*/
+  background-size:  auto 100%;
+  background-position: center bottom;
 }
 
-#menu{
+.menu{
   margin: 0 auto;
-  width:300px;
+  width:400px;
 }
 
 .green{
@@ -41,5 +57,36 @@ h1{
 
 .block, .player{
   position: absolute;    
+}
+
+/* Style Seite*/
+
+button {
+	text-align:center;
+	margin:5px;
+	padding:2px;
+	line-height: 1.5;
+	width: 110px;
+	color: #000;
+	background-color:  rgba(230,230,230,0.8);
+	box-sizing: border-box;
+	border-radius: 4px; 
+	box-shadow: 0 0 3px 1px rgba(0,0,0,0.7);
+	font-weight: bold;
+	color: buttontext;
+	display:block;
+	float:left;
+}
+
+button:hover {
+	box-shadow: 0 0 3px 1px rgba(0,0,0,1)
+}
+
+button:active {
+	box-shadow:
+		inset 0px 0px 4px rgba(0,0,0,0.2),
+		inset 0px 1px 1px rgba(0,0,0,0.2),
+		0px 1px white;
+	text-shadow:0px 0px 0px #aaa;
 }
 
