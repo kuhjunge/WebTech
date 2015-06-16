@@ -3,14 +3,15 @@ part of stackAttackLib;
 /**
  * Powerups
  */
-class Powerup extends Block {
+abstract class Powerup extends Block {
   
   /**
    * Konstruktor
    */
-  Powerup(int x, int y):super(x,y, NO_COLOR, false){
-    //TODO andere Powerups hinzufügen
-    element.innerHtml = '<img src="'+PICS_PATH+POWERUP_HEART+BLOCK_SIZE.toString()+PICS_TYP+'"></img>';    
+  Powerup(int x, int y):super(x,y, NO_COLOR, true, false){    
     element.classes.add("powerup");       
   }
+  
+  void walkThrough(Player p);
+  
 }

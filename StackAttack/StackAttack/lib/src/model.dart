@@ -63,6 +63,14 @@ class Model{
   Player get player => _player;
  
   /**
+   * löscht einen Block aus _blockMap und das Object des Blocks
+   */
+  void _deleteBlock(Block b){
+    _blockMap.remove(b._x.toString()+" "+b.y.toString());
+    b.element.remove();
+  }
+  
+  /**
    * Alle Blöcke aus _blockMap fallen so weit sie können nach unten
    */
   void _allBlocksFallingDown(){
@@ -95,8 +103,7 @@ class Model{
            if(counter == BLOCKS_PER_ROW){             
              //lösche Zeile
              tmpList.forEach( (e){
-               _blockMap.remove(e._x.toString()+" "+e.y.toString());
-               e.element.remove();
+               _deleteBlock(e);
              });
             //zähle Punkte hoch 
              _player.points += POINTS_PER_ROW;             
@@ -111,17 +118,19 @@ class Model{
    * Bewege einen Block in _blockMap
    */
   void _moveOneBlock(Block b, int newX, int newY){
-    _blockMap.remove(b.x.toString()+" "+b.y.toString());
+    int oldX = b.x;
+    int oldY = b.y;
     b.y = newY;
     b.x = newX;
     block = b;
+    _blockMap.remove(oldX.toString()+" "+oldY.toString());
   }
     
   /**
    * Überprüft, ob Player und Block kollidieren
    */
   bool _playerCollision(Player p, Block b){    
-    if( b.x == p.x && ( b.y == p.y || b.y == p.y +1) ){
+    if( b.x == p.x &&  b.y == p.y ){
       return true;
     }
     else{
@@ -145,7 +154,14 @@ class Model{
         else{
           //Abfrage auf Kollision mit Player
           if (_playerCollision(_player, e) ){
-            return false;
+            if(e.isWalkable){
+              e.walkThrough(_player);
+              _deleteBlock(e);
+              tmpList.add(e);              
+            }
+            else{
+              return false;
+            }
           }
           // "fallen" bis unten maximal oder kollision Block 
           if ( ( e.y >= BLOCK_ROWS) 
@@ -188,6 +204,15 @@ class Model{
     else{
       a = getBlock( p.x +1 + x, p.y + 1 + y);
     }
+    //Abfrage, ob Block.isWalkable == true
+    if(b != null && b.isWalkable && aboveB == null){
+      b.walkThrough(_player);
+      _deleteBlock(b);
+      p.x = p.x + x;
+      p.y = p.y + y;
+      _playerFalling(p);
+      return;
+    }
     //bewege direkt den Player
     if(aboveB == null && b == null && ((d==Direction.LEFT) ? (p.x + x  >= 0) : (p.x + x < BLOCKS_PER_ROW)) ){
       p.x = p.x + x;
@@ -225,11 +250,8 @@ class Model{
           case Direction.TOPRIGHT:           
             _playerMove(_player, 1, -1, Direction.RIGHT);
             break;
-      }     
-    
-    
-  }
-  
+      }
+  }  
   
   /**
    * Abfrage, ob Player fallen muß

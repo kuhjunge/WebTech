@@ -20,18 +20,18 @@ class Player extends MovingElement {
   /**
    * Konstruktor
    */
-  Player(int x, int y, int life) : super(x, y){    
+  Player(int x, int y) : super(x, y){    
     element.innerHtml = '<img src="'+PICS_PATH+PLAYER.toString()+PICS_TYP+'" height="$_height px" width="$_width px"></img>';    
     element.classes.add("player");
     element.style
         ..width = (_width.toString() + "px")
         ..height = _height.toString()+"px";
-    
-    _life = life;
   }  
     
   int get points => _points;
   set points(int p) => _points = p;
   
-  int get life => _life;  
+  int get life => _life; 
+  set life(int l) => _life = l;
+  
 }

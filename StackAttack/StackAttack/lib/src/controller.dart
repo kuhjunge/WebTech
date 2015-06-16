@@ -95,7 +95,7 @@ class Controller{
             break;
         }          
         Block block = new Block(0,0, color,false,false);
-        //Powerup block = new Powerup(0,0);//TODO Powerup-Mechaniken übernehmen => aufsammeln können in model :)
+        //PowerupHeart block = new PowerupHeart(0,0);//TODO Powerup-Mechaniken übernehmen => aufsammeln können in model :)
         
         block.targetX = new Random().nextInt(BLOCKS_PER_ROW);         
         _view.addElement(block.element); 
@@ -112,6 +112,7 @@ class Controller{
       //Zähle Leben runter
       if(_model.player.life > 0){
         int life = _model.player.life - 1;
+        int points = _model.player.points;
         
         //starte Spiel erneut
         _timer.cancel();
@@ -120,10 +121,11 @@ class Controller{
         _view.clear();
         
         //neuer Player mit weniger Leben
-        _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1), life);       
-        _view.addElement(_model.player.element);
-        //update LifeView
-        _view.updateLife(_model.player.life);
+        _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1));
+        _model.player.points = points;
+        _model.player.life = life;
+        _view.addElement(_model.player.element);        
+        
         //restart Timer
         _timer = new Timer.periodic(_timerIntervall, (_)=> timerEvent() );
       }
@@ -136,6 +138,7 @@ class Controller{
     }
     
     //update des Views für Punkteanzeige
+    _view.updateLife(_model.player.life);
     _view.updatePoints(_model.player.points);
    
   }
@@ -151,7 +154,7 @@ class Controller{
   void loadLevel(){
     //TODO Unterschiedliche Schwierigkeitsgrade einstellbar(ladbar und hier umsetzen)   
     
-    _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1), START_LIFE);
+    _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1));
 
   }  
   

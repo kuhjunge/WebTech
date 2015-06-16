@@ -19,5 +19,11 @@ class Block extends MovingElement {
   }
   
   bool get isWalkable => _isWalkable;  
+ 
+  /**
+   * Für abgeleitete Klassen zu nutzen, wenn isWalkable==true
+   */
+  void walkThrough(Player p){  
+  }
   
 }
