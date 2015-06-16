@@ -17,6 +17,8 @@ part of stackAttackLib;
  String BLUE;
  String GREEN;
  String BLACK;
+ String WHITE;
+ String YELLOW;
  String NO_COLOR;
  int DIFFERENT_COLORS;//Anzahl verschiedener Farben
 
@@ -26,12 +28,15 @@ part of stackAttackLib;
  String POWERUP_HEART;
  String BLOCK;
  String PICS_TYP;
+ //Level
+ String LEVEL_PATH;
+ int LEVEL_COUNT;
 
  //Punktesystem
  int POINTS_PER_ROW;
  int POINTS_PER_GROUPELEMENT;
  int START_LIFE;
-
+ 
 /**
  * Bewegungsrichtungen eines Players
  */

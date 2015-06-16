@@ -21,17 +21,21 @@ class Controller{
    * TimerIntervall 
    */
   var _timerIntervall = new Duration(milliseconds: 200);
-  
-  /**
-   * Wahrscheinlichkeit für Erzeugung eines neuen Blocks
-   * 0 .. 99
-   */
-  var _randomValue = 99;
-   
+ 
   /**
    * 
    */
   var _isStarted = false;
+
+  /**
+   * Liste der Level
+   */
+  Map<int, Level> levels = new Map();
+
+  /**
+   * aktuelles Level
+   */
+  int aktLevel = 1;
   
   /**
    * Konstruktor
@@ -40,7 +44,7 @@ class Controller{
   }
   
   /**
-   * TODO herausnehmen und in model migrieren; bzw. da, wo die Json-Level-Dateien eingeladen werden
+   * Zählt hoch für die Erzeugung neuer Blöcke
    */
   int counter = 0;
   
@@ -48,7 +52,7 @@ class Controller{
    * Lade Spielparameter ein
    */
   Future loadParameters() async{
-    //Laden von Parametern
+    //Laden von globalen Parametern
     String inputString = await HttpRequest.getString('/parameters/global_settings.json');    
     Map jMap = JSON.decode(inputString);    
     BLOCK_SIZE = jMap["BLOCK_SIZE"];
@@ -56,6 +60,8 @@ class Controller{
     BLOCK_ROWS = jMap["BLOCK_ROWS"];   
     RED = jMap["RED"];
     BLUE = jMap["BLUE"];
+    WHITE = jMap["WHITE"];
+    YELLOW = jMap["YELLOW"];
     GREEN = jMap["GREEN"];
     BLACK = jMap["BLACK"]; 
     DIFFERENT_COLORS = jMap["DIFFERENT_COLORS"];
@@ -69,44 +75,45 @@ class Controller{
     START_LIFE = jMap["START_LIFE"]; 
     PLAYER_HEIGHT = jMap["PLAYER_HEIGHT"];
     PLAYER_WIDTH = jMap["PLAYER_WIDTH"];
+    LEVEL_PATH = jMap["LEVEL_PATH"];
+    LEVEL_COUNT = jMap["LEVEL_COUNT"];
+    //Laden der Level
+    for(int i = 1; i <= LEVEL_COUNT; i++){
+      inputString = await HttpRequest.getString("/parameters/$LEVEL_PATH/level$i.json");
+      jMap = JSON.decode(inputString);
+      levels[i] = new Level(jMap["YELLOW_SHARE"], jMap["RED_SHARE"], jMap["GREEN_SHARE"],jMap["BLUE_SHARE"],
+        jMap["WHITE_SHARE"],jMap["BLACK_SHARE"],jMap["START_POINTS"],jMap["END_POINTS"],jMap["FALLING_SPEED"],
+        jMap["CREATION_SPEED"]);
+    }
   }
   
   /**
    * das Timer-Event
    */
   void timerEvent(){
-    //TODO hier könnten counter/randomValue werte durch Datei eingeladen werden
-    if( counter == 5){      
-      if( new Random().nextInt(100) < _randomValue){
-        //Zufallsfarbe TODO Farben hinzufügen
-        String color = "";
-        switch(new Random().nextInt(DIFFERENT_COLORS)){
-          case 0:
-            color = RED;
-            break;
-          case 1:
-            color = BLUE;
-            break;
-          case 2:
-            color = GREEN;
-            break;
-          case 3:
-            color = BLACK;
-            break;
-        }          
-        Block block = new Block(0,0, color,false,false);
-        //PowerupHeart block = new PowerupHeart(0,0);//TODO Powerup-Mechaniken übernehmen => aufsammeln können in model :)
+    Level level = levels[aktLevel];
+    if( level != null && counter == level.creation_speed){
+      int randomValue = new Random().nextInt(100);
+      String color = "";
+      bool isSolid = false;
+      
+      if(randomValue < level.yellow_share){
+        color = YELLOW;
+      }
+      
+        Block block = new Block(0,0, color,false,isSolid);
+        //PowerupHeart block = new PowerupHeart(0,0);
         
         block.targetX = new Random().nextInt(BLOCKS_PER_ROW);         
         _view.addElement(block.element); 
         _model.addMovingBlock(block); 
         counter = 0;
-      }
+      
     }
     else{
       counter++;
     }    
-      
+      //TODO Anzeige, in welchem Level man ist, reinnehmen
     //bewege Blöcke inklusive Kollisionsdetection
     if( !_model.moveBlocks() ){
       //Zähle Leben runter
@@ -137,7 +144,12 @@ class Controller{
       }      
     }
     
-    //update des Views für Punkteanzeige
+    //Überprüfung, ob Level erhöht werden muß
+    if( _model.player.points >= levels[aktLevel].end_points){
+      aktLevel++;
+    }
+    
+    //update des Views 
     _view.updateLife(_model.player.life);
     _view.updatePoints(_model.player.points);
    
@@ -147,17 +159,8 @@ class Controller{
    * Setter für den View
    */
   set view(View v) => _view = v;
-  
-  /**
-   * lade Level 
-   */
-  void loadLevel(){
-    //TODO Unterschiedliche Schwierigkeitsgrade einstellbar(ladbar und hier umsetzen)   
-    
-    _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1));
+ 
 
-  }  
-  
   /**
    * Startet neues Spiel
    */
@@ -166,14 +169,18 @@ class Controller{
     _model = new Model();
     _view.clear();
     if( _timer != null)
-      _timer.cancel();
-    // lade Level
-     loadLevel();    
+     _timer.cancel();
+  
+    //setze Level zurück
+    aktLevel = 1;
+    
      // füge Spieler hinzu
-    _view.addElement(_model.player.element);     
+     _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1));
+     _view.addElement(_model.player.element);     
 
-     //update LifeView    
+     //update View    
      _view.updateLife(_model.player.life);
+     _view.updatePoints(_model.player.points);
      
     //setze StartBool
     _isStarted = true;

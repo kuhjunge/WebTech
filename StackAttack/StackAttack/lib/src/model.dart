@@ -221,7 +221,7 @@ class Model{
       return;
     }
     //verschiebe Block
-    if( b != null && !_movingBlocks.contains(b) && aboveB == null && a == null 
+    if( b != null && !b.isSolid && !_movingBlocks.contains(b) && aboveB == null && a == null 
         && ( (d==Direction.LEFT) ? (b.x +  x >= 0) : (b.x + x < BLOCKS_PER_ROW) )){
       _moveOneBlock(b, b.x +x, b.y);
       _blockFalling(b);
@@ -233,8 +233,7 @@ class Model{
   /**
    * Bewegt den Player
    */
-  void movingPlayer(Direction d){  
-      Player p = _player;
+  void movingPlayer(Direction d){
       switch( d ){
           case Direction.DOWN:
             break;
