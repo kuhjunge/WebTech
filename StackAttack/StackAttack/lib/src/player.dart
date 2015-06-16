@@ -12,12 +12,21 @@ class Player extends MovingElement {
   /**
    * Anzahl der Leben
    */
-  int _life = 3;
-  String _height =  (2*BLOCK_SIZE).toString() + "px";
+  int _life = START_LIFE;
+  
+  int _height = PLAYER_HEIGHT * BLOCK_SIZE;
+  int _width  = PLAYER_WIDTH * BLOCK_SIZE;
+  
+  /**
+   * Konstruktor
+   */
   Player(int x, int y, int life) : super(x, y){    
-    element.innerHtml = '<img src="'+PICS_PATH+PLAYER.toString()+PICS_TYP+'" height="$_height px" width="$BLOCK_SIZE px"></img>';    
+    element.innerHtml = '<img src="'+PICS_PATH+PLAYER.toString()+PICS_TYP+'" height="$_height px" width="$_width px"></img>';    
     element.classes.add("player");
-    element.style.height = _height;
+    element.style
+        ..width = (_width.toString() + "px")
+        ..height = _height.toString()+"px";
+    
     _life = life;
   }  
     

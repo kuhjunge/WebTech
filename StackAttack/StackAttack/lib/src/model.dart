@@ -45,23 +45,13 @@ class Model{
   /**
    * gibt die Values der BlockMap als List zurück
    */
-  List<Block> get blocks => _blockMap.values.toList();
+ // List<Block> get blocks => _blockMap.values.toList();
   
   /**
    * gibt den Block an übergebender Position x,y zurück
    */
   Block getBlock(int x, int y) => _blockMap[(x).toString() + " " + (y).toString()];
-  
-  /**
-   * setter für _movingBlocks
-   */
-  //set movingBlocks(Block block) => _movingBlocks.add(block);
-  
-  /**
-   * getter für _movingBlocks
-   */
-  //List<Block> get movingBlocksList => _movingBlocks.toList();
-  
+   
   /**
    * setter für Player
    */
@@ -184,6 +174,36 @@ class Model{
     return true;
   }
     
+  /**
+   * der übergebende Player versucht x/y nach Direction.LEFT oder .RIGHT sich zu bewegen    
+   * Entweder Bewegung Player oder Block wird verschoben
+   */
+  void _playerMove(Player p, int x, int y, Direction d){
+    Block b = getBlock( p.x + x, p.y + 1 + y);
+    Block aboveB = getBlock( p.x + x, p.y + y); 
+    Block a;
+    if(d == Direction.LEFT){
+        a = getBlock( p.x -1 + x, p.y + 1 + y);
+    }
+    else{
+      a = getBlock( p.x +1 + x, p.y + 1 + y);
+    }
+    //bewege direkt den Player
+    if(aboveB == null && b == null && ((d==Direction.LEFT) ? (p.x + x  >= 0) : (p.x + x < BLOCKS_PER_ROW)) ){
+      p.x = p.x + x;
+      p.y = p.y + y;
+      _playerFalling(p);
+      return;
+    }
+    //verschiebe Block
+    if( b != null && !_movingBlocks.contains(b) && aboveB == null && a == null 
+        && ( (d==Direction.LEFT) ? (b.x +  x >= 0) : (b.x + x < BLOCKS_PER_ROW) )){
+      _moveOneBlock(b, b.x +x, b.y);
+      _blockFalling(b);
+      _checkDeletionOfFullRow(b.y);
+    }                
+  }
+  
   
   /**
    * Bewegt den Player
@@ -194,78 +214,16 @@ class Model{
           case Direction.DOWN:
             break;
           case Direction.LEFT:   
-            Block b = getBlock( p.x - 1, p.y + 1);
-            Block aboveB = getBlock( p.x -1, p.y);       
-            Block a = getBlock( p.x - 2, p.y + 1);            
-            //bewege direkt den Player
-            if(aboveB == null && b == null && p.x - 1 >= 0){
-              p.x = p.x - 1;
-              _playerFalling(p);
-              break;
-            }
-            //verschiebe Block
-            if( b != null && !_movingBlocks.contains(b) && aboveB == null && a == null && b.x - 1 >= 0){
-              _moveOneBlock(b, b.x -1, b.y);
-              _blockFalling(b);
-              _checkDeletionOfFullRow(b.y);
-              break;
-            }                   
+            _playerMove(_player, -1, 0, Direction.LEFT); 
             break;
-          case Direction.RIGHT:             
-            Block b = getBlock( p.x + 1, p.y + 1);
-            Block aboveB = getBlock( p.x + 1, p.y);       
-            Block a = getBlock( p.x + 2, p.y + 1);
-            //bewege direkt den Player
-            if(aboveB == null && b == null && p.x + 1 < BLOCKS_PER_ROW){
-              p.x = p.x + 1;
-              _playerFalling(p);
-              break;
-            }
-            //verschiebe Block
-            if( b != null && !_movingBlocks.contains(b) && aboveB == null && a == null && b.x + 1 < BLOCKS_PER_ROW){
-              _moveOneBlock(b, b.x + 1, b.y);
-              _blockFalling(b);
-              _checkDeletionOfFullRow(b.y);
-              break;
-            }                    
+          case Direction.RIGHT:
+            _playerMove(_player, 1, 0, Direction.RIGHT);            
             break;
-          case Direction.TOPLEFT:                 
-            Block b = getBlock( p.x - 1, p.y);
-            Block aboveB = getBlock( p.x - 1, p.y - 1);       
-            Block a = getBlock( p.x - 2, p.y);            
-            //bewege direkt den Player
-            if(aboveB == null && b == null && p.x - 1 >= 0){
-              p.x = p.x - 1;
-              p.y = p.y -1;
-              _playerFalling(p);
-              break;
-            }
-            //verschiebe Block
-            if( b != null  && !_movingBlocks.contains(b)&& aboveB == null && a == null && b.x -1 >= 0){
-              _moveOneBlock(b, b.x -1, b.y);
-              _blockFalling(b);
-              _checkDeletionOfFullRow(b.y); 
-              break;
-            }                    
+          case Direction.TOPLEFT:
+            _playerMove(_player, -1, -1, Direction.LEFT);
             break;
-          case Direction.TOPRIGHT:
-            Block b = getBlock( p.x + 1, p.y);
-            Block aboveB = getBlock( p.x + 1, p.y - 1);       
-            Block a = getBlock( p.x + 2, p.y);            
-            //bewege direkt den Player
-            if(aboveB == null && b == null && p.x + 1 < BLOCKS_PER_ROW){
-              p.x = p.x + 1;
-              p.y = p.y -1;
-              _playerFalling(p);
-              break;
-            }
-            //verschiebe Block
-            if( b != null  && !_movingBlocks.contains(b)&& aboveB == null && a == null && b.x + 1 < BLOCKS_PER_ROW){
-              _moveOneBlock(b, b.x +1, b.y);
-              _blockFalling(b);
-              _checkDeletionOfFullRow(b.y); 
-              break;
-            }                                                        
+          case Direction.TOPRIGHT:           
+            _playerMove(_player, 1, -1, Direction.RIGHT);
             break;
       }     
     
@@ -277,7 +235,7 @@ class Model{
    * Abfrage, ob Player fallen muß
    */
   void _playerFalling(Player p){   
-    while( p.y + 1 < BLOCK_ROWS && getBlock(p.x, p.y + 2) == null){//TODO 2*BLOCK_SIZE modular gestalten
+    while( p.y + 1 < BLOCK_ROWS && getBlock(p.x, p.y + 2) == null){
             p.y = p.y + 1;
     }
   }
