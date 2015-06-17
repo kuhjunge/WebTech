@@ -82,7 +82,7 @@ class Controller{
       inputString = await HttpRequest.getString("/parameters/$LEVEL_PATH/level$i.json");
       jMap = JSON.decode(inputString);
       levels[i] = new Level(jMap["YELLOW_SHARE"], jMap["RED_SHARE"], jMap["GREEN_SHARE"],jMap["BLUE_SHARE"],
-        jMap["WHITE_SHARE"],jMap["BLACK_SHARE"],jMap["START_POINTS"],jMap["END_POINTS"],jMap["FALLING_SPEED"],
+        jMap["WHITE_SHARE"],jMap["BLACK_SHARE"], jMap["POWERUP_SHARE"], jMap["START_POINTS"],jMap["END_POINTS"],jMap["FALLING_SPEED"],
         jMap["CREATION_SPEED"]);
     }
   }
@@ -93,27 +93,27 @@ class Controller{
   void timerEvent(){
     Level level = levels[aktLevel];
     if( level != null && counter == level.creation_speed){
-      int randomValue = new Random().nextInt(100);
+      //zähle alle share-Werte hoch
+      int maxValue = level.black_share+level.blue_share+level.green_share+level.powerup_share+level.red_share+level.white_share+level.yellow_share;
+      //nehme Zufallszahl
+      int randomValue = new Random().nextInt(maxValue);
       String color = "";
       bool isSolid = false;
-      int value = level.yellow_share;
+      bool isPowerup = false;
       
-      if(randomValue < value){
-        color = YELLOW;
+      if()
+      
+      Block block;
+      if( !isPowerup ){
+        block = new Block(0,0, color,false,isSolid);        
       }
-      value += level.red_share;
-      if(randomValue < value){
-        color = RED;
+      else{
+        block = new PowerupHeart(0,0);        
       }
-      
-        Block block = new Block(0,0, color,false,isSolid);
-        //PowerupHeart block = new PowerupHeart(0,0);
-        
-        block.targetX = new Random().nextInt(BLOCKS_PER_ROW);         
-        _view.addElement(block.element); 
-        _model.addMovingBlock(block); 
-        counter = 0;
-      
+      block.targetX = new Random().nextInt(BLOCKS_PER_ROW);         
+      _view.addElement(block.element); 
+      _model.addMovingBlock(block); 
+      counter = 0;      
     }
     else{
       counter++;
@@ -150,7 +150,7 @@ class Controller{
     }
     
     //Überprüfung, ob Level erhöht werden muß
-    if( _model.player.points >= levels[aktLevel].end_points){
+    if( _model.player.points >= levels[aktLevel].end_points && levels.containsKey(aktLevel+1)){
       aktLevel++;
     }
     
