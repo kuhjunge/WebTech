@@ -33,5 +33,5 @@ class Player extends MovingElement {
   
   int get life => _life; 
   set life(int l) => _life = l;
-  
+    
 }

@@ -85,6 +85,8 @@ class Controller{
         jMap["WHITE_SHARE"],jMap["BLACK_SHARE"], jMap["POWERUP_SHARE"], jMap["START_POINTS"],jMap["END_POINTS"],jMap["FALLING_SPEED"],
         jMap["CREATION_SPEED"]);
     }
+    //Einstellen TimerIntervall
+    _timerIntervall = new Duration(milliseconds: levels[aktLevel].falling_speed);
   }
   
   /**
@@ -101,15 +103,53 @@ class Controller{
       bool isSolid = false;
       bool isPowerup = false;
       
-      if()
-      
+      maxValue -= level.yellow_share;
+      if(randomValue > maxValue){
+        color = YELLOW;
+      }
+      else{
+        maxValue -= level.blue_share;
+        if(randomValue > maxValue){
+          color = BLUE;
+        }  
+        else{
+          maxValue -= level.green_share;
+          if(randomValue > maxValue){
+           color = GREEN; 
+          }
+          else{
+            maxValue -= level.red_share;
+            if(randomValue > maxValue){
+              color = RED;
+            }
+            else{
+              maxValue -= level.white_share;
+              if(randomValue > maxValue){
+                color = WHITE;
+              }
+              else{
+                maxValue -= level.black_share;
+                if(randomValue > maxValue){
+                  color = BLACK;
+                  isSolid = true;
+                }
+                else{
+                  color = NO_COLOR;
+                  isPowerup = true;
+                }
+              }
+            }
+          }
+        }
+      }      
+        
       Block block;
       if( !isPowerup ){
         block = new Block(0,0, color,false,isSolid);        
       }
       else{
         block = new PowerupHeart(0,0);        
-      }
+      }      
       block.targetX = new Random().nextInt(BLOCKS_PER_ROW);         
       _view.addElement(block.element); 
       _model.addMovingBlock(block); 
@@ -122,21 +162,18 @@ class Controller{
     //bewege Blöcke inklusive Kollisionsdetection
     if( !_model.moveBlocks() ){
       //Zähle Leben runter
-      if(_model.player.life > 0){
-        int life = _model.player.life - 1;
-        int points = _model.player.points;
+      if(_model.player.life > 0){        
         
         //starte Spiel erneut
         _timer.cancel();
-        // lösche alte Werte
-        _model = new Model();
-        _view.clear();
+        // alte Blöcke fallen nach unten
+        _model.allBlocksFallingDown();
         
-        //neuer Player mit weniger Leben
-        _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1));
-        _model.player.points = points;
-        _model.player.life = life;
-        _view.addElement(_model.player.element);        
+         //Player wird um einen nach oben wieder dort hingesetzt und Leben verringert
+        _model.player.y--;        
+        _model.player.life--;                
+        
+        
         
         //restart Timer
         _timer = new Timer.periodic(_timerIntervall, (_)=> timerEvent() );
@@ -150,8 +187,9 @@ class Controller{
     }
     
     //Überprüfung, ob Level erhöht werden muß
-    if( _model.player.points >= levels[aktLevel].end_points && levels.containsKey(aktLevel+1)){
+    if( _model.player.points >= levels[aktLevel].end_points && levels.containsKey(aktLevel+1)){      
       aktLevel++;
+      _timerIntervall = new Duration(milliseconds: levels[aktLevel].falling_speed);
     }
     
     //update des Views 

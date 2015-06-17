@@ -73,7 +73,7 @@ class Model{
   /**
    * Alle Blöcke aus _blockMap fallen so weit sie können nach unten
    */
-  void _allBlocksFallingDown(){
+  void allBlocksFallingDown(){
     for(int a = 0; a < BLOCKS_PER_ROW; a++){
       for(int b = BLOCK_ROWS; b > 0; b--){
         Block bl = getBlock(a, b);
@@ -108,7 +108,7 @@ class Model{
             //zähle Punkte hoch 
              _player.points += POINTS_PER_ROW;             
             //verschiebe den Rest nach unten
-             _allBlocksFallingDown();
+             allBlocksFallingDown();
              //verschiebe auch player nach unten
              _playerFalling(_player);
            }        
