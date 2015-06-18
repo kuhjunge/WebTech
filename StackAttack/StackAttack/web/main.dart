@@ -18,5 +18,5 @@ void main(){
  * http://www.iconarchive.com/show/character-icons-by-martin-berube/Kid-icon.html
  * http://icons.iconarchive.com/icons/kyo-tux/phuzion/256/Misc-Box-icon.png
  * https://stocksnap.io/photo/77G671166K
- * 
+ * wenn powerup in mich reinfällt, ist danach ein Leerblock entstanden
  */

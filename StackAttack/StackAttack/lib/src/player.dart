@@ -32,6 +32,10 @@ class Player extends MovingElement {
   set points(int p) => _points = p;
   
   int get life => _life; 
-  set life(int l) => _life = l;
+  set life(int l){
+    if(l <= MAX_LIFE){
+      _life = l;      
+    }
+  }
     
 }

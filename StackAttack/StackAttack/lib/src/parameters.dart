@@ -26,6 +26,7 @@ part of stackAttackLib;
  String PICS_PATH;
  String PLAYER;//Bild des stehenden Spielers
  String POWERUP_HEART;
+ String POWERUP_BOMB;
  String BLOCK;
  String PICS_TYP;
  //Level
@@ -36,6 +37,7 @@ part of stackAttackLib;
  int POINTS_PER_ROW;
  int POINTS_PER_GROUPELEMENT;
  int START_LIFE;
+ int MAX_LIFE;
  
 /**
  * Bewegungsrichtungen eines Players

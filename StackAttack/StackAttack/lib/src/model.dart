@@ -140,10 +140,11 @@ class Model{
   
   /**
    * Bewegt alle Blöcke in _movingBlockList
-   * return false Block ist oben angekommen => Spiel verloren;
-   * return false Block hat Spieler getroffen => Spiel verloren;
+   * return 0 keine Collisionen
+   * return -1 Block ist oben angekommen => Spiel verloren und Spielfeld gelöscht
+   * return -2 Block hat Spieler getroffen => Spiel verloren;
    */
-  bool moveBlocks(){
+ int moveBlocks(){
     List<Block> tmpList = new List();
 
     for(Block e in _movingBlocks){      
@@ -155,12 +156,12 @@ class Model{
           //Abfrage auf Kollision mit Player
           if (_playerCollision(_player, e) ){
             if(e.isWalkable){
-              e.walkThrough(_player);
+              e.walkThrough(this);
               _deleteBlock(e);
               tmpList.add(e);              
             }
             else{
-              return false;
+              return -1;
             }
           }
           // "fallen" bis unten maximal oder kollision Block 
@@ -168,8 +169,9 @@ class Model{
             || ( getBlock( e.x, e.y + 1) != null ) ){          
             //Spiel verloren, wenn e.y == 0 bleibt
             if( e.y == 0 ){
-              return false;
+              return -2;
             }
+            
             //füge zum Löschen aus Liste hinzu
             tmpList.add(e);                 
             //Lösche ganze Zeile, wenn Block bis nach ganz unten gefallen ist
@@ -187,7 +189,7 @@ class Model{
     tmpList.forEach( (f) {
       _movingBlocks.remove(f);    
     });
-    return true;
+    return 0;
   }
     
   /**
@@ -206,7 +208,7 @@ class Model{
     }
     //Abfrage, ob Block.isWalkable == true
     if(b != null && b.isWalkable && aboveB == null){
-      b.walkThrough(_player);
+      b.walkThrough(this);
       _deleteBlock(b);
       p.x = p.x + x;
       p.y = p.y + y;
@@ -255,9 +257,15 @@ class Model{
   /**
    * Abfrage, ob Player fallen muß
    */
-  void _playerFalling(Player p){   
-    while( p.y + 1 < BLOCK_ROWS && getBlock(p.x, p.y + 2) == null){
-            p.y = p.y + 1;
+  void _playerFalling(Player p){
+    
+    while( p.y + 1 < BLOCK_ROWS && ( getBlock(p.x, p.y + 2)==null ||  (getBlock(p.x, p.y + 2)!= null &&  getBlock(p.x, p.y + 2).isWalkable) ) ) { 
+      Block  b = getBlock(p.x, p.y + 2);
+      if( b != null && b.isWalkable){
+        b.walkThrough(this);
+        _deleteBlock(b);
+      }
+      p.y = p.y + 1;
     }
   }
   

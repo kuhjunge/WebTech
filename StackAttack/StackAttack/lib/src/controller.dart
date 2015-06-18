@@ -30,12 +30,12 @@ class Controller{
   /**
    * Liste der Level
    */
-  Map<int, Level> levels = new Map();
+  Map<int, Level> _levels = new Map();
 
   /**
    * aktuelles Level
    */
-  int aktLevel = 1;
+  int _aktLevel = 1;
   
   /**
    * Konstruktor
@@ -46,7 +46,7 @@ class Controller{
   /**
    * Zählt hoch für die Erzeugung neuer Blöcke
    */
-  int counter = 0;
+  int _counter = 0;
   
   /**
    * Lade Spielparameter ein
@@ -68,11 +68,13 @@ class Controller{
     PICS_PATH = jMap["PICS_PATH"];
     PLAYER = jMap["PLAYER"];
     POWERUP_HEART = jMap["POWERUP_HEART"];
+    POWERUP_BOMB = jMap["POWERUP_BOMB"];
     BLOCK = jMap["BLOCK"];
     PICS_TYP = jMap["PICS_TYP"];
     POINTS_PER_ROW = jMap["POINTS_PER_ROW"];
     POINTS_PER_GROUPELEMENT = jMap["POINTS_PER_GROUPELEMENT"];
-    START_LIFE = jMap["START_LIFE"]; 
+    START_LIFE = jMap["START_LIFE"];
+    MAX_LIFE = jMap["MAX_LIFE"];
     PLAYER_HEIGHT = jMap["PLAYER_HEIGHT"];
     PLAYER_WIDTH = jMap["PLAYER_WIDTH"];
     LEVEL_PATH = jMap["LEVEL_PATH"];
@@ -81,20 +83,20 @@ class Controller{
     for(int i = 1; i <= LEVEL_COUNT; i++){
       inputString = await HttpRequest.getString("/parameters/$LEVEL_PATH/level$i.json");
       jMap = JSON.decode(inputString);
-      levels[i] = new Level(jMap["YELLOW_SHARE"], jMap["RED_SHARE"], jMap["GREEN_SHARE"],jMap["BLUE_SHARE"],
+      _levels[i] = new Level(jMap["YELLOW_SHARE"], jMap["RED_SHARE"], jMap["GREEN_SHARE"],jMap["BLUE_SHARE"],
         jMap["WHITE_SHARE"],jMap["BLACK_SHARE"], jMap["POWERUP_SHARE"], jMap["START_POINTS"],jMap["END_POINTS"],jMap["FALLING_SPEED"],
         jMap["CREATION_SPEED"]);
     }
     //Einstellen TimerIntervall
-    _timerIntervall = new Duration(milliseconds: levels[aktLevel].falling_speed);
+    _timerIntervall = new Duration(milliseconds: _levels[_aktLevel].falling_speed);
   }
   
   /**
    * das Timer-Event
    */
   void timerEvent(){
-    Level level = levels[aktLevel];
-    if( level != null && counter == level.creation_speed){
+    Level level = _levels[_aktLevel];
+    if( level != null && _counter == level.creation_speed){
       //zähle alle share-Werte hoch
       int maxValue = level.black_share+level.blue_share+level.green_share+level.powerup_share+level.red_share+level.white_share+level.yellow_share;
       //nehme Zufallszahl
@@ -153,28 +155,39 @@ class Controller{
       block.targetX = new Random().nextInt(BLOCKS_PER_ROW);         
       _view.addElement(block.element); 
       _model.addMovingBlock(block); 
-      counter = 0;      
+      _counter = 0;      
     }
     else{
-      counter++;
+      _counter++;
     }    
       //TODO Anzeige, in welchem Level man ist, reinnehmen
     //bewege Blöcke inklusive Kollisionsdetection
-    if( !_model.moveBlocks() ){
+    int isCollision = _model.moveBlocks();
+    if( isCollision < 0 ){
       //Zähle Leben runter
       if(_model.player.life > 0){        
         
         //starte Spiel erneut
         _timer.cancel();
-        // alte Blöcke fallen nach unten
-        _model.allBlocksFallingDown();
         
-         //Player wird um einen nach oben wieder dort hingesetzt und Leben verringert
-        _model.player.y--;        
-        _model.player.life--;                
+        int life = _model.player.life -1;
+        int x = _model.player.x;
         
+        if(isCollision == -1){
+          // alte Blöcke fallen nach unten
+           _model.allBlocksFallingDown();
+           _model.player.y--;
+        }
+        else{
+          //lösche Spielfeld          
+          _model = new Model();
+          _view.clear();
+          _model.player = new Player(x, BLOCK_ROWS-(PLAYER_HEIGHT-1));
+          _view.addElement(_model.player.element);
+        }
         
-        
+        _model.player.life = life;
+                
         //restart Timer
         _timer = new Timer.periodic(_timerIntervall, (_)=> timerEvent() );
       }
@@ -187,14 +200,13 @@ class Controller{
     }
     
     //Überprüfung, ob Level erhöht werden muß
-    if( _model.player.points >= levels[aktLevel].end_points && levels.containsKey(aktLevel+1)){      
-      aktLevel++;
-      _timerIntervall = new Duration(milliseconds: levels[aktLevel].falling_speed);
+    if( _model.player.points >= _levels[_aktLevel].end_points && _levels.containsKey(_aktLevel+1)){      
+      _aktLevel++;
+      _timerIntervall = new Duration(milliseconds: _levels[_aktLevel].falling_speed);
     }
     
     //update des Views 
-    _view.updateLife(_model.player.life);
-    _view.updatePoints(_model.player.points);
+    _view.updateView(_model.player, _aktLevel);
    
   }
 
@@ -215,15 +227,14 @@ class Controller{
      _timer.cancel();
   
     //setze Level zurück
-    aktLevel = 1;
+    _aktLevel = 1;
     
      // füge Spieler hinzu
      _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1));
      _view.addElement(_model.player.element);     
 
      //update View    
-     _view.updateLife(_model.player.life);
-     _view.updatePoints(_model.player.points);
+     _view.updateView(_model.player, _aktLevel);
      
     //setze StartBool
     _isStarted = true;
@@ -246,7 +257,7 @@ class Controller{
   /**
    * Reaktion auf KeyboardEingabe
    */
-  void keyEvent(var key){  
+  void keyEvent(var key){
     if( _isStarted && _timer.isActive){
       switch( key.keyCode ){
         case KeyCode.A:          

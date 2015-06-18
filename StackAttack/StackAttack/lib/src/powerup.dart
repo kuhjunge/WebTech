@@ -12,6 +12,6 @@ abstract class Powerup extends Block {
     element.classes.add("powerup");       
   }
   
-  void walkThrough(Player p);
+  void walkThrough(Model m);
   
 }

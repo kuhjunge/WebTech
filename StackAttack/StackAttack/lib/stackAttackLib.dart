@@ -15,6 +15,7 @@ part 'src/parameters.dart';
 part 'src/powerup.dart';
 part 'src/powerupHeart.dart';
 part 'src/level.dart';
+part 'src/powerupBomb.dart';
 
 
 

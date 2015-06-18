@@ -24,7 +24,7 @@ class Block extends MovingElement {
   /**
    * Für abgeleitete Klassen zu nutzen, wenn isWalkable==true
    */
-  void walkThrough(Player p){  
+  void walkThrough(Model m){  
   }
   
 }

@@ -24,6 +24,11 @@ class View{
   Element _lifeView;
   
   /**
+   * Anzeige des Levels
+   */
+  Element _levelView;
+  
+  /**
    * Konstruktor
    * Übergabe des html-body
    * Initialisierung
@@ -32,6 +37,7 @@ class View{
     _container = body.querySelector("#field");    
     _pointView = body.querySelector("#pointView");
     _lifeView = body.querySelector("#lifeView");
+    _levelView = body.querySelector("#levelView");
     _control = control;
     //setze die Dimensionen des Feldes
     _container.style
@@ -72,17 +78,12 @@ class View{
   }  
   
   /**
-   * refresht die Punkteanzeige
+   * refresht die Punkteanzeige, refresht die Lebensanzeige
    */
-  void updatePoints(int points){
-    _pointView.text = "Punktestand: "+points.toString();
-  }
-  
-  /**
-   * refresht die Lebensanzeige
-   */
-  void updateLife(int life){
-    _lifeView.text = "Leben: "+life.toString();
+  void updateView(Player p, int level){
+    _pointView.text = "Punktestand: "+p.points.toString();
+    _lifeView.text = "Leben: "+p.life.toString();
+    _levelView.text = "Level: "+level.toString();
   }
     
   

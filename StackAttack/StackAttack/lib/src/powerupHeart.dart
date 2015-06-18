@@ -12,7 +12,7 @@ class PowerupHeart extends Powerup {
     element.innerHtml = '<img src="'+PICS_PATH+POWERUP_HEART.toString()+PICS_TYP+'" height="$BLOCK_SIZE px" width="$BLOCK_SIZE px"></img>';              
   }
   
-  void walkThrough(Player p){
-    p.life += 1;  
+  void walkThrough(Model m){
+    m._player.life += 1;  
   }
 }
