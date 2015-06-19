@@ -151,11 +151,11 @@ class Controller{
       }
       else{
         block = new PowerupHeart(0,0);        
-      }      
+      }
       block.targetX = new Random().nextInt(BLOCKS_PER_ROW);          
       _model.addMovingBlock(block);
       _view.addElement(block);
-      _counter = 0;      
+      _counter = 0;
     }
     else{
       _counter++;

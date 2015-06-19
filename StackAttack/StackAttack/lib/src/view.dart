@@ -81,8 +81,8 @@ class View{
              ..width = elem.width.toString() + "px"
              ..height = elem.height.toString() + "px";
     div.classes.addAll(elem.classes);
-    div.attributes.putIfAbsent("id", ()=>elem.id.toString());
-    _container.append(div);
+    div.attributes.putIfAbsent("nr", ()=>elem.nr.toString());
+    _container.append(div);    
   }  
   
   /**
@@ -102,8 +102,9 @@ class View{
     List<Element> deletedElem = new List();
     List<Element> elemente = _container.querySelectorAll(".MovingElement");
     for(Element elem in elemente){
-      MovingElement mE = m.getMovingElement( int.parse(elem.attributes["id"], onError: (_)=> -1) );
-      if( mE != null ){
+      int nr = int.parse(elem.attributes["nr"], onError: (_)=> -1);      
+      MovingElement mE = m.getMovingElement( nr );
+      if( mE != null ){      
         elem.style
           ..left = (mE.x*BLOCK_SIZE).toString() + "px"
           ..top = (mE.y*BLOCK_SIZE).toString() + "px";        

@@ -40,7 +40,7 @@ part of stackAttackLib;
  int MAX_LIFE;
  
  //Globaler id - Counter
- int idCounter = 0;
+ int nrCounter = 0;
  
 /**
  * Bewegungsrichtungen eines Players

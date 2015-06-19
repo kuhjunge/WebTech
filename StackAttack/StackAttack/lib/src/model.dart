@@ -277,16 +277,18 @@ class Model{
   /**
    * Gibt MovingElement für übergebende id zurück
    */
-  MovingElement getMovingElement(int id){
-    _blockMap.forEach( (s,b) {
-      if(b.id == id){
-        return b;
+  MovingElement getMovingElement(int nr){
+    MovingElement tmp = null;
+    
+    _blockMap.keys.toList().forEach( (f) {      
+      if( _blockMap[f].nr == nr){
+        tmp = _blockMap[f];
       }
-    });
-    if( _player.id == id){
-      return _player;
+    });    
+    if( _player.nr == nr){
+      tmp = _player;
     }
-    return null;
+    return tmp;
   }
   
 }

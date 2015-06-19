@@ -9,7 +9,7 @@ abstract class MovingElement{
     
   int _height;
   int _width;
-  int _id;
+  int _nr;
   
   List<String> _classes = new List();
     
@@ -17,7 +17,8 @@ abstract class MovingElement{
     * Konstruktor
     */
    MovingElement(this._x, this._y, this._width, this._height){
-     _id = idCounter++;
+     _nr = nrCounter;
+     nrCounter++;
      addClass("MovingElement");
    }
    
@@ -30,7 +31,7 @@ abstract class MovingElement{
    int get width => _width;
    int get targetX => _targetX;
    List<String> get classes => _classes;
-   int get id => _id;
+   int get nr => _nr;
    
    /**
     * setter
