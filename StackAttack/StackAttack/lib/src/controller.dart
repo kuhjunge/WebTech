@@ -94,7 +94,7 @@ class Controller{
   /**
    * das Timer-Event
    */
-  void timerEvent(){
+  void _timerEvent(){
     Level level = _levels[_aktLevel];
     if( level != null && _counter == level.creation_speed){
       //zähle alle share-Werte hoch
@@ -147,7 +147,7 @@ class Controller{
         
       Block block;
       if( !isPowerup ){
-        block = new Block(0,0, color,false,isSolid);        
+        block = new Block(0,0, color, false, isSolid);        
       }
       else{
         block = new PowerupHeart(0,0);        
@@ -189,7 +189,7 @@ class Controller{
         _model.player.life = life;
                 
         //restart Timer
-        _timer = new Timer.periodic(_timerIntervall, (_)=> timerEvent() );
+        _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );
       }
       else{
       //setze StartBool
@@ -240,7 +240,7 @@ class Controller{
     //setze StartBool
     _isStarted = true;
     // starte TimerEvent 
-    _timer = new Timer.periodic(_timerIntervall, (_)=> timerEvent() );
+    _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );
   }
   
   /**
@@ -252,7 +252,7 @@ class Controller{
     if( _timer != null &&_timer.isActive )
       _timer.cancel();
     else
-      _timer = new Timer.periodic(_timerIntervall, (_)=> timerEvent() );      
+      _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );      
   }
   
   /**

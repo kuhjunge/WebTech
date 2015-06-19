@@ -65,13 +65,15 @@ h1{
 
 .block{
   position: absolute;
-  background-image: 'PICS_PATH+BLOCK.toString()+PICS_TYP';    
+  background-image: url(../pics/block.png);    
 }
 .player{
-  position: absolute;    
+  position: absolute;
+  background-image: url(../pics/player.png);    
 }
-.powerup{
+.powerupHeart{
   position: absolute;    
+  background-image: url(../pics/powerup_heart.png);
 }
 
 /* Style Seite*/

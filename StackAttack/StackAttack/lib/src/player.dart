@@ -17,9 +17,9 @@ class Player extends MovingElement {
   /**
    * Konstruktor
    */
-  Player(int x, int y) : super(x, y, PLAYER_WIDTH*BLOCK_SIZE, PLAYER_HEIGHT*BLOCK_SIZE){    
-    //element.innerHtml = '<img src="'+PICS_PATH+PLAYER.toString()+PICS_TYP+'" height="$_height px" width="$_width px"></img>';    
+  Player(int x, int y) : super(x, y, PLAYER_WIDTH*BLOCK_SIZE, PLAYER_HEIGHT*BLOCK_SIZE){        
     addClass("player");
+    addClass(BLUE);//TODO zu testzwecken
   }  
     
   int get points => _points;

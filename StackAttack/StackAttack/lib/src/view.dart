@@ -76,8 +76,8 @@ class View{
   void addElement(MovingElement elem){
     DivElement div = new DivElement();
     div.style
-             ..left = (elem.x*elem.width).toString() + "px"
-             ..top = (elem.y*elem.height).toString() + "px"     
+             ..left = (elem.x*BLOCK_SIZE).toString() + "px"
+             ..top = (elem.y*BLOCK_SIZE).toString() + "px"     
              ..width = elem.width.toString() + "px"
              ..height = elem.height.toString() + "px";
     div.classes.addAll(elem.classes);
@@ -99,20 +99,20 @@ class View{
    * und eventuell Löschen von nicht mehr existierenden Elemente
    */
   void updateMovingElements(Model m){
-    var deletedElem = new List();
-    var elemente = _container.querySelectorAll("MovingElement");
+    List<Element> deletedElem = new List();
+    List<Element> elemente = _container.querySelectorAll(".MovingElement");
     for(Element elem in elemente){
       MovingElement mE = m.getMovingElement( int.parse(elem.attributes["id"], onError: (_)=> -1) );
       if( mE != null ){
         elem.style
-          ..left = (mE.x*mE.width).toString() + "px"
-          ..top = (mE.y*mE.height).toString() + "px";
+          ..left = (mE.x*BLOCK_SIZE).toString() + "px"
+          ..top = (mE.y*BLOCK_SIZE).toString() + "px";        
       }
       else{
         deletedElem.add(elem);
       }
     }
-    //löschen nicht existiertet Elemente
+    //löschen nicht existierender Elemente
     deletedElem.forEach( (f) {
       f.remove();
     });

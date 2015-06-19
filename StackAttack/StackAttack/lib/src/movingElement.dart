@@ -17,7 +17,8 @@ abstract class MovingElement{
     * Konstruktor
     */
    MovingElement(this._x, this._y, this._width, this._height){
-     _id = idCounter++;     
+     _id = idCounter++;
+     addClass("MovingElement");
    }
    
    /**
