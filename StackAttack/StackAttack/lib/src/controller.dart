@@ -152,20 +152,19 @@ class Controller{
       else{
         block = new PowerupHeart(0,0);        
       }      
-      block.targetX = new Random().nextInt(BLOCKS_PER_ROW);         
-      _view.addElement(block.element); 
-      _model.addMovingBlock(block); 
+      block.targetX = new Random().nextInt(BLOCKS_PER_ROW);          
+      _model.addMovingBlock(block);
+      _view.addElement(block);
       _counter = 0;      
     }
     else{
       _counter++;
     }    
-      //TODO Anzeige, in welchem Level man ist, reinnehmen
     //bewege Blöcke inklusive Kollisionsdetection
     int isCollision = _model.moveBlocks();
     if( isCollision < 0 ){
       //Zähle Leben runter
-      if(_model.player.life > 0){        
+      if(_model.player.life > 1){        
         
         //starte Spiel erneut
         _timer.cancel();
@@ -183,7 +182,8 @@ class Controller{
           _model = new Model();
           _view.clear();
           _model.player = new Player(x, BLOCK_ROWS-(PLAYER_HEIGHT-1));
-          _view.addElement(_model.player.element);
+          _view.addElement(_model.player);
+          
         }
         
         _model.player.life = life;
@@ -207,6 +207,7 @@ class Controller{
     
     //update des Views 
     _view.updateView(_model.player, _aktLevel);
+    _view.updateMovingElements(_model);
    
   }
 
@@ -231,7 +232,7 @@ class Controller{
     
      // füge Spieler hinzu
      _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1));
-     _view.addElement(_model.player.element);     
+     _view.addElement(_model.player);
 
      //update View    
      _view.updateView(_model.player, _aktLevel);
@@ -273,6 +274,7 @@ class Controller{
           _model.movingPlayer(Direction.TOPRIGHT);
           break;
       }
+      _view.updateMovingElements(_model);
     }
       
   }

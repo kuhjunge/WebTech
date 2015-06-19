@@ -63,11 +63,10 @@ class Model{
   Player get player => _player;
  
   /**
-   * löscht einen Block aus _blockMap und das Object des Blocks
+   * löscht einen Block aus _blockMap 
    */
   void _deleteBlock(Block b){
     _blockMap.remove(b._x.toString()+" "+b.y.toString());
-    b.element.remove();
   }
   
   /**
@@ -273,6 +272,21 @@ class Model{
     while( b.y < BLOCK_ROWS && getBlock( b.x, b.y + 1) == null){          
       _moveOneBlock(b, b.x, b.y + 1);          
     }
+  }
+  
+  /**
+   * Gibt MovingElement für übergebende id zurück
+   */
+  MovingElement getMovingElement(int id){
+    _blockMap.forEach( (s,b) {
+      if(b.id == id){
+        return b;
+      }
+    });
+    if( _player.id == id){
+      return _player;
+    }
+    return null;
   }
   
 }

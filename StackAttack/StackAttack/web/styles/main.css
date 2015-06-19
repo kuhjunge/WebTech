@@ -63,7 +63,14 @@ h1{
   background-color: white;
 }
 
-.block, .player{
+.block{
+  position: absolute;
+  background-image: 'PICS_PATH+BLOCK.toString()+PICS_TYP';    
+}
+.player{
+  position: absolute;    
+}
+.powerup{
   position: absolute;    
 }
 

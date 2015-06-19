@@ -39,6 +39,9 @@ part of stackAttackLib;
  int START_LIFE;
  int MAX_LIFE;
  
+ //Globaler id - Counter
+ int idCounter = 0;
+ 
 /**
  * Bewegungsrichtungen eines Players
  */
