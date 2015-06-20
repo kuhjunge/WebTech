@@ -26,4 +26,43 @@ class Block extends MovingElement {
   void walkThrough(Model m){  
   }
   
+  /**
+   * Bewege diesen Block;
+   * return 0, wenn erfolgreich bewegt
+   * return -1, wenn keine Bewegung erfolgt ist
+   * return -2, wenn Block oben angekommen ist
+   */
+  int move(Model m){
+      //bewege nach Rechts
+      if( targetX > x){
+        m.moveOneBlock(this, x +1, y);
+        return 0;
+      }
+      else{        
+        //"fallen" bis unten maximal oder kollision Block 
+        if ( ( y >= BLOCK_ROWS) 
+         || ( m.getBlock( x, y + 1) != null ) ){          
+         //Spiel verloren, wenn y == 0 bleibt
+         if( y == 0 ){
+           return -2;
+         }
+         return -1;
+        }
+        else{
+          m.moveOneBlock(this, x, y+1);
+          return 0;
+        }
+      }
+    return -1;
+  }
+  
+  /**
+   * Block fällt runter
+   */
+  void falling(Model m){
+    while( y < BLOCK_ROWS &&  m.getBlock(x, y + 1) == null ) {       
+      m.moveOneBlock(this, x, y +1 );      
+    }         
+  }
+  
 }

@@ -104,9 +104,8 @@ class View{
   void updateMovingElements(Model m){
     List<Element> deletedElem = new List();
     List<Element> elemente = _container.querySelectorAll(".MovingElement");
-    for(Element elem in elemente){
-      int nr = int.parse(elem.attributes["nr"], onError: (_)=> -1);      
-      MovingElement mE = m.getMovingElement( nr );
+    for(Element elem in elemente){            
+      MovingElement mE = m.getMovingElement( elem.attributes["nr"] );
       if( mE != null ){      
         elem.style
           ..left = (mE.x*BLOCK_SIZE).toString() + "px"

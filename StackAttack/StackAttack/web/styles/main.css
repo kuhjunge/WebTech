@@ -63,17 +63,8 @@ h1{
   background-color: white;
 }
 
-.block{
-  position: absolute;
-  /* background-image: url(../pics/block.png); */    
-}
-.player{
-  position: absolute;
-  background-image: url(../pics/player.png);    
-}
-.powerupHeart{
+.block, .powerupHeart, .player{
   position: absolute;    
-  background-image: url(../pics/powerup_heart.png);
 }
 
 /* Style Seite*/

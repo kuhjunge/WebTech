@@ -161,7 +161,7 @@ class Controller{
       _counter++;
     }    
     //bewege Blöcke inklusive Kollisionsdetection
-    int isCollision = _model.moveBlocks();
+    int isCollision = _model.moveBlocks(); 
     if( isCollision < 0 ){
       //Zähle Leben runter
       if(_model.player.life > 1){        
@@ -170,9 +170,10 @@ class Controller{
         _timer.cancel();
         
         int life = _model.player.life -1;
+        int points = _model.player.points;
         int x = _model.player.x;
         
-        if(isCollision == -1){
+        if(isCollision == -2){
           // alte Blöcke fallen nach unten
            _model.allBlocksFallingDown();
            _model.player.y--;
@@ -182,16 +183,17 @@ class Controller{
           _model = new Model();
           _view.clear();
           _model.player = new Player(x, BLOCK_ROWS-(PLAYER_HEIGHT-1));
-          _view.addElement(_model.player);
-          
+          _view.addElement(_model.player);          
         }
         
         _model.player.life = life;
+        _model.player.points = points;
                 
         //restart Timer
         _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );
       }
       else{
+        //TODO GAME OVER könnte hier eingebaut werden
       //setze StartBool
         _isStarted = false;
         //TODO Verlier-Bild etc einblenden
