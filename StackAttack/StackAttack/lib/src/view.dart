@@ -74,7 +74,10 @@ class View{
    * fügt ein HtmlElement zum container hinzu
    */
   void addElement(MovingElement elem){
-    DivElement div = new DivElement();
+   ImageElement div = new ImageElement();
+   div.src = elem.image;
+   div.width = elem.width;
+   div.height = elem.height;
     div.style
              ..left = (elem.x*BLOCK_SIZE).toString() + "px"
              ..top = (elem.y*BLOCK_SIZE).toString() + "px"     

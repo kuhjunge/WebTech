@@ -65,7 +65,7 @@ h1{
 
 .block{
   position: absolute;
-  background-image: url(../pics/block.png);    
+  /* background-image: url(../pics/block.png); */    
 }
 .player{
   position: absolute;

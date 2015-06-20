@@ -10,6 +10,7 @@ abstract class MovingElement{
   int _height;
   int _width;
   int _nr;
+  String _image;
   
   List<String> _classes = new List();
     
@@ -32,6 +33,7 @@ abstract class MovingElement{
    int get targetX => _targetX;
    List<String> get classes => _classes;
    int get nr => _nr;
+   String get image => _image;
    
    /**
     * setter
@@ -39,6 +41,7 @@ abstract class MovingElement{
    set x(int x) =>  _x = x;     
    set y(int y) => _y = y;
    set targetX(int x) => _targetX = x;
+   set image(String image) => _image = image;
    
    /**
     * fügt eine Klasse hinzu

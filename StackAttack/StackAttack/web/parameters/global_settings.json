@@ -4,7 +4,7 @@
   "BLOCK_ROWS":10,
   "PLAYER_HEIGHT":2,
   "PLAYER_WIDTH": 1,    
-  "PICS_PATH":"/pics/",
+  "PICS_PATH":"../pics/",
   "PLAYER":"player",
   "POWERUP_HEART":"powerup_heart",
   "POWER_BOMB":"powerup_bomb",

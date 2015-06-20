@@ -19,7 +19,7 @@ class Player extends MovingElement {
    */
   Player(int x, int y) : super(x, y, PLAYER_WIDTH*BLOCK_SIZE, PLAYER_HEIGHT*BLOCK_SIZE){        
     addClass("player");
-    addClass(BLUE);//TODO zu testzwecken
+    image = PICS_PATH+PLAYER+PICS_TYP;
   }  
     
   int get points => _points;
