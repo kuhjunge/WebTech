@@ -1,6 +1,6 @@
 {
   "BLOCK_SIZE":30,    
-  "BLOCKS_PER_ROW":10,
+  "BLOCKS_PER_ROW":15,
   "BLOCK_ROWS":10,    
   "PICS_PATH":"../pics/",
   "PLAYER":"player",

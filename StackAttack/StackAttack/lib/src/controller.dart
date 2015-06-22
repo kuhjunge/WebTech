@@ -276,7 +276,5 @@ class Controller{
       }
       _view.updateMovingElements(_model);
     }
-      
   }
-  
 }

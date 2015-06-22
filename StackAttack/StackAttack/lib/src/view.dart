@@ -27,6 +27,10 @@ class View{
    * Anzeige des Levels
    */
   Element _levelView;
+  /**
+   * Anzeige für Pause, Game Over
+   */
+  Element _message;
   
   /**
    * Konstruktor
@@ -109,7 +113,6 @@ class View{
         h.classes.add("hon");
       }
       i++;
-      
     });
     /*_lifeView.text = p.life.toString();*/
     _levelView.text = level.toString();
