@@ -75,8 +75,6 @@ class Controller{
     POINTS_PER_GROUPELEMENT = jMap["POINTS_PER_GROUPELEMENT"];
     START_LIFE = jMap["START_LIFE"];
     MAX_LIFE = jMap["MAX_LIFE"];
-    PLAYER_HEIGHT = jMap["PLAYER_HEIGHT"];
-    PLAYER_WIDTH = jMap["PLAYER_WIDTH"];
     LEVEL_PATH = jMap["LEVEL_PATH"];
     LEVEL_COUNT = jMap["LEVEL_COUNT"];
     //Laden der Level
@@ -147,10 +145,10 @@ class Controller{
         
       Block block;
       if( !isPowerup ){
-        block = new Block(0,0, color, false, isSolid);        
+        block = new Block(-1,0, color, false, isSolid);        
       }
       else{
-        block = new PowerupHeart(0,0);        
+        block = new PowerupHeart(-1,0);        
       }
       block.targetX = new Random().nextInt(BLOCKS_PER_ROW);          
       _model.addMovingBlock(block);
@@ -182,7 +180,7 @@ class Controller{
           //lösche Spielfeld          
           _model = new Model();
           _view.clear();
-          _model.player = new Player(x, BLOCK_ROWS-(PLAYER_HEIGHT-1));
+          _model.player = new Player(x, Player.getStartHeight());
           _view.addElement(_model.player);          
         }
         
@@ -233,7 +231,7 @@ class Controller{
     _aktLevel = 1;
     
      // füge Spieler hinzu
-     _model.player = new Player(BLOCKS_PER_ROW~/2, BLOCK_ROWS-(PLAYER_HEIGHT-1));
+     _model.player = new Player(Player.getStartWidth(), Player.getStartHeight() );
      _view.addElement(_model.player);
 
      //update View    

@@ -81,36 +81,6 @@ class Model{
   }
   
   /**
-   *  Lösche Zeile, wenn in übergebender Zeile alle Blöcke belegt sind
-   */
-  void _checkDeletionOfFullRow(var row){        
-           int counter = 0;
-           List<Block> tmpList = new List();
-                      
-           //überprüfen
-           for(int i = 0; i < BLOCKS_PER_ROW; i++){
-            Block tmpBlock = getBlock(i, row);
-            if( tmpBlock != null){
-              counter++;
-              tmpList.add(tmpBlock);
-            }
-           }
-           //löschen
-           if(counter == BLOCKS_PER_ROW){             
-             //lösche Zeile
-             tmpList.forEach( (e){
-               deleteBlock(e);
-             });
-            //zähle Punkte hoch 
-             _player.points += POINTS_PER_ROW;             
-            //verschiebe den Rest nach unten
-             allBlocksFallingDown();
-             //verschiebe auch player nach unten
-             _player.falling(this); 
-           }        
-  }
-  
-  /**
    * Bewege einen Block in _blockMap
    */
   void moveOneBlock(Block b, int newX, int newY){
@@ -142,9 +112,12 @@ class Model{
         tmpList.add(e);
       }
       //Block bewegt sich nicht mehr
+      //überprüfung, ob ganze Zeile oder zusammenhängende Blöcke gelöscht werden soll
       if(value == -1){
-        tmpList.add(e);
-        _checkDeletionOfFullRow(e.y);
+        tmpList.add(e);        
+        if( !e.rowDeletion(this, e.y) ){           
+          e.blocksDeletion(this);
+        }
       }
       //Block ist oben angekommen => Player verliert Leben
       if(value == -2){
@@ -179,9 +152,7 @@ class Model{
           case Direction.TOPRIGHT:           
             _player.move(this,  1, -1, Direction.RIGHT);
             break;
-      }
-      //Abfrage, ob eine Reihe gelöscht werden soll
-      _checkDeletionOfFullRow(BLOCK_ROWS);
+      }      
   }  
    
     

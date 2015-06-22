@@ -16,8 +16,9 @@ class Player extends MovingElement {
     
   /**
    * Konstruktor
+   * für einen Spieler mit 2*Block_Size hoch und 1*Block_Size breit
    */
-  Player(int x, int y) : super(x, y, PLAYER_WIDTH*BLOCK_SIZE, PLAYER_HEIGHT*BLOCK_SIZE){        
+  Player(int x, int y) : super(x, y, 1*BLOCK_SIZE, 2*BLOCK_SIZE){        
     addClass("player");
     image = PICS_PATH+PLAYER+PICS_TYP;
   }  
@@ -31,6 +32,7 @@ class Player extends MovingElement {
       _life = l;      
     }
   }
+  
   /**
      * der übergebende Player versucht x/y nach Direction.LEFT oder .RIGHT sich zu bewegen    
      * Entweder Bewegung Player oder Block wird verschoben
@@ -64,8 +66,11 @@ class Player extends MovingElement {
       //verschiebe Block
       if( b != null && !b.isSolid && !m.isAMovingBlock(b) && aboveB == null && a == null 
           && ( (d==Direction.LEFT) ? (b.x +  x_t >= 0) : (b.x + x_t < BLOCKS_PER_ROW) )){
-        m.moveOneBlock(b, b.x+ x_t, b.y);        
+        m.moveOneBlock(b, b.x+ x_t, b.y);
         b.falling(m);
+        if( !b.rowDeletion(m, b.y) ){
+          b.blocksDeletion(m);
+        }
       }                
     }
   
@@ -98,5 +103,18 @@ class Player extends MovingElement {
       }
       return 0;
     }
-    
+     
+  /**
+   * gibt für neue Elemente eine sinnvolle Starthöhe zurück
+   */
+  static int getStartHeight(){
+    return BLOCK_ROWS-1;
+  }
+  
+  /**
+   * gibt für neue Elemente eine sinnvollen x-Startwert
+   */
+  static int getStartWidth(){
+    return BLOCKS_PER_ROW~/2;    
+  }
 }

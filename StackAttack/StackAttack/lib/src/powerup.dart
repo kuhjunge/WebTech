@@ -14,4 +14,10 @@ abstract class Powerup extends Block {
   
   void walkThrough(Model m);
   
+  /**
+   * Alle Powerups bleiben, wenn mehr als 3 aneinander sind
+   */
+  void blocksDeletion(Model m){    
+  }
+  
 }

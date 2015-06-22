@@ -9,8 +9,6 @@ part of stackAttackLib;
  int BLOCK_ROWS; // maximale Anzahl an Zeilen, inclusive 0
  int FIELD_WIDTH = BLOCKS_PER_ROW * BLOCK_SIZE;
  int FIELD_HEIGHT = BLOCK_ROWS * BLOCK_SIZE;
- int PLAYER_HEIGHT;
- int PLAYER_WIDTH;
 
  //Farben
  String RED;
