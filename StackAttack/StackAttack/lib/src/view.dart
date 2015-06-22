@@ -34,15 +34,21 @@ class View{
    * Initialisierung
    */
   View(Element body, Controller control){
-    _container = body.querySelector("#field");    
+    List<Element> _menu;
+    
+    _container = body.querySelector("#field"); 
     _pointView = body.querySelector("#pointView");
     _lifeView = body.querySelector("#lifeView");
     _levelView = body.querySelector("#levelView");
+    _menu = body.querySelectorAll(".menu");
     _control = control;
     //setze die Dimensionen des Feldes
     _container.style
       ..height = (FIELD_HEIGHT + BLOCK_SIZE).toString() + "px"
       ..width = (FIELD_WIDTH ).toString() + "px";
+    
+    _menu.forEach((a)=> a.style
+      ..width = (FIELD_WIDTH ).toString() + "px");
     /*
      * verknüpfe mit controller.startGame
      */
@@ -92,9 +98,9 @@ class View{
    * refresht die Punkteanzeige, refresht die Lebensanzeige
    */
   void updateView(Player p, int level){
-    _pointView.text = "Punktestand: "+p.points.toString();
-    _lifeView.text = "Leben: "+p.life.toString();
-    _levelView.text = "Level: "+level.toString();
+    _pointView.text = p.points.toString();
+    /*_lifeView.text = p.life.toString();*/
+    _levelView.text = level.toString();
   }
     
   /**

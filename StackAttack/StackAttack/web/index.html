@@ -21,20 +21,28 @@
 <body>
   <div id="wrap">
     <h1>Stack Attack</h1>
-      <div class="menu"> <p id="pointView">Punktestand: </p>
-            <p id="lifeView">Leben: </p>
-            <p id="levelView">Level: </p>
-      </div>
-    <div id="field"></div>
-    <div class="menu">
-      <button id="button_start">Spiel starten</button>
-      <button id="button_pause">Spiel pausieren</button>
-      <button id="button_rules">Spielregeln</button>  
 
-    </div><!-- menu -->
+        <div class="menu">
+          <div class="left">Level: <span id="levelView">1</span></div>
+          <div class="lifeWrap">
+            <div id="hwrap">
+              <div class="heart hon"> </div>
+              <div class="heart hon"> </div>
+              <div class="heart hoff"> </div>
+              <div class="heart hoff"> </div>
+              <div class="heart hoff"> </div>
+              <div class="clear"> </div>
+           </div> 
+          </div>
+         <div class="right">Punktestand: <span id="pointView">0</span></div>
+         <div class="clear"> </div>
+        </div>
+      <div id="field"></div>
+      <div class="menu">
+        <button id="button_start">Spiel starten</button>
+        <button id="button_pause">Spiel pausieren</button>
+        <button id="button_rules">Spielregeln</button>  
+      </div><!-- menu -->
   </div><!-- wrap -->
-
-
-
 </body>
 </html>

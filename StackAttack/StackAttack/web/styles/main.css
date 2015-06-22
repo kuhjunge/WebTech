@@ -12,7 +12,6 @@ h1{
 
 #wrap{
   position:absolute;
-  
   /*
   background-image: url(../pics/background.jpg);
   */
@@ -25,7 +24,6 @@ h1{
 
 #field{  
   background-color: lightgrey;  
-  width: 200px;
   height: 420px;
   position:relative;
   margin: 10px auto;
@@ -36,7 +34,6 @@ h1{
 
 .menu{
   margin: 0 auto;
-  width:400px;
 }
 
 .green{
@@ -97,4 +94,48 @@ button:active {
 		0px 1px white;
 	text-shadow:0px 0px 0px #aaa;
 }
+.lifeWrap{
+  float:left;
+  width:33%;
+  min-width:120px;
+}
 
+#hwrap{
+  margin: 0 auto;
+  width:120px;
+}
+
+.heart{
+    width:24px;
+    height:24px;
+    background-size: contain;
+    float:right;
+}
+
+.hon{
+    background-image: url(../pics/powerup_heart_empty.png);
+}
+
+.hoff{
+    background-image: url(../pics/powerup_heart.png);
+}
+
+.right {
+	float:right;
+	width:33%;
+	text-align: right;
+	min-width:115px;
+}
+
+.left {
+	float:left;
+	width:33%;
+	min-width:50px;
+}
+
+.clear {
+	clear: both; 
+	overflow: hidden;
+	height: 0;
+	width: 0;
+}
