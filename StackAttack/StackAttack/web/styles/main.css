@@ -124,7 +124,7 @@ button:active {
 	float:right;
 	width:33%;
 	text-align: right;
-	min-width:115px;
+	min-width:100px;
 }
 
 .left {
