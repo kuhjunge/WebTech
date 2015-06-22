@@ -21,7 +21,7 @@ class View{
   /**
    * Anzeige der Leben
    */
-  Element _lifeView;
+  List<Element> _lifeView;
   
   /**
    * Anzeige des Levels
@@ -38,7 +38,7 @@ class View{
     
     _container = body.querySelector("#field"); 
     _pointView = body.querySelector("#pointView");
-    _lifeView = body.querySelector("#lifeView");
+    _lifeView = body.querySelectorAll(".heart");
     _levelView = body.querySelector("#levelView");
     _menu = body.querySelectorAll(".menu");
     _control = control;
@@ -98,7 +98,19 @@ class View{
    * refresht die Punkteanzeige, refresht die Lebensanzeige
    */
   void updateView(Player p, int level){
+    var i = 0;
     _pointView.text = p.points.toString();
+    _lifeView.forEach((h){
+      h.classes..remove("hoff")..remove("hon");
+      if (i < p.life){
+       h.classes.add("hoff");
+      }
+      else{
+        h.classes.add("hon");
+      }
+      i++;
+      
+    });
     /*_lifeView.text = p.life.toString();*/
     _levelView.text = level.toString();
   }
