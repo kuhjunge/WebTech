@@ -28,8 +28,9 @@ h1{
   height: 420px;
   position:relative;
   margin: 0 auto;
+  background-image: url(../pics/bg_game.jpg);
   background-position: center bottom;
-  background-size: 200px;
+  background-size: cover;
   border: 1px black solid
 }
 
@@ -61,8 +62,21 @@ h1{
   background-color: white;
 }
 
-.block, .powerupHeart, .player{
-  position: absolute;    
+.block, .powerup_heart, .player{
+  position: absolute;
+  background-size: contain; 
+}
+
+.player{
+  background-image: url(../pics/player.png);
+}
+
+.block {
+  background-image: url(../pics/block.png);
+}
+
+.block .powerup_heart, .powerup_heart {
+  background-image: url(../pics/powerup_heart.png);
 }
 
 /* Style Seite*/
@@ -114,11 +128,11 @@ button:active {
 }
 
 .hon{
-    background-image: url(../pics/powerup_heart_empty.png);
+  background-image: url(../pics/powerup_heart.png);
 }
 
 .hoff{
-    background-image: url(../pics/powerup_heart.png);
+  background-image: url(../pics/powerup_heart_empty.png); 
 }
 
 .right {

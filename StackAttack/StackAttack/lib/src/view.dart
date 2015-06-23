@@ -84,10 +84,9 @@ class View{
    * fügt ein HtmlElement zum container hinzu
    */
   void addElement(MovingElement elem){
-   ImageElement div = new ImageElement();
-   div.src = elem.image;
-   div.width = elem.width;
-   div.height = elem.height;
+   DivElement div = new DivElement();
+  /* div.setAttribute("width", elem.width.toString());
+   div.setAttribute("height", elem.height.toString());*/
     div.style
              ..left = (elem.x*BLOCK_SIZE).toString() + "px"
              ..top = (elem.y*BLOCK_SIZE).toString() + "px"     
@@ -104,13 +103,13 @@ class View{
   void updateView(Player p, int level){
     var i = 0;
     _pointView.text = p.points.toString();
-    _lifeView.forEach((h){
+    _lifeView.reversed.forEach((h){
       h.classes..remove("hoff")..remove("hon");
       if (i < p.life){
-       h.classes.add("hoff");
+       h.classes.add("hon");
       }
       else{
-        h.classes.add("hon");
+        h.classes.add("hoff");
       }
       i++;
     });

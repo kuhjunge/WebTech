@@ -9,7 +9,7 @@ class PowerupHeart extends Powerup {
    * Konstruktor
    */
   PowerupHeart(int x, int y):super(x,y){    
-    image = PICS_PATH+POWERUP_HEART+PICS_TYP;              
+    addClass("powerup_heart");
   }
   
   void walkThrough(Model m){
