@@ -75,8 +75,16 @@ h1{
   background-image: url(../pics/block.png);
 }
 
-.block .powerup_heart, .powerup_heart {
+#field .powerup_heart {
   background-image: url(../pics/powerup_heart.png);
+}
+
+#field .powerup_bomb {
+  background-image: url(../pics/powerup_bomb.png);
+}
+
+#field .powerup_colorchange {
+  background-image: url(../pics/powerup_color.png);
 }
 
 /* Style Seite*/
