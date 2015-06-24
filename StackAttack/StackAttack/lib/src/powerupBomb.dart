@@ -14,6 +14,7 @@ class PowerupBomb extends Powerup {
   
   void walkThrough(Model m){
     print("bombe");
+    return;
     Player p = m.player;
     //links und rechts der Figur    
     for(int i = -1; i <= p.height; i++){

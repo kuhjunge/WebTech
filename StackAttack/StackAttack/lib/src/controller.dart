@@ -127,6 +127,7 @@ class Controller{
            _isStarted = false;
            //TODO Verlier-Bild etc einblenden
            _timer.cancel();  
+           return;
          }      
        }
     

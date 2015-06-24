@@ -13,7 +13,15 @@ class PowerupColorChange extends Powerup {
   }
   
   void walkThrough(Model m){
-    print("colorChange");
+    List<Block> list = m.getAllBlocksAsList();
+    print("Colorchange"+list.length.toString());
+    list.forEach( (f){
+      if(!f.isWalkable){
+        f.color = RED;
+        f.blocksDeletion(m);
+        print("hier");
+      }
+    });
   }
   
 }

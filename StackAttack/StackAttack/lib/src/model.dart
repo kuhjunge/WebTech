@@ -176,4 +176,21 @@ class Model{
     return _movingBlocks.contains(b);
   }
   
+  /**
+   * Gibt alle Blöcke in blockMap als Liste zurück
+   * jeder Block nur einmal
+   */
+  List<Block> getAllBlocksAsList(){
+    List<Block> tmpList = new List();
+    
+    _blockMap.keys.forEach( (f){
+      int value = int.parse(f, onError: (_)=> -1);
+      if(value != -1){
+        tmpList.add( _blockMap[value.toString()]);
+      }
+    });
+    
+    return tmpList;
+  }
+  
 }

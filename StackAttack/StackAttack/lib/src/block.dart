@@ -19,6 +19,10 @@ class Block extends MovingElement {
   bool get isWalkable => _isWalkable;  
   bool get isSolid => _isSolid;
   String get color => _color;
+  set color(String c) {
+    _color = c;//TODO Farben hier und im View ändern
+    
+  }
   
   /**
    * Für abgeleitete Klassen zu nutzen, wenn isWalkable==true
