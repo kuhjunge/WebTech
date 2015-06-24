@@ -19,6 +19,7 @@ part of stackAttackLib;
  String YELLOW;
  String NO_COLOR;
  int DIFFERENT_COLORS;//Anzahl verschiedener Farben
+ int POWERUP_COUNT;//Anzahl verschiedener Powerups
 
  //Level
  String LEVEL_PATH;

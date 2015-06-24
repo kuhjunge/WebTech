@@ -47,11 +47,11 @@ class Player extends MovingElement {
         a = m.getBlock( x +1 + x_t, y + 1 + y_t);
       }
       //Abfrage, ob Block.isWalkable == true
-      if(b != null && b.isWalkable && aboveB == null){
-        b.walkThrough(m);
-        m.deleteBlock(b);
+      if(b != null && b.isWalkable && aboveB == null){        
         x = x + x_t;
         y = y + y_t;
+        m.deleteBlock(b);
+        b.walkThrough(m);        
         falling(m);
         return;
       }

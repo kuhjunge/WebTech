@@ -187,7 +187,7 @@ class Block extends MovingElement {
    /**
     * Rekursives Löschen zusammenhängender Blöcke
     */
-   int _rekDelete(Model m, Block b){
+   void _rekDelete(Model m, Block b){
      int x_t = b.x;
      int y_t = b.y;
      String color_t = b.color;
@@ -196,35 +196,19 @@ class Block extends MovingElement {
      //lösche Nachbarn, wenn gleiche Farbe
      Block tmpBlock = m.getBlock(x_t - 1, y_t);
      if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-       _rekDelete(m, tmpBlock);
-       tmpBlock = m.getBlock(x_t - 2, y_t);
-       if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-         _rekDelete(m, tmpBlock);
-       }
+       _rekDelete(m, tmpBlock);       
      }
      tmpBlock = m.getBlock(x_t + 1, y_t);
      if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-       _rekDelete(m, tmpBlock);
-       tmpBlock = m.getBlock(x_t + 2, y_t);
-       if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-         _rekDelete(m, tmpBlock);
-       }
+       _rekDelete(m, tmpBlock);       
      }
      tmpBlock = m.getBlock(x_t, y_t -1 );
      if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-       _rekDelete(m, tmpBlock);
-       tmpBlock = m.getBlock(x_t, y_t - 2);
-       if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-         _rekDelete(m, tmpBlock);
-       }
+       _rekDelete(m, tmpBlock);       
      }
      tmpBlock = m.getBlock(x_t, y_t+1);
      if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-       _rekDelete(m, tmpBlock);
-       tmpBlock = m.getBlock(x_t, y_t+2);
-       if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-         _rekDelete(m, tmpBlock);
-       }
+       _rekDelete(m, tmpBlock);       
      }     
      
    }

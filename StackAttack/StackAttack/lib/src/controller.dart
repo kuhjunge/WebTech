@@ -66,6 +66,7 @@ class Controller{
     BLACK = jMap["BLACK"]; 
     NO_COLOR = jMap["NO_COLOR"];
     DIFFERENT_COLORS = jMap["DIFFERENT_COLORS"];
+    POWERUP_COUNT = jMap["POWERUP_COUNT"];
     POINTS_PER_ROW = jMap["POINTS_PER_ROW"];
     POINTS_PER_GROUPELEMENT = jMap["POINTS_PER_GROUPELEMENT"];
     START_LIFE = jMap["START_LIFE"];
@@ -88,6 +89,47 @@ class Controller{
    * das Timer-Event
    */
   void _timerEvent(){
+    //bewege Blöcke inklusive Kollisionsdetection
+       int isCollision = _model.moveBlocks(); 
+       if( isCollision < 0 ){
+         //Zähle Leben runter
+         if(_model.player.life > 1){        
+           
+           //starte Spiel erneut
+           _timer.cancel();
+           
+           int life = _model.player.life -1;
+           int points = _model.player.points;
+           int x = _model.player.x;
+           
+           if(isCollision == -2){
+             // alte Blöcke fallen nach unten
+              _model.allBlocksFallingDown();
+              _model.player.y--;
+           }
+           else{
+             //lösche Spielfeld          
+             _model = new Model();
+             _view.clear();
+             _model.player = new Player(x, Player.getStartHeight());
+             _view.addElement(_model.player);          
+           }
+           
+           _model.player.life = life;
+           _model.player.points = points;
+                   
+           //restart Timer
+           _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );
+         }
+         else{
+           //TODO GAME OVER könnte hier eingebaut werden
+         //setze StartBool
+           _isStarted = false;
+           //TODO Verlier-Bild etc einblenden
+           _timer.cancel();  
+         }      
+       }
+    
     Level level = _levels[_aktLevel];
     if( level != null && _counter == level.creation_speed){
       //zähle alle share-Werte hoch
@@ -140,10 +182,22 @@ class Controller{
         
       Block block;
       if( !isPowerup ){
-        block = new Block(-1,0, color, false, isSolid);        
+        block = new Block(0,0, color, false, isSolid);        
       }
       else{
-        block = new PowerupHeart(-1,0);        
+        int powerUpRandom = new Random().nextInt(POWERUP_COUNT);
+        if(powerUpRandom == 1){
+          block = new PowerupHeart(0,0);
+        }
+        else{
+          if(powerUpRandom == 2){
+            block = new PowerupBomb(0,0);
+          }
+          else{
+            block = new PowerupColorChange(0,0);
+          }
+        }
+                
       }
       block.targetX = new Random().nextInt(BLOCKS_PER_ROW);          
       _model.addMovingBlock(block);
@@ -153,47 +207,7 @@ class Controller{
     else{
       _counter++;
     }    
-    //bewege Blöcke inklusive Kollisionsdetection
-    int isCollision = _model.moveBlocks(); 
-    if( isCollision < 0 ){
-      //Zähle Leben runter
-      if(_model.player.life > 1){        
-        
-        //starte Spiel erneut
-        _timer.cancel();
-        
-        int life = _model.player.life -1;
-        int points = _model.player.points;
-        int x = _model.player.x;
-        
-        if(isCollision == -2){
-          // alte Blöcke fallen nach unten
-           _model.allBlocksFallingDown();
-           _model.player.y--;
-        }
-        else{
-          //lösche Spielfeld          
-          _model = new Model();
-          _view.clear();
-          _model.player = new Player(x, Player.getStartHeight());
-          _view.addElement(_model.player);          
-        }
-        
-        _model.player.life = life;
-        _model.player.points = points;
-                
-        //restart Timer
-        _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );
-      }
-      else{
-        //TODO GAME OVER könnte hier eingebaut werden
-      //setze StartBool
-        _isStarted = false;
-        //TODO Verlier-Bild etc einblenden
-        _timer.cancel();  
-      }      
-    }
-    
+       
     //Überprüfung, ob Level erhöht werden muß
     if( _model.player.points >= _levels[_aktLevel].end_points && _levels.containsKey(_aktLevel+1)){      
       _aktLevel++;
