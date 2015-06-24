@@ -123,6 +123,7 @@ class Controller{
          }
          else{
            //TODO GAME OVER könnte hier eingebaut werden
+           _view.addInfo("Game Over!");
          //setze StartBool
            _isStarted = false;
            //TODO Verlier-Bild etc einblenden

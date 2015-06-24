@@ -93,7 +93,17 @@ class View{
     div.classes.addAll(elem.classes);
     div.attributes.putIfAbsent("nr", ()=>elem.nr.toString());
     _container.append(div);    
-  }  
+  }
+  
+  /**
+   * fügt ein HtmlElement zum container hinzu
+   */
+  void addInfo(var mes){
+   DivElement div = new DivElement();
+    div.classes.add("info");
+    div.appendHtml("<p>"+mes+"</p>");
+    _container.append(div);    
+  }
   
   /**
    * refresht die Punkteanzeige, refresht die Lebensanzeige

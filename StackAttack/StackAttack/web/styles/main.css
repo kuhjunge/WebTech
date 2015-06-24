@@ -62,9 +62,10 @@ h1{
   background-color: white;
 }
 
-.block, .powerup_heart, .player{
+.block, .powerup_heart, .player, .powerup_bomb, .powerup_colorchange{
   position: absolute;
-  background-size: contain; 
+  background-size: contain;
+  z-index:1;
 }
 
 .player{
@@ -117,6 +118,18 @@ button:active {
 		0px 1px white;
 	text-shadow:0px 0px 0px #aaa;
 }
+
+.info{
+  position:relative;
+  width:90%;
+  height:86%;
+  background-color: rgba(255,255,255,0.5);
+ /* line-height: 1.5;*/
+  padding:5%;
+  text-align:center;
+  z-index:5;
+}
+
 .lifeWrap{
   float:left;
   width:33%;
