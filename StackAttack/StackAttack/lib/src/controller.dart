@@ -198,6 +198,9 @@ class Controller{
     if( _model.player.points >= _levels[_aktLevel].end_points && _levels.containsKey(_aktLevel+1)){      
       _aktLevel++;
       _timerIntervall = new Duration(milliseconds: _levels[_aktLevel].falling_speed);
+      //restart Timer
+      _timer.cancel();
+      _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );
     }
     
     //update des Views 

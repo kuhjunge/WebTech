@@ -3,7 +3,7 @@
   "BLOCKS_PER_ROW":15,
   "BLOCK_ROWS":10,    
   "LEVEL_PATH":"/level",
-  "LEVEL_COUNT":1,  
+  "LEVEL_COUNT":5,  
   "DIFFERENT_COLORS":6,
   "RED":"red",
   "BLUE":"blue",

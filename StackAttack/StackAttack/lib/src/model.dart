@@ -74,7 +74,9 @@ class Model{
       for(int b = BLOCK_ROWS; b > 0; b--){
         Block bl = getBlock(a, b);
         if( bl != null && !_movingBlocks.contains(bl)){
-          bl.falling(this);     
+          bl.falling(this);
+          //Überprüfe, ob eventuell zusammenhängende Blöcke entstehen
+          bl.blocksDeletion(this);
         }
       }
     }
