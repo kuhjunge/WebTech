@@ -85,8 +85,6 @@ class View{
    */
   void addElement(MovingElement elem){
    DivElement div = new DivElement();
-  /* div.setAttribute("width", elem.width.toString());
-   div.setAttribute("height", elem.height.toString());*/
     div.style
              ..left = (elem.x*BLOCK_SIZE).toString() + "px"
              ..top = (elem.y*BLOCK_SIZE).toString() + "px"     

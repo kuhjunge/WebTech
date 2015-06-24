@@ -14,7 +14,6 @@ class Block extends MovingElement {
   Block(int x, int y, this._color, this._isWalkable, this._isSolid):super(x,y,BLOCK_SIZE, BLOCK_SIZE){ 
     addClass("block");
     addClass(_color);
-   /* image = PICS_PATH+BLOCK+PICS_TYP;*/
   }
   
   bool get isWalkable => _isWalkable;  

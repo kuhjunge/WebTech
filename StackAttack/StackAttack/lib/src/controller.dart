@@ -64,13 +64,8 @@ class Controller{
     YELLOW = jMap["YELLOW"];
     GREEN = jMap["GREEN"];
     BLACK = jMap["BLACK"]; 
+    NO_COLOR = jMap["NO_COLOR"];
     DIFFERENT_COLORS = jMap["DIFFERENT_COLORS"];
-    PICS_PATH = jMap["PICS_PATH"];
-    PLAYER = jMap["PLAYER"];
-    POWERUP_HEART = jMap["POWERUP_HEART"];
-    POWERUP_BOMB = jMap["POWERUP_BOMB"];
-    BLOCK = jMap["BLOCK"];
-    PICS_TYP = jMap["PICS_TYP"];
     POINTS_PER_ROW = jMap["POINTS_PER_ROW"];
     POINTS_PER_GROUPELEMENT = jMap["POINTS_PER_GROUPELEMENT"];
     START_LIFE = jMap["START_LIFE"];

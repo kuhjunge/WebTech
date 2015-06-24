@@ -20,13 +20,6 @@ part of stackAttackLib;
  String NO_COLOR;
  int DIFFERENT_COLORS;//Anzahl verschiedener Farben
 
- //Externe Bilder
- String PICS_PATH;
- String PLAYER;//Bild des stehenden Spielers
- String POWERUP_HEART;
- String POWERUP_BOMB;
- String BLOCK;
- String PICS_TYP;
  //Level
  String LEVEL_PATH;
  int LEVEL_COUNT;
