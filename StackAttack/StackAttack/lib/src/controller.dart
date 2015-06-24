@@ -188,6 +188,8 @@ class Controller{
       }
       else{
         int powerUpRandom = new Random().nextInt(POWERUP_COUNT);
+        block = new PowerupHeart(0,0);
+        /*
         if(powerUpRandom == 1){
           block = new PowerupHeart(0,0);
         }
@@ -198,7 +200,7 @@ class Controller{
           else{
             block = new PowerupColorChange(0,0);
           }
-        }
+        }*/
                 
       }
       block.targetX = new Random().nextInt(BLOCKS_PER_ROW);          
@@ -263,10 +265,14 @@ class Controller{
   void pauseGame(){
     if(!_isStarted)
       return;
-    if( _timer != null &&_timer.isActive )
+    if( _timer != null &&_timer.isActive ){
+      _view.showRules();
       _timer.cancel();
-    else
-      _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );      
+    }
+    else {
+      _view.removeInfo();
+      _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() ); 
+    }
   }
   
   /**

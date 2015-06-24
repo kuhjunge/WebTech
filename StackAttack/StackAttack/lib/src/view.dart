@@ -70,7 +70,8 @@ class View{
     body.onKeyDown.listen( (e){      
       _control.keyEvent(e);      
     });
-    
+    // zeige die Regeln
+    showRules();
   }
   
   /**
@@ -94,6 +95,26 @@ class View{
     div.attributes.putIfAbsent("nr", ()=>elem.nr.toString());
     _container.append(div);    
   }
+  
+  /**
+   * zeigt die Regeln an
+   */
+  void showRules(){
+    addInfo("<h2>Regeln:</h2><p>Der Spieler muss die Spielsteine verschieben und darf sich nicht treffen lassen. Schwarze Steine sind unbeweglich. "+
+        "3er Farbkombinationen und Reihen geben Punkte.</p><h2>Tastenbelegung:</h2><p>A: Links <br>Q: Linkssprung <br>D: Rechts <br>E: Rechtssprung </p>");
+  }
+  /**
+   * zeigt die Regeln an
+   */
+  void removeInfo(){
+    List<Element> _info;
+    _info = _container.querySelectorAll(".info");
+    
+    _info.forEach((e) {
+      e.remove();
+    });
+  }
+  
   
   /**
    * fügt ein HtmlElement zum container hinzu
