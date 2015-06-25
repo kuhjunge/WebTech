@@ -38,15 +38,15 @@ class Controller{
   int _aktLevel = 1;
   
   /**
+   * Zählt hoch für die Erzeugung neuer Blöcke
+   */
+  int _counter = 0;
+  
+  /**
    * Konstruktor
    */
   Controller() {
   }
-  
-  /**
-   * Zählt hoch für die Erzeugung neuer Blöcke
-   */
-  int _counter = 0;
   
   /**
    * Lade Spielparameter ein

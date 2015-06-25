@@ -179,7 +179,7 @@ class Model{
   /**
    * Gibt alle Blöcke in blockMap als Liste zurück
    * jeder Block nur einmal
-   */
+  
   List<Block> getAllBlocksAsList(){
     List<Block> tmpList = new List();
     
@@ -191,6 +191,6 @@ class Model{
     });
     
     return tmpList;
-  }
+  } */
   
 }
