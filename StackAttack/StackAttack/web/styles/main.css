@@ -31,7 +31,9 @@ h1{
   background-image: url(../pics/bg_game.jpg);
   background-position: center bottom;
   background-size: cover;
-  border: 1px black solid
+  border: 1px black solid;
+  clear:both;
+  overflow:hidden;
 }
 
 .menu{
@@ -95,7 +97,7 @@ button {
 	margin:5px;
 	padding:2px;
 	line-height: 1.5;
-	width: 110px;
+	width: 130px;
 	color: #000;
 	background-color:  rgba(230,230,230,0.8);
 	box-sizing: border-box;
@@ -119,15 +121,16 @@ button:active {
 	text-shadow:0px 0px 0px #aaa;
 }
 
-#rules, .info{
+.info{
   position:relative;
   width:96%;
-  height:94%;
+  height:96%;
   background-color: rgba(255,255,255,0.5);
  /* line-height: 1.5;*/
   padding:2%;
   text-align:center;
   z-index:5;
+  overflow: auto;
 }
 
 .lifeWrap{
@@ -160,7 +163,7 @@ button:active {
 	float:right;
 	width:33%;
 	text-align: right;
-	min-width:100px;
+	min-width:120px;
 }
 
 .left {

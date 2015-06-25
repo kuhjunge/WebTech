@@ -19,8 +19,13 @@
 <body>
   <div id="wrap">
     <h1>Stack Attack</h1>
-
-        <div class="menu">
+      <div class="menu">
+        <button id="button_start">Spiel starten</button>
+        <button id="button_pause">Spiel pausieren</button>
+      </div><!-- menu -->
+      <div id="field">
+      </div>
+      <div class="menu">
           <div class="left">Level: <span id="levelView">1</span></div>
           <div class="lifeWrap">
             <div id="hwrap">
@@ -35,12 +40,6 @@
          <div class="right">Punktestand: <span id="pointView">0</span></div>
          <div class="clear"> </div>
         </div>
-      <div id="field">
-      </div>
-      <div class="menu">
-        <button id="button_start">Spiel starten</button>
-        <button id="button_pause">Spiel pausieren</button>
-      </div><!-- menu -->
   </div><!-- wrap -->
   <script type="application/dart" src="main.dart"></script>
   <script data-pub-inline src="packages/browser/dart.js"></script>
