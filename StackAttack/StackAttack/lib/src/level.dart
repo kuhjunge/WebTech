@@ -5,20 +5,15 @@ part of stackAttackLib;
  */
 class Level{
   
-  int yellow_share;
-  int red_share;
-  int green_share;
-  int blue_share;
-  int white_share;
-  int black_share;
-  int powerup_share;
-  int start_points;
-  int end_points;
+  Map<String, int> colors_share = new Map();
+  Map<String, int> solid_colors_share = new Map();
+  Map<String, int> powerups_share = new Map();  
+  int end_points;  
   int falling_speed;
   int creation_speed;
   
   //Konstruktor
-  Level(this.yellow_share, this.red_share, this.green_share, this.blue_share, this.white_share, this.black_share, this.powerup_share, this.start_points, this.end_points, this.falling_speed, this.creation_speed){    
+  Level(this.colors_share, this.solid_colors_share, this.powerups_share, this.end_points, this.falling_speed, this.creation_speed){    
   }
   
 }

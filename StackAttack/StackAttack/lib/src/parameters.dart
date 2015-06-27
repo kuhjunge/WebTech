@@ -10,16 +10,11 @@ part of stackAttackLib;
  int FIELD_WIDTH = BLOCKS_PER_ROW * BLOCK_SIZE;
  int FIELD_HEIGHT = BLOCK_ROWS * BLOCK_SIZE;
 
- //Farben
- String RED;
- String BLUE;
- String GREEN;
- String BLACK;
- String WHITE;
- String YELLOW;
- String NO_COLOR;
- int DIFFERENT_COLORS;//Anzahl verschiedener Farben
- int POWERUP_COUNT;//Anzahl verschiedener Powerups
+ //Farben/Powerups
+ List<String> COLORS = new List(); 
+ String NO_COLOR; 
+ List<String> POWERUPS = new List();
+ List<String> SOLID_COLORS = new List();
 
  //Level
  String LEVEL_PATH;
@@ -31,7 +26,7 @@ part of stackAttackLib;
  int START_LIFE;
  int MAX_LIFE;
  
- //Globaler id - Counter
+ //Globaler nr - Counter
  int nrCounter = 0;
  
 /**

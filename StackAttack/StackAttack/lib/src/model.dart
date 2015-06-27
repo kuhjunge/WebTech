@@ -177,20 +177,53 @@ class Model{
   }
   
   /**
-   * Gibt alle Blöcke in blockMap als Liste zurück
-   * jeder Block nur einmal
-  
-  List<Block> getAllBlocksAsList(){
-    List<Block> tmpList = new List();
+   * Errechnet aus dem übergebenden Verteilungen des Levels zufällig den nächsten Block
+   */
+  Block getRandomBlock(Level level){    
+    //zähle alle share-Werte hoch
+    int maxValue = 0;
+    level.colors_share.forEach( (s,i) => maxValue += i);
+    level.solid_colors_share.forEach( (s,i) => maxValue += i);
+    level.powerups_share.forEach( (s,i) => maxValue += i);
+        
+    //nehme Zufallszahl
+    int randomValue = new Random().nextInt(maxValue);
     
-    _blockMap.keys.forEach( (f){
-      int value = int.parse(f, onError: (_)=> -1);
-      if(value != -1){
-        tmpList.add( _blockMap[value.toString()]);
+    for(int i = 0; i < level.colors_share.keys.length; i++){
+      String f = level.colors_share.keys.elementAt(i);      
+      maxValue -= level.colors_share[f];
+      if(randomValue > maxValue){        
+        return new Block(0,0, f, false, false);
       }
-    });
-    
-    return tmpList;
-  } */
+    }
+     
+    for(int i = 0; i < level.solid_colors_share.keys.length; i++){
+      String f = level.solid_colors_share.keys.elementAt(i);
+      maxValue -= level.solid_colors_share[f];
+      if(randomValue > maxValue){        
+        return new Block(0,0, f, false, true);
+      }
+    }
+
+    for(int i = 0; i < level.powerups_share.keys.length; i++){
+      String f = level.powerups_share.keys.elementAt(i);
+      maxValue -= level.powerups_share[f];
+      if(randomValue > maxValue){
+        if( f.compareTo("powerup_heart") == 0){
+          return new PowerupHeart(0,0);
+        }
+        /*if( f.compareTo("powerup_heart") != 0){
+          return new PowerupHeart(0,0);
+        }
+        if( f.compareTo("powerup_heart") != 0){
+          return new PowerupHeart(0,0);
+        } */       
+        
+      }
+    }
+        
+    //Default
+    return new Block(0,0, level.colors_share.keys.first , false, false);
+  }
   
 }

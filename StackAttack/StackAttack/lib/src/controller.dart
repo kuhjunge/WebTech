@@ -12,6 +12,7 @@ class Controller{
    * der verwendete View
    */
   View _view;
+  
   /**
    * Timer
    */
@@ -20,7 +21,7 @@ class Controller{
   /**
    * TimerIntervall 
    */
-  var _timerIntervall = new Duration(milliseconds: 200);
+  var _timerIntervall;
  
   /**
    * 
@@ -46,27 +47,26 @@ class Controller{
    * Konstruktor
    */
   Controller() {
+    _loadParameters().then( (f) {
+      View view = new View(document.body, this); 
+      _view = view;  
+    });
   }
   
   /**
    * Lade Spielparameter ein
    */
-  Future loadParameters() async{
+  Future _loadParameters() async{
     //Laden von globalen Parametern
     String inputString = await HttpRequest.getString('/parameters/global_settings.json');    
     Map jMap = JSON.decode(inputString);    
     BLOCK_SIZE = jMap["BLOCK_SIZE"];
     BLOCKS_PER_ROW = jMap["BLOCKS_PER_ROW"];
-    BLOCK_ROWS = jMap["BLOCK_ROWS"];   
-    RED = jMap["RED"];
-    BLUE = jMap["BLUE"];
-    WHITE = jMap["WHITE"];
-    YELLOW = jMap["YELLOW"];
-    GREEN = jMap["GREEN"];
-    BLACK = jMap["BLACK"]; 
+    BLOCK_ROWS = jMap["BLOCK_ROWS"];     
     NO_COLOR = jMap["NO_COLOR"];
-    DIFFERENT_COLORS = jMap["DIFFERENT_COLORS"];
-    POWERUP_COUNT = jMap["POWERUP_COUNT"];
+    COLORS = jMap["COLORS"];
+    SOLID_COLORS = jMap["SOLID_COLORS"];        
+    POWERUPS = jMap["POWERUPS"];       
     POINTS_PER_ROW = jMap["POINTS_PER_ROW"];
     POINTS_PER_GROUPELEMENT = jMap["POINTS_PER_GROUPELEMENT"];
     START_LIFE = jMap["START_LIFE"];
@@ -77,9 +77,10 @@ class Controller{
     for(int i = 1; i <= LEVEL_COUNT; i++){
       inputString = await HttpRequest.getString("/parameters/$LEVEL_PATH/level$i.json");
       jMap = JSON.decode(inputString);
-      _levels[i] = new Level(jMap["YELLOW_SHARE"], jMap["RED_SHARE"], jMap["GREEN_SHARE"],jMap["BLUE_SHARE"],
-        jMap["WHITE_SHARE"],jMap["BLACK_SHARE"], jMap["POWERUP_SHARE"], jMap["START_POINTS"],jMap["END_POINTS"],jMap["FALLING_SPEED"],
-        jMap["CREATION_SPEED"]);
+      Map<String, int> colors_share = jMap["COLORS_SHARE"];
+      Map<String, int> solid_colors_share = jMap["SOLID_COLORS_SHARE"];
+      Map<String, int> powerup_share = jMap["POWERUPS_SHARE"];          
+      _levels[i] = new Level(colors_share, solid_colors_share, powerup_share, jMap["END_POINTS"], jMap["FALLING_SPEED"], jMap["CREATION_SPEED"]);
     }
     //Einstellen TimerIntervall
     _timerIntervall = new Duration(milliseconds: _levels[_aktLevel].falling_speed);
@@ -89,6 +90,7 @@ class Controller{
    * das Timer-Event
    */
   void _timerEvent(){
+    
     //bewege Blöcke inklusive Kollisionsdetection
        int isCollision = _model.moveBlocks(); 
        if( isCollision < 0 ){
@@ -122,11 +124,10 @@ class Controller{
            _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );
          }
          else{
-           //TODO GAME OVER könnte hier eingebaut werden
+           //Game over
            _view.addInfo("Game Over!");
-         //setze StartBool
-           _isStarted = false;
-           //TODO Verlier-Bild etc einblenden
+           //setze StartBool
+           _isStarted = false;           
            _timer.cancel();  
            return;
          }      
@@ -134,75 +135,8 @@ class Controller{
     
     Level level = _levels[_aktLevel];
     if( level != null && _counter == level.creation_speed){
-      //zähle alle share-Werte hoch
-      int maxValue = level.black_share+level.blue_share+level.green_share+level.powerup_share+level.red_share+level.white_share+level.yellow_share;
-      //nehme Zufallszahl
-      int randomValue = new Random().nextInt(maxValue);
-      String color = "";
-      bool isSolid = false;
-      bool isPowerup = false;
+      Block block = _model.getRandomBlock(level);
       
-      maxValue -= level.yellow_share;
-      if(randomValue > maxValue){
-        color = YELLOW;
-      }
-      else{
-        maxValue -= level.blue_share;
-        if(randomValue > maxValue){
-          color = BLUE;
-        }  
-        else{
-          maxValue -= level.green_share;
-          if(randomValue > maxValue){
-           color = GREEN; 
-          }
-          else{
-            maxValue -= level.red_share;
-            if(randomValue > maxValue){
-              color = RED;
-            }
-            else{
-              maxValue -= level.white_share;
-              if(randomValue > maxValue){
-                color = WHITE;
-              }
-              else{
-                maxValue -= level.black_share;
-                if(randomValue > maxValue){
-                  color = BLACK;
-                  isSolid = true;
-                }
-                else{
-                  color = NO_COLOR;
-                  isPowerup = true;
-                }
-              }
-            }
-          }
-        }
-      }      
-        
-      Block block;
-      if( !isPowerup ){
-        block = new Block(0,0, color, false, isSolid);        
-      }
-      else{
-        int powerUpRandom = new Random().nextInt(POWERUP_COUNT);
-        block = new PowerupHeart(0,0);
-        /*
-        if(powerUpRandom == 1){
-          block = new PowerupHeart(0,0);
-        }
-        else{
-          if(powerUpRandom == 2){
-            block = new PowerupBomb(0,0);
-          }
-          else{
-            block = new PowerupColorChange(0,0);
-          }
-        }*/
-                
-      }
       block.targetX = new Random().nextInt(BLOCKS_PER_ROW);          
       _model.addMovingBlock(block);
       _view.addElement(block);
@@ -226,12 +160,6 @@ class Controller{
     _view.updateMovingElements(_model);
    
   }
-
-  /**
-   * Setter für den View
-   */
-  set view(View v) => _view = v;
- 
 
   /**
    * Startet neues Spiel
