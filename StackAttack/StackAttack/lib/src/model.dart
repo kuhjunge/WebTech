@@ -211,19 +211,16 @@ class Model{
       if(randomValue > maxValue){
         if( f.compareTo("powerup_heart") == 0){
           return new PowerupHeart(0,0);
-        }/*
+        }
         if( f.compareTo("powerup_bomb") != 0){
           return new PowerupBomb(0,0);
         }
-        if( f.compareTo("powerup_heart") != 0){
-          return new PowerupHeart(0,0);
-        } */       
         
       }
     }
         
     //Default, d.h. die letzte Möglichkeit
-    return new PowerupBomb(0,0);
+    return new PowerupCoin(0,0);
   }
   
 }

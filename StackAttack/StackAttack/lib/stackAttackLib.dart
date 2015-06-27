@@ -16,6 +16,7 @@ part 'src/powerup.dart';
 part 'src/powerupHeart.dart';
 part 'src/level.dart';
 part 'src/powerupBomb.dart';
+part 'src/powerupCoin.dart';
 
 
 

@@ -51,8 +51,9 @@ class Player extends MovingElement {
         x = x + x_t;
         y = y + y_t;
         m.deleteBlock(b);
-        falling(m); 
+        falling(m);
         b.walkThrough(m);
+        falling(m);
         return;
       }
       //bewege direkt den Player
