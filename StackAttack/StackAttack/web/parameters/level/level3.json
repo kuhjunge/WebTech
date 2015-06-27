@@ -1,14 +1,19 @@
 {
-  "YELLOW_SHARE":15,
-  "RED_SHARE":15,
-  "GREEN_SHARE":15,
-  "BLUE_SHARE":15,
-  "WHITE_SHARE":15,
-  "BLACK_SHARE":10,
-  "POWERUP_SHARE":5,  
-  "START_POINTS":200,
+  "COLORS_SHARE":{
+    "yellow":15,
+    "red":15,
+    "green":15,
+    "blue":15,
+    "white":15
+  },
+  "SOLID_COLORS_SHARE":{
+    "black":10
+  },
+  "POWERUPS_SHARE":{
+    "powerup_heart":5
+  }, 
   "END_POINTS":400,  
   "FALLING_SPEED":200,
-  "CREATION_SPEED":3
+  "CREATION_SPEED":5
 }
  

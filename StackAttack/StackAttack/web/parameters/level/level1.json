@@ -8,7 +8,7 @@
     "black":10
   },
   "POWERUPS_SHARE":{
-    "powerup_heart":50
+    "powerup_heart":5
   }, 
   "END_POINTS":100,  
   "FALLING_SPEED":200,
