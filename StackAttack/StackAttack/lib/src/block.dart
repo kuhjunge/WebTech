@@ -65,85 +65,46 @@ class Block extends MovingElement {
     }         
   }
   
+  void _rekDel(String color, Block tmp, List<Block> list, Model m){
+    Block  left, right, top, down;    
+    left = m.getBlock(tmp.x-1, tmp.y);
+    right= m.getBlock(tmp.x+1, tmp.y);
+    top = m.getBlock(tmp.x, tmp.y+1);
+    down = m.getBlock(tmp.x, tmp.y-1);
+    
+    if(left != null && left.color == color && !list.contains(left)){
+      list.add(left);
+      _rekDel(color, left, list, m);
+    }
+    if(right != null && right.color == color && !list.contains(right)){
+      list.add(right);
+      _rekDel(color, right, list, m);
+    }
+    if(top != null && top.color == color && !list.contains(top)){
+      list.add(top);
+      _rekDel(color, top, list, m);
+    }
+    if(down != null && down.color == color && !list.contains(down)){
+      list.add(down);
+      _rekDel(color, down, list, m);
+    } 
+    
+  }
+  
   /**
    * Überprüft, ob zusammenhängende Blöcke an diesem dran sind
    */
   void blocksDeletion(Model m){
-    int counter = 1;
-    //a)
-    Block tmpBlock = m.getBlock(x-1, y);   
-    if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-      counter++;
-      tmpBlock = m.getBlock(x-2, y);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-      tmpBlock = m.getBlock(x-1, y-1);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-      tmpBlock = m.getBlock(x-1, y+1);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-    }
-    //b)
-    tmpBlock = m.getBlock(x+1, y);   
-    if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-      counter++;
-      tmpBlock = m.getBlock(x+2, y);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-      tmpBlock = m.getBlock(x+1, y-1);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-      tmpBlock = m.getBlock(x+1, y+1);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-    }
-    //c)
-    tmpBlock = m.getBlock(x, y-1);   
-    if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-      counter++;
-      tmpBlock = m.getBlock(x, y-2);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-      tmpBlock = m.getBlock(x-1, y-1);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-      tmpBlock = m.getBlock(x+1, y-1);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-    }
-    //d)
-    tmpBlock = m.getBlock(x, y+1);   
-    if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-      counter++;
-      tmpBlock = m.getBlock(x, y+2);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-      tmpBlock = m.getBlock(x-1, y+1);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-      tmpBlock = m.getBlock(x+1, y+1);
-      if( tmpBlock != null && tmpBlock.color.compareTo(color) == 0 ) {
-        counter++;
-      }
-    }
+    List<Block> list = new List();
+    list.add(this);    
+    _rekDel(this.color, this, list, m);
   
     //min 3 zusammenhängende
-    if(counter >= 3){     
-      _rekDelete(m, this);
+    if(list.length >= 3){     
+      //lösche gesammelte Blöcke
+      list.forEach( (f) => m.deleteBlock(f));
       //zähle Punkte hoch  
-       m.player.points += POINTS_PER_GROUPELEMENT*counter;             
+       m.player.points += POINTS_PER_GROUPELEMENT*list.length;             
       //verschiebe den Rest nach unten
        m.allBlocksFallingDown();
       //verschiebe auch player nach unten
@@ -182,35 +143,6 @@ class Block extends MovingElement {
               return true;
             }
             return false;
-   }
-  
-   /**
-    * Rekursives Löschen zusammenhängender Blöcke
-    */
-   void _rekDelete(Model m, Block b){
-     int x_t = b.x;
-     int y_t = b.y;
-     String color_t = b.color;
-     //Lösche Block
-     m.deleteBlock(b);
-     //lösche Nachbarn, wenn gleiche Farbe
-     Block tmpBlock = m.getBlock(x_t - 1, y_t);
-     if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-       _rekDelete(m, tmpBlock);       
-     }
-     tmpBlock = m.getBlock(x_t + 1, y_t);
-     if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-       _rekDelete(m, tmpBlock);       
-     }
-     tmpBlock = m.getBlock(x_t, y_t -1 );
-     if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-       _rekDelete(m, tmpBlock);       
-     }
-     tmpBlock = m.getBlock(x_t, y_t+1);
-     if( tmpBlock != null && tmpBlock.color.compareTo(color_t) == 0 ){
-       _rekDelete(m, tmpBlock);       
-     }     
-     
-   }
+   }  
    
 }
