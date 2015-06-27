@@ -211,9 +211,9 @@ class Model{
       if(randomValue > maxValue){
         if( f.compareTo("powerup_heart") == 0){
           return new PowerupHeart(0,0);
-        }
-        /*if( f.compareTo("powerup_heart") != 0){
-          return new PowerupHeart(0,0);
+        }/*
+        if( f.compareTo("powerup_bomb") != 0){
+          return new PowerupBomb(0,0);
         }
         if( f.compareTo("powerup_heart") != 0){
           return new PowerupHeart(0,0);
@@ -222,8 +222,8 @@ class Model{
       }
     }
         
-    //Default
-    return new Block(0,0, level.colors_share.keys.first , false, false);
+    //Default, d.h. die letzte Möglichkeit
+    return new PowerupBomb(0,0);
   }
   
 }

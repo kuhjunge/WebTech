@@ -12,28 +12,14 @@ class PowerupBomb extends Powerup {
     addClass("powerup_bomb");
   }
   
-  void walkThrough(Model m){
-    print("bombe");
-    return;
-    Player p = m.player;
-    //links und rechts der Figur    
-    for(int i = -1; i <= p.height; i++){
-      Block b = m.getBlock(p.x - 1, p.y - i);
-      if( b != null){
-        m.deleteBlock(b);  
-      }
-      b = m.getBlock(p.x + p.width, p.y - i);
-      if( b != null){
-        m.deleteBlock(b);  
-      }      
-    }
-    //unterhalb der Figur
-    for(int i = -1; i <= p.width; i++){
-      Block b = m.getBlock(p.x - i, p.y + p.height);
-      if( b != null){
-        m.deleteBlock(b);  
-      }      
-    }        
+  void walkThrough(Model m){    
+    //lösche alle Nachbarn des Players
+    var l = m.player.getNeighbours(m); 
+    l.forEach( (f)=> m.deleteBlock(f) );
+    
+    //vergebe Punkte wie für zusammenhängende Blöcke
+    m.player.points += POINTS_PER_GROUPELEMENT*l.length;
+    
     //alle fallen runter
     m.allBlocksFallingDown();
   }

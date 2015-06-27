@@ -51,8 +51,8 @@ class Player extends MovingElement {
         x = x + x_t;
         y = y + y_t;
         m.deleteBlock(b);
-        b.walkThrough(m);        
-        falling(m);
+        falling(m); 
+        b.walkThrough(m);
         return;
       }
       //bewege direkt den Player
@@ -77,10 +77,13 @@ class Player extends MovingElement {
       while( y + 1 < BLOCK_ROWS && ( m.getBlock(x, y + 2)==null ||  (m.getBlock(x, y + 2)!= null &&  m.getBlock(x, y + 2).isWalkable) ) ) { 
         Block  b = m.getBlock(x, y + 2);
         if( b != null && b.isWalkable){
-          b.walkThrough(m);
+          y = y + 1;
           m.deleteBlock(b);
+          b.walkThrough(m);          
         }
-        y = y + 1;
+        else{
+          y = y + 1;
+        }
       }     
     }
   
@@ -102,6 +105,57 @@ class Player extends MovingElement {
       }
       return 0;
     }
+    
+  /**
+   * Gibt eine Liste von benachbarten Blöcken zurück
+   */
+  List<Block> getNeighbours(Model m){
+    List<Block> list = new List();    
+    
+    Block b = m.getBlock(x-1, y+1);
+    if(b != null){
+      list.add(b);
+    }    
+    b = m.getBlock(x+1, y+1);
+    if(b != null){
+      list.add(b);
+    }    
+    
+    b = m.getBlock(x-1, y);
+    if(b != null){
+      list.add(b);
+    }    
+    b = m.getBlock(x+1, y);
+    if(b != null){
+      list.add(b);
+    }    
+    
+    b = m.getBlock(x-1, y-1);
+    if(b != null){
+      list.add(b);
+    }    
+    b = m.getBlock(x+1, y-1);
+    if(b != null){
+      list.add(b);
+    }    
+    
+    
+    b = m.getBlock(x-1, y+2);
+    if(b != null){
+      list.add(b);
+    }    
+    b = m.getBlock(x, y+2);
+    if(b != null){
+      list.add(b);
+    }   
+    b = m.getBlock(x+1, y+2);
+    if(b != null){
+      list.add(b);
+    }
+    
+    
+    return list;
+  }
      
   /**
    * gibt für neue Elemente eine sinnvolle Starthöhe zurück

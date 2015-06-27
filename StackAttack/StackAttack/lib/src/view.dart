@@ -30,7 +30,7 @@ class View{
   /**
    * Anzeige für Pause, Game Over
    */
-  Element _message;
+  //Element _message;
   
   /**
    * Konstruktor
