@@ -36,6 +36,12 @@ h1{
   overflow:hidden;
 }
 
+#credit{
+	line-height: 1.5;
+	text-align: center;
+	color: #222;
+}
+
 .menu{
   margin: 0 auto;
 }

@@ -7,15 +7,14 @@
     "white":50
   },
   "SOLID_COLORS_SHARE":{
-    "black":50
+    "black":100
   },
   "POWERUPS_SHARE":{
     "powerup_heart":5,
-    "powerup_bomb":20,
+    "powerup_bomb":10,
     "powerup_coin":5
   }, 
-  "END_POINTS":400,  
-  "FALLING_SPEED":200,
-  "CREATION_SPEED":6
+  "END_POINTS":1000,  
+  "FALLING_SPEED":150,
+  "CREATION_SPEED":2
 }
- 

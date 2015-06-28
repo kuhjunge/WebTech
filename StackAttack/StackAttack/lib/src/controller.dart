@@ -134,7 +134,7 @@ class Controller{
        }
     
     Level level = _levels[_aktLevel];
-    if( level != null && _counter == level.creation_speed){
+    if( level != null && _counter >= level.creation_speed){
       Block block = _model.getRandomBlock(level);
       
       block.targetX = new Random().nextInt(BLOCKS_PER_ROW);          
