@@ -178,6 +178,12 @@ class Controller{
      _model.player = new Player(Player.getStartWidth(), Player.getStartHeight() );
      _view.addElement(_model.player);
 
+     //füge StartBlock hinzu, um Wartezeit am Anfang zu reduzieren
+     Block block = _model.getRandomBlock(_levels[_aktLevel]);     
+      block.targetX = new Random().nextInt(BLOCKS_PER_ROW);          
+      _model.addMovingBlock(block);
+      _view.addElement(block);
+     
      //update View    
      _view.updateView(_model.player, _aktLevel);
      
