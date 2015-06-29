@@ -77,6 +77,7 @@ class Model{
           bl.falling(this);
           //Überprüfe, ob eventuell zusammenhängende Blöcke entstehen
           bl.blocksDeletion(this);
+          bl.falling(this);
         }
       }
     }
