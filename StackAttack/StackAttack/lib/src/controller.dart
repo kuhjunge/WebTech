@@ -107,7 +107,7 @@ class Controller{
            if(isCollision == -2){
              // alte Blöcke fallen nach unten
               _model.allBlocksFallingDown();
-              _model.player.y--;
+              _model.player.y -= 2;
            }
            else{
              //lösche Spielfeld          
