@@ -154,6 +154,9 @@ class Controller{
       _timer.cancel();
       _timer = new Timer.periodic(_timerIntervall, (_)=> _timerEvent() );
     }
+  
+    //Player springt auf fallenden Block
+    _model._player.falling(_model);
     
     //update des Views 
     _view.updateView(_model.player, _aktLevel);
