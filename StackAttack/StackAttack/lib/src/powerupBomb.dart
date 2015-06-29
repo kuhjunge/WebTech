@@ -22,6 +22,8 @@ class PowerupBomb extends Powerup {
     
     //alle fallen runter
     m.allBlocksFallingDown();
+    //Player fällt runter
+    m.player.falling(m);
   }
   
 }

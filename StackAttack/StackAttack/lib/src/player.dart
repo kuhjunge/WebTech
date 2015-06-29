@@ -50,8 +50,7 @@ class Player extends MovingElement {
       if(b != null && b.isWalkable && aboveB == null){        
         x = x + x_t;
         y = y + y_t;
-        m.deleteBlock(b);
-        falling(m);
+        m.deleteBlock(b);        
         b.walkThrough(m);
         falling(m);
         return;
@@ -80,7 +79,7 @@ class Player extends MovingElement {
         if( b != null && b.isWalkable){
           y = y + 1;
           m.deleteBlock(b);
-          b.walkThrough(m);          
+          b.walkThrough(m);
         }
         else{
           y = y + 1;
