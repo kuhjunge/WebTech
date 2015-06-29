@@ -76,6 +76,13 @@ h1{
   z-index:1;
 }
 
+.info .prev{
+  position: relative;
+  width:20px;
+  height:20px;
+  float:left;
+}
+
 .player{
   background-image: url(../pics/player.png);
 }

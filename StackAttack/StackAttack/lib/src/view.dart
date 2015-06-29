@@ -100,8 +100,16 @@ class View{
    * zeigt die Regeln an
    */
   void showRules(){
-    addInfo("<h2>Regeln:</h2><p>Der Spieler muss die Spielsteine verschieben und darf sich nicht treffen lassen. Schwarze Steine sind unbeweglich. "+
-        "3er Farbkombinationen und Reihen geben Punkte.</p><h2>Tastenbelegung:</h2><p>A: Links <br>Q: Linkssprung <br>D: Rechts <br>E: Rechtssprung </p>");
+    addInfo("<h2>Regeln:</h2><p>Der Spieler muss die Spielsteine verschieben und darf sich nicht treffen lassen.<br />"+
+        "Blockverbunde und Reihen geben Punkte.</p><h2>Tastenbelegung:</h2><p>A: Links <br/>Q: Linkssprung <br/>D: Rechts <br/>E: Rechtssprung </p>"+
+        "<h2>Blockarten:</h2><div class='red prev block'></div><p> Ein normaler Block kann verschoben werden und gibt in einem Verbund von mindestens 3 gleichfarbigen Blöcken "
+        +POINTS_PER_GROUPELEMENT.toString() +
+        " Punkte pro Block und wird aufgelößt <br/>Es gibt: "+COLORS.toString()+"</p>"+
+        "<div class='black prev block'></div><p> Schwarze Blöcke verhalten sich wie normale Blöcke, können aber NICHT verschoben werden.</p>"+
+        "<div class='powerup_heart prev block'></div><p> Ein Herz gibt ein zusätzliches Leben. Max: "+MAX_LIFE.toString() +"</p>"+
+        "<div class='powerup_bomb prev block'></div><p>Eine Bombe zerstört alle Blöcke die am Spieler anliegen.</p>"+
+        "<div class='powerup_coin prev block'></div><p> Ein Geldstück gibt "+(POINTS_PER_GROUPELEMENT*4).toString() +" Punkte.</p>"+
+        "<p>Eine komplette Reihe gibt "+POINTS_PER_ROW.toString() +" Punkte.</p>");
   }
   /**
    * zeigt die Regeln an
