@@ -33,7 +33,7 @@ class Player extends MovingElement {
   }
   
   /**
-     * der übergebende Player versucht x/y nach Direction.LEFT oder .RIGHT sich zu bewegen    
+     * der Player versucht x/y nach Direction.LEFT oder .RIGHT sich zu bewegen    
      * Entweder Bewegung Player oder Block wird verschoben
      */
     void move(Model m, int x_t, int y_t, Direction d){
@@ -158,16 +158,16 @@ class Player extends MovingElement {
   }
      
   /**
-   * gibt für neue Elemente eine sinnvolle Starthöhe zurück
+   * gibt für neue Elemente eine sinnvolle Startposition für die y-Koordinate zurück
    */
-  static int getStartHeight(){
+  static int getStartTop(){
     return BLOCK_ROWS-1;
   }
   
   /**
-   * gibt für neue Elemente eine sinnvollen x-Startwert
+   * gibt für neue Elemente einen sinnvollen x-Startwert zurück
    */
-  static int getStartWidth(){
+  static int getStartLeft(){
     return BLOCKS_PER_ROW~/2;    
   }
 }

@@ -113,7 +113,7 @@ class Controller{
              //lösche Spielfeld          
              _model = new Model();
              _view.clear();
-             _model.player = new Player(x, Player.getStartHeight());
+             _model.player = new Player(x, Player.getStartTop());
              _view.addElement(_model.player);          
            }
            
@@ -175,7 +175,7 @@ class Controller{
     _aktLevel = 1;
     
      // füge Spieler hinzu
-     _model.player = new Player(Player.getStartWidth(), Player.getStartHeight() );
+     _model.player = new Player(Player.getStartLeft(), Player.getStartTop() );
      _view.addElement(_model.player);
 
      //füge StartBlock hinzu, um Wartezeit am Anfang zu reduzieren
