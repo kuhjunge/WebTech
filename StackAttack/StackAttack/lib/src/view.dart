@@ -66,10 +66,34 @@ class View{
     body.querySelector("#button_pause").onClick.listen(( e){
       _control.pauseGame();
     });
-
+    
+    /*
+     * Bewegung des Players per Tastatur
+     */
     body.onKeyDown.listen( (e){      
       _control.keyEvent(e);      
     });
+    
+    /*
+     * Bewegung des Players per Mausdruck
+     */    
+    _container.onMouseUp.listen( (ev){      
+      int x = ev.offset.x;
+      int y = ev.offset.y;
+      if( x < FIELD_WIDTH~/2 && y < FIELD_HEIGHT~/2){
+        _control.keyEvent(new KeyEvent('keydown', keyCode: 81));        
+      }
+      if( x < FIELD_WIDTH~/2 && y >= FIELD_HEIGHT~/2){
+        _control.keyEvent(new KeyEvent('keydown', keyCode: 65));
+      }
+      if( x >= FIELD_WIDTH~/2 && y < FIELD_HEIGHT~/2){
+        _control.keyEvent(new KeyEvent('keydown', keyCode: 69));
+      }
+      if( x >= FIELD_WIDTH~/2 && y >= FIELD_HEIGHT~/2){
+        _control.keyEvent(new KeyEvent('keydown', keyCode: 68));
+      } 
+    });
+    
     // zeige die Regeln
     showRules();
   }
