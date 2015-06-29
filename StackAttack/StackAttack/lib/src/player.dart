@@ -66,10 +66,8 @@ class Player extends MovingElement {
       if( b != null && !b.isSolid && !m.isAMovingBlock(b) && aboveB == null && a == null 
           && ( (d==Direction.LEFT) ? (b.x +  x_t >= 0) : (b.x + x_t < BLOCKS_PER_ROW) )){
         m.moveOneBlock(b, b.x+ x_t, b.y);
-        b.falling(m);
-        if( !b.rowDeletion(m, b.y) ){
-          b.blocksDeletion(m);
-        }
+        b.targetX = b.x;
+        m.addMovingBlock(b);        
       }                
     }
   
