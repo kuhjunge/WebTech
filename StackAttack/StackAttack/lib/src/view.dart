@@ -5,13 +5,13 @@ part of stackAttackLib;
  */
 class View{
   /**
-   * Der DivElement Container
-   */
-  Element _container;
-  /**
    * zuständiger Controller
    */
   Controller _control;
+  /**
+   * Der DivElement Container
+   */
+  Element _container;
   
   /**
    * Anzeige der Punkte
