@@ -125,7 +125,8 @@ class View{
    */
   void showRules(){
     addInfo("<h2>Regeln:</h2><p>Der Spieler muss die Spielsteine verschieben und darf sich nicht treffen lassen.<br />"+
-        "Blockverbunde und Reihen geben Punkte.</p><h2>Tastenbelegung:</h2><p>A: Links <br/>Q: Linkssprung <br/>D: Rechts <br/>E: Rechtssprung </p>"+
+        "Blockverbunde und Reihen geben Punkte.</p><h2>Tastenbelegung:</h2><p>A: Links <br />(Touch: Klick Feld Unten Links)<br/>"+
+        "Q: Linkssprung <br />(Touch: Klick Feld Oben Links)<br/>D: Rechts <br />(Touch: Klick Feld Unten Rechts)<br/>E: Rechtssprung <br />(Touch: Klick Feld Oben Rechts)<br />Warunung: Die Touch Eingabe ist experimentell!</p>"+
         "<h2>Blockarten:</h2><div class='red prev block'></div><p> Ein normaler Block kann verschoben werden und gibt in einem Verbund von mindestens 3 gleichfarbigen Blöcken "
         +POINTS_PER_GROUPELEMENT.toString() +
         " Punkte pro Block und wird aufgelößt <br/>Es gibt: "+COLORS.toString()+"</p>"+
