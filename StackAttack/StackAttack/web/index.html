@@ -13,35 +13,34 @@
     <meta name="scaffolded-by" content="https://github.com/google/stagehand">
     <title>StackAttack</title>
     <link rel="stylesheet" href="styles/main.css">
-   
 </head>
-
 <body>
   <div id="wrap">
     <h1>Stack Attack</h1>
-      <div class="menu">
+      <div class="menu"> <!-- Steuerungsbuttons -->
         <button id="button_start">Spiel starten</button>
         <button id="button_pause">Spiel pausieren</button>
       </div><!-- menu -->
-      <div id="field">
+      <div id="field"><!-- Spielfeld -->
       </div>
       <div class="menu">
-          <div class="left">Level: <span id="levelView">1</span></div>
-          <div class="lifeWrap">
-            <div id="hwrap">
-              <div class="heart hoff"> </div>
-              <div class="heart hoff"> </div>
-              <div class="heart hoff"> </div>
-              <div class="heart hoff"> </div>
-              <div class="heart hoff"> </div>
-              <div class="clear"> </div>
-           </div> 
-          </div>
-         <div class="right">Punktestand: <span id="pointView">0</span></div>
-         <div class="clear"> </div>
-         <div id="credit">by Simon Krause & Chris Deter - Version 1.1</div>
+        <div class="left">Level: <span id="levelView">1</span></div>
+        <div class="lifeWrap"><!-- Lebensanzeige-->
+          <div id="hwrap">
+            <div class="heart hoff"> </div>
+            <div class="heart hoff"> </div>
+            <div class="heart hoff"> </div>
+            <div class="heart hoff"> </div>
+            <div class="heart hoff"> </div>
+            <div class="clear"> </div><!-- clear div -->
+          </div> 
         </div>
+        <div class="right">Punktestand: <span id="pointView">0</span></div>
+        <div class="clear"> </div><!-- clear div -->
+        <div id="credit">by Simon Krause & Chris Deter - Version 1.2</div>
+      </div>
   </div><!-- wrap -->
+  <!-- Scripte -->
   <script type="application/dart" src="main.dart"></script>
   <script data-pub-inline src="packages/browser/dart.js"></script>
 </body>

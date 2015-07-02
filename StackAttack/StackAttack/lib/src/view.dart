@@ -77,9 +77,10 @@ class View{
     /*
      * Bewegung des Players per Mausdruck
      */    
-    _container.onMouseUp.listen( (ev){      
-      int x = ev.offset.x;
-      int y = ev.offset.y;
+      _container.onMouseUp.listen( (ev){      
+      int x = ev.client.x - _container.offsetLeft;
+      int y = ev.client.y - _container.offsetTop;
+
       if( x < FIELD_WIDTH~/2 && y < FIELD_HEIGHT~/2){
         _control.keyEvent(new KeyEvent('keydown', keyCode: 81));        
       }
@@ -92,7 +93,8 @@ class View{
       if( x >= FIELD_WIDTH~/2 && y >= FIELD_HEIGHT~/2){
         _control.keyEvent(new KeyEvent('keydown', keyCode: 68));
       } 
-    });
+    }); 
+     
     
     // zeige die Regeln
     showRules();
@@ -125,8 +127,8 @@ class View{
    */
   void showRules(){
     addInfo("<h2>Regeln:</h2><p>Der Spieler muss die Spielsteine verschieben und darf sich nicht treffen lassen.<br />"+
-        "Blockverbunde und Reihen geben Punkte.</p><h2>Tastenbelegung:</h2><p>A: Links <br />(Touch: Klick Feld Unten Links)<br/>"+
-        "Q: Linkssprung <br />(Touch: Klick Feld Oben Links)<br/>D: Rechts <br />(Touch: Klick Feld Unten Rechts)<br/>E: Rechtssprung <br />(Touch: Klick Feld Oben Rechts)<br />Warunung: Die Touch Eingabe ist experimentell!</p>"+
+        "Blockverbunde und Reihen geben Punkte.</p><h2>Tastenbelegung:</h2><p>A: Links <br />Q: Linkssprung<br/>D: Rechts<br/>E: Rechtssprung</p>"+
+        "<h2>Touch:</h2><p>Spielfeld in den Ecken anklicken.<br/>Oben Links für Sprung nach links.<br/>Oben Rechts für Sprung nach Rechts.<br/>Unten Links für Schritt nach Links.<br/>Unten Rechts für Schritt nach Rechts.</p>"+
         "<h2>Blockarten:</h2><div class='red prev block'></div><p> Ein normaler Block kann verschoben werden und gibt in einem Verbund von mindestens 3 gleichfarbigen Blöcken "
         +POINTS_PER_GROUPELEMENT.toString() +
         " Punkte pro Block und wird aufgelößt <br/>Es gibt: "+COLORS.toString()+"</p>"+

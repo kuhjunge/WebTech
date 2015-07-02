@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
+/* Allgemeines CSS */
 html, body {
     margin: 0;
     padding: 0;
@@ -7,118 +8,24 @@ html, body {
 }
 
 h1{
-  margin-top: 100px;
-  text-align:center;
+    margin-top: 10%;
+    text-align:center;
 }
 
-#wrap{
-  position:absolute;
-  background-image: url(../pics/background.jpg);
-  background-position: center;
-  background-size: 1500px 1500px;
-  background-repeat:  no-repeat;
-  width:100%;
-  height:100%;
-}
-
-/* Style Spiel*/
-
-#field{  
-  background-color: rgba(200,200,200,.7);
-  height: 420px;
-  position:relative;
-  margin: 0 auto;
-  background-image: url(../pics/bg_game.jpg);
-  background-position: center bottom;
-  background-size: cover;
-  border: 1px black solid;
-  clear:both;
-  overflow:hidden;
-}
-
-#credit{
-	line-height: 1.5;
-	text-align: center;
-	color: #222;
-}
-
-.menu{
-  margin: 0 auto;
-}
-
-.green{
-  background-color: green;
-}
-
-.blue{
-  background-color: blue;
-}
-
-.red{
-  background-color: red;
-}
-
-.black{
-  background-color: black;
-}
-
-.yellow{
-  background-color: yellow;
-}
-
-.white{
-  background-color: white;
-}
-
-.block, .powerup_heart, .player, .powerup_bomb, .powerup_coin{
-  position: absolute;
-  background-size: contain;
-  z-index:1;
-}
-
-.info .prev{
-  position: relative;
-  width:20px;
-  height:20px;
-  float:left;
-}
-
-.player{
-  background-image: url(../pics/player.png);
-}
-
-.block {
-  background-image: url(../pics/block.png);
-}
-
-#field .powerup_heart {
-  background-image: url(../pics/powerup_heart.png);
-}
-
-#field .powerup_bomb {
-  background-image: url(../pics/powerup_bomb.png);
-}
-
-#field .powerup_coin {
-  background-image: url(../pics/powerup_coin.png);
-}
-
-/* Style Seite*/
-
+/* Button Style */
 button {
-	text-align:center;
+	display:block;
+	box-sizing: border-box;
+	width: 130px;
 	margin:5px;
 	padding:2px;
 	line-height: 1.5;
-	width: 130px;
-	color: #000;
+	text-align:center;
 	background-color:  rgba(230,230,230,0.8);
-	box-sizing: border-box;
 	border-radius: 4px; 
 	box-shadow: 0 0 3px 1px rgba(0,0,0,0.7);
 	font-weight: bold;
 	color: buttontext;
-	display:block;
 	float:left;
 }
 
@@ -134,27 +41,34 @@ button:active {
 	text-shadow:0px 0px 0px #aaa;
 }
 
-.info{
-  position:relative;
-  width:96%;
-  height:96%;
-  background-color: rgba(255,255,255,0.7);
- /* line-height: 1.5;*/
-  padding:2%;
-  text-align:center;
-  z-index:5;
-  overflow: auto;
+/* Wrap für das ganze Spielfeld */
+#wrap{
+    position:absolute; /* Wichtig für absolute Anzeige der Spielelemente */
+    background-image: url(../pics/background.jpg);
+    background-position: center;
+    background-size: contain;
+    background-repeat:  no-repeat;
+    width:100%;
+    height:100%;
 }
 
-.lifeWrap{
-  float:left;
-  width:33%;
-  min-width:120px;
+/* Style Menu*/
+
+#credit{
+    line-height: 1.5;
+	text-align: center;
+	color: #222;
 }
 
 #hwrap{
-  margin: 0 auto;
-  width:120px;
+    margin: 0 auto;
+    width:120px;
+}
+
+.lifeWrap{
+    float:left;
+    width:33%;
+    min-width:120px;
 }
 
 .heart{
@@ -165,11 +79,15 @@ button:active {
 }
 
 .hon{
-  background-image: url(../pics/powerup_heart.png);
+    background-image: url(../pics/powerup_heart.png);
 }
 
 .hoff{
-  background-image: url(../pics/powerup_heart_empty.png); 
+    background-image: url(../pics/powerup_heart_empty.png); 
+}
+
+.menu{
+    margin: 0 auto;
 }
 
 .right {
@@ -191,6 +109,91 @@ button:active {
 	height: 0;
 	width: 0;
 }
+
+.info{
+    position:relative;
+    width:96%;
+    height:96%;
+    background-color: rgba(255,255,255,0.7);
+    padding:2%;
+    text-align:center;
+    z-index:5;
+    overflow: auto;
+}
+
+.info .prev{
+    position: relative;
+    width:20px;
+    height:20px;
+    float:left;
+}
+
+/* Spielfeld Style */
+
+#field{  
+    position:relative;/* Wichtig für absolute Anzeige der Spielelemente */
+    background-color: rgba(200,200,200,.7);
+    height: 420px;
+    margin: auto;
+    background-image: url(../pics/bg_game.jpg);
+    background-position: center bottom;
+    background-size: cover;
+    border: 1px black solid;
+    clear:both;
+    overflow:hidden;
+}
+
+.block, .powerup_heart, .player, .powerup_bomb, .powerup_coin{
+    position: absolute;
+    background-size: contain;
+    z-index:1;
+}
+
+.green{
+    background-color: green;
+}
+
+.blue{
+    background-color: blue;
+}
+
+.red{
+    background-color: red;
+}
+
+.black{
+    background-color: black;
+}
+
+.yellow{
+    background-color: yellow;
+}
+
+.white{
+    background-color: white;
+}
+
+.player{
+    background-image: url(../pics/player.png);
+}
+
+.block {
+    background-image: url(../pics/block.png);
+}
+
+/* Höherwertiges CSS um .block zu überschreiben bei den Powerups */
+#field .powerup_heart {
+    background-image: url(../pics/powerup_heart.png);
+}
+
+#field .powerup_bomb {
+    background-image: url(../pics/powerup_bomb.png);
+}
+
+#field .powerup_coin {
+    background-image: url(../pics/powerup_coin.png);
+}
+
 /*
 Notiz Bildquellen:
 Hintergrundbild:  http://vecto2000.com/cube-vector-background/
