@@ -58,7 +58,7 @@ class Controller{
    */
   Future _loadParameters() async{
     //Laden von globalen Parametern
-    String inputString = await HttpRequest.getString('/parameters/global_settings.json');    
+    String inputString = await HttpRequest.getString('./parameters/global_settings.json');    
     Map jMap = JSON.decode(inputString);    
     BLOCK_SIZE = jMap["BLOCK_SIZE"];
     BLOCKS_PER_ROW = jMap["BLOCKS_PER_ROW"];
@@ -75,7 +75,7 @@ class Controller{
     LEVEL_COUNT = jMap["LEVEL_COUNT"];
     //Laden der Level
     for(int i = 1; i <= LEVEL_COUNT; i++){
-      inputString = await HttpRequest.getString("/parameters/$LEVEL_PATH/level$i.json");
+      inputString = await HttpRequest.getString("./parameters/$LEVEL_PATH/level$i.json");
       jMap = JSON.decode(inputString);
       Map<String, int> colors_share = jMap["COLORS_SHARE"];
       Map<String, int> solid_colors_share = jMap["SOLID_COLORS_SHARE"];
