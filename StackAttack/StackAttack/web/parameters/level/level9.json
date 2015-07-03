@@ -16,6 +16,6 @@
     "powerup_lightning":20
   }, 
   "END_POINTS":100000,  
-  "FALLING_SPEED":100,
+  "FALLING_SPEED":150,
   "CREATION_SPEED":1
 }
