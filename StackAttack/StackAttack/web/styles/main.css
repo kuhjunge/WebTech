@@ -194,6 +194,9 @@ button:active {
     background-image: url(../pics/powerup_coin.png);
 }
 
+#field .powerup_lightning {
+    background-image: url(../pics/powerup_lightning.png);
+}
 /*
 Notiz Bildquellen:
 Hintergrundbild:  http://vecto2000.com/cube-vector-background/
@@ -201,6 +204,7 @@ Spielfigur: http://www.iconarchive.com/show/character-icons-by-martin-berube/Kid
 Bombe: http://www.iconarchive.com/show/oxygen-icons-by-oxygen-icons.org/Actions-edit-bomb-icon.html
 Coin: http://www.iconarchive.com/show/pretty-office-11-icons-by-custom-icon-design/coin-us-dollar-icon.html
 Herz: http://www.iconarchive.com/show/free-large-love-icons-by-aha-soft/Heart-icon.html
+blitz: http://www.iconarchive.com/show/weather-icons-by-custom-icon-design/lightning-icon.html
 Spielfeld Hintergrund: http://xoo.me/template/details/8063-white-gallery-hall-with-spotlights-background-jpg
 Kisten Textur: by Chris Deter
 

@@ -11,7 +11,8 @@
   "POWERUPS_SHARE":{
     "powerup_heart":20,
     "powerup_bomb":2,
-    "powerup_coin":20
+    "powerup_coin":20,
+    "powerup_lightning":20
   }, 
   "END_POINTS":100,  
   "FALLING_SPEED":300,

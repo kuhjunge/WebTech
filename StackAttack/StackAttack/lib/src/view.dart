@@ -131,11 +131,12 @@ class View{
         "<h2>Touch:</h2><p>Spielfeld in den Ecken anklicken.<br/>Oben Links für Sprung nach links.<br/>Oben Rechts für Sprung nach Rechts.<br/>Unten Links für Schritt nach Links.<br/>Unten Rechts für Schritt nach Rechts.</p>"+
         "<h2>Blockarten:</h2><div class='red prev block'></div><p> Ein normaler Block kann verschoben werden und gibt in einem Verbund von mindestens 3 gleichfarbigen Blöcken "
         +POINTS_PER_GROUPELEMENT.toString() +
-        " Punkte pro Block und wird aufgelößt <br/>Es gibt: "+COLORS.toString()+"</p>"+
+        " Punkte pro Block und wird aufgelößt <br/> Es gibt: "+COLORS.toString()+"</p>"+
         "<div class='black prev block'></div><p> Schwarze Blöcke verhalten sich wie normale Blöcke, können aber NICHT verschoben werden.</p>"+
         "<div class='powerup_heart prev block'></div><p> Ein Herz gibt ein zusätzliches Leben. Max: "+MAX_LIFE.toString() +"</p>"+
-        "<div class='powerup_bomb prev block'></div><p>Eine Bombe zerstört alle Blöcke die am Spieler anliegen.</p>"+
+        "<div class='powerup_bomb prev block'></div><p> Eine Bombe zerstört alle Blöcke die am Spieler anliegen.</p>"+
         "<div class='powerup_coin prev block'></div><p> Ein Geldstück gibt "+(POINTS_PER_GROUPELEMENT*4).toString() +" Punkte.</p>"+
+        "<div class='powerup_lightning prev block'></div><p> Der Blitz zerstört eine ganze Reihe von Blöcken.</p>"+
         "<p>Eine komplette Reihe gibt "+POINTS_PER_ROW.toString() +" Punkte.</p>");
   }
   /**
