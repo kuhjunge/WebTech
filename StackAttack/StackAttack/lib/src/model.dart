@@ -216,7 +216,9 @@ class Model{
         if( f.compareTo("powerup_bomb") != 0){
           return new PowerupBomb(0,0);
         }
-        
+        if( f.compareTo("powerup_lightning") != 0){
+          return new PowerupLightning(0,0);
+        }        
       }
     }
         
