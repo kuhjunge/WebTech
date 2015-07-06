@@ -132,11 +132,8 @@ button:active {
 
 #field{  
     position:relative;/* Wichtig für absolute Anzeige der Spielelemente */
-    background-color: rgba(200,200,200,.7);
-    height: 420px;
     margin: auto;
     background-image: url(../pics/bg_game.jpg);
-    background-position: center bottom;
     background-size: cover;
     border: 1px black solid;
     clear:both;
